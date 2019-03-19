@@ -4,6 +4,7 @@ body , html {
   height : 100%;
   margin : 0 0;
   padding: 0  0;
+  background-color: #777;
 }
 
 .square {
