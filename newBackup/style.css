@@ -1,9 +1,3 @@
-button {
-	position: absolute;
-	width: 80px;
-	right: 50%;
-	margin-right: -40px;
-}
 #playModeDiv {
 	text-align: center;
 	margin: 20px 0 0;
@@ -32,7 +26,7 @@ button {
 #boardDiv {
 	width: 480px;
 	margin: 0 auto 30px;
-	border: 8px solid rgb(39, 39, 39);
+	border: 10px solid brown;
 	cursor: default;
 }
 .draughtsSquare {
@@ -40,13 +34,16 @@ button {
 	width: 60px;
 	height: 60px;
 	vertical-align: top;
-	background-color: rgb(220, 245, 226);
+	background-color: beige;
 }
 .draughtsRow:nth-child(odd) .draughtsSquare:nth-child(even), .draughtsRow:nth-child(even) .draughtsSquare:nth-child(odd) {
-	background-color: rgba(255, 0, 0, 0.699);
+	background-color: darkkhaki;
 }
 .draughtsSquare.clickable {
-	box-shadow: inset 0 0 .5px 4px rgb(0, 17, 255);
+	box-shadow: inset 0 0 5px 4px yellow;
+}
+.draughtsSquare.aiOption {
+	box-shadow: inset 0 0 5px 4px #99f;
 }
 .draughtsPiece {
 	width: 40px;
@@ -60,12 +57,12 @@ button {
 	border-radius: 50%;
 }
 .draughtsPiece.w, .draughtsPiece.W {
-	border-color: rgb(0, 0, 0);
-	background: #fff;
+	border-color: #666;
+	background: linear-gradient(#ffe,#ccb);
 }
 .draughtsPiece.b, .draughtsPiece.B {
-	border-color: #fff;
-	background: black;
+	border-color: #ddd;
+	background: linear-gradient(black,#444);
 	color: white;
 }
 .draughtsPiece.selected {

@@ -18,7 +18,7 @@ aiMove calls mcMove which runs mcts (monte carlo tree search) many times. mcts r
 
 */
 
-var draughtsInitial = [ // ' ' is an empty square, 'b' a black piece, 'w' a white piece; 'B' and 'W' are kings.
+var initialBoard = [ // ' ' is an empty square, 'b' a black piece, 'w' a white piece; 'B' and 'W' are kings.
 	[' ','b',' ','b',' ','b',' ','b'],
 	['b',' ','b',' ','b',' ','b',' '],
 	[' ','b',' ','b',' ','b',' ','b'],
@@ -29,51 +29,21 @@ var draughtsInitial = [ // ' ' is an empty square, 'b' a black piece, 'w' a whit
 	['w',' ','w',' ','w',' ','w',' ']];
 var draughts = [];
 var player = 'B'; // current active player
-var playMode = 2; // number of human players (1 or 2)
-var aiColourMode = "random"; // "random", 'W', or 'B'. Colour of AI player.
-var humans = {W: true, B: true}; // human or AI
 var selected; // piece selected to be moved
 var legalMoves = []; // array of all possible moves given the current board and player state.
 var highlightOptions = true;
 
-function setPlayMode(n) {
-	playMode = n;
-	// button1player.className = "playModeButton";
-	// button2player.className = "playModeButton";
-	// document.getElementById("button"+n+"player").className += " selectedPlayMode";
-	initialise();
-}
+initialise();
 
-function setColourMode(c) {
-	aiColourMode = c;
-	if (playMode == 1) initialise();
-}
 
 function initialise() {
-	player = 'B';
-	humans.W = true;
-	humans.B = true;
-	if (playMode == 1) { // game against AI
-		if (aiColourMode == "random") {
-			if (Math.random() < 0.5) humans.W = false;
-			else humans.B = false;
-		} else {
-			humans[aiColourMode] = false;
-		}
-	}
-	draughts = draughtsInitial.map(r => r.slice()); // copy draughtsInitial to draughts
-	selected = false;
+	draughts = initialBoard.map(r => r.slice()); // copy initialBoard to draughts
 	legalMoves = findLegalMoves(draughts,player);
 	renderBoard();
-	
-	// MCTS AI
-	mcTree = {r: -1, c: -1, moveSequence: [], player: 'B', wins: 0, plays: 0, parent: null, children: []};
-	mcState = draughts.map(r => r.slice()); // copy array
-	if (!humans[player]) aiMove();
 }
 
 function renderBoard() {
-	while (boardDiv.firstChild) boardDiv.removeChild(boardDiv.firstChild);
+	while (boardDiv.firstChild) boardDiv.removeChild(boardDiv.firstChild); // wipes board
 	draughts.forEach((row,r) => {
 		var draughtsRow = document.createElement("div");
 		boardDiv.appendChild(draughtsRow);
@@ -90,24 +60,16 @@ function renderBoard() {
 			}
 			if (draughts[r][c] == 'W' || draughts[r][c] == 'B') draughtsPiece.textContent = '\u2654'; // king
 			if (legalMoves.some(m => m.r == r && m.c == c)) {
-				if (humans[player]) {
-					draughtsSquare.onclick = function(){selectPiece(r,c);};
-					if (highlightOptions) draughtsSquare.className += " clickable";
-				} else if (highlightOptions) draughtsSquare.className += " aiOption";
+				draughtsSquare.onclick = function(){selectPiece(r,c);};
+				if (highlightOptions) draughtsSquare.className += " clickable";
 			}
-			if (selected &&
-				legalMoves.some(m => 
-					(m.r == selected.r && m.c == selected.c &&
-					 m.moveSequence[0].r == r && m.moveSequence[0].c == c))) {
-				if (humans[player]) {
-					draughtsSquare.onclick = function(){placePiece(r,c);};
-					if (highlightOptions) draughtsSquare.className += " clickable";
-				} else if (highlightOptions) draughtsSquare.className += " aiOption";
+			if (selected && legalMoves.some(m =>  (m.r == selected.r && m.c == selected.c && m.moveSequence[0].r == r && m.moveSequence[0].c == c))) {
+				draughtsSquare.onclick = function(){placePiece(r,c);};
+				if (highlightOptions) draughtsSquare.className += " clickable";
 			}
 		});
 	});
-	if (humans.B && humans.W) infoDiv.innerHTML = ((player == 'W') ? "white" : "black")+"'s move";
-	else infoDiv.innerHTML = humans[player] ? "your move" : "AI thinking...";
+	infoDiv.innerHTML = ((player == 'W') ? "white" : "black")+"'s move";
 	if (legalMoves.length === 0) infoDiv.innerHTML = ((player == 'W') ? "BLACK" : "WHITE")+" WINS";
 }
 
@@ -118,17 +80,10 @@ function selectPiece(r,c) { // r = row, c = column
 }
 
 function placePiece(r,c) { // r = row, c = column
-	var move = legalMoves.find(m => 
-		(m.r == selected.r && m.c == selected.c &&
-		 m.moveSequence[0].r == r && m.moveSequence[0].c == c));
-	
+	var move = legalMoves.find(m => (m.r == selected.r && m.c == selected.c && m.moveSequence[0].r == r && m.moveSequence[0].c == c));
 	draughts = updateState(draughts,selected.r,selected.c,r,c);
-	
 	if (move.moveSequence.length > 1) {
-		legalMoves = legalMoves.filter(m =>
-			(m.r == selected.r && m.c == selected.c &&
-			 m.moveSequence[0].r == r && m.moveSequence[0].c == c)).map(m =>
-			 ({r: m.moveSequence[0].r, c: m.moveSequence[0].c, moveSequence: m.moveSequence.slice(1)}));
+		legalMoves = legalMoves.filter(m => (m.r == selected.r && m.c == selected.c && m.moveSequence[0].r == r && m.moveSequence[0].c == c)).map(m => ({r: m.moveSequence[0].r, c: m.moveSequence[0].c, moveSequence: m.moveSequence.slice(1)}));
 		selected = {r:r,c:c};
 	} else {
 		selected = false;
@@ -136,7 +91,6 @@ function placePiece(r,c) { // r = row, c = column
 		legalMoves = findLegalMoves(draughts,player);
 	}
 	renderBoard();
-	if (!humans[player] && !selected && legalMoves.length > 0) aiMove();
 }
 
 function updateState(board,pieceR,pieceC,destinationR,destinationC) { // p = player
@@ -145,11 +99,9 @@ function updateState(board,pieceR,pieceC,destinationR,destinationC) { // p = pla
 	if (board[pieceR][pieceC] == 'w' && destinationR == 0) board[destinationR][destinationC] = 'W';
 	if (board[pieceR][pieceC] == 'b' && destinationR == 7) board[destinationR][destinationC] = 'B';
 	board[pieceR][pieceC] = ' ';
-	
 	if (Math.abs(destinationR-pieceR) == 2) { // a piece has been captured
 		board[(pieceR+destinationR)/2][(pieceC+destinationC)/2] = ' ';
 	}
-	
 	return board;
 }
 
@@ -257,5 +209,3 @@ function toggleHighlight() {
 	highlightOptions = !highlightOptions;
 	renderBoard();
 }
-
-setPlayMode(2);
