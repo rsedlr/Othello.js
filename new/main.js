@@ -105,6 +105,8 @@ function updateState(board,pieceR,pieceC,destinationR,destinationC) { // p = pla
 	return board;
 }
 
+
+
 function findLegalMoves(board,p) { // p = player
 	var possibleCaptures = [];
 	var possibleSteps = []; // non-capturing moves
@@ -201,7 +203,6 @@ function findPossibleSteps(board,r,c,p) { // r = row, c = column, p = player
 		if (c <= 6 && r+dir >= 0 && r+dir < 8 &&
 			board[r+dir][c+1] == ' ') steps.push([{r:r+dir,c:c+1}]);
 	}
-	
 	return steps;
 }
 
