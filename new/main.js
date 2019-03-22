@@ -27,6 +27,15 @@ var initialBoard = [ // ' ' is an empty square, 'b' a black piece, 'w' a white p
 	['w',' ','w',' ','w',' ','w',' '],
 	[' ','w',' ','w',' ','w',' ','w'],
 	['w',' ','w',' ','w',' ','w',' ']];
+// var initialBoard = [ // ' ' is an empty square, 'b' a black piece, 'w' a white piece; 'B' and 'W' are kings.
+// 	[' ',' ',' ',' ',' ',' ',' ',' '],
+// 	[' ',' ',' ',' ',' ',' ',' ',' '],
+// 	[' ',' ',' ',' ',' ',' ',' ',' '],
+// 	[' ',' ',' ',' ',' ',' ',' ',' '],
+// 	[' ',' ',' ',' ',' ',' ',' ',' '],
+// 	[' ',' ',' ',' ',' ',' ',' ',' '],
+// 	[' ',' ',' ',' ',' ',' ',' ',' '],
+// 	[' ',' ',' ',' ',' ',' ',' ',' ']];
 var draughts = [];
 var player = 'B'; // current active player
 var selected; // piece selected to be moved
@@ -58,40 +67,40 @@ function renderBoard() {
 				draughtsPiece.className = "draughtsPiece "+draughts[r][c];
 				if (selected && selected.r == r && selected.c == c) draughtsPiece.className += " selected";
 			}
-			if (draughts[r][c] == 'W' || draughts[r][c] == 'B') draughtsPiece.textContent = '\u2654'; // king
-			if (legalMoves.some(m => m.r == r && m.c == c)) {
+			// if (draughts[r][c] == 'W' || draughts[r][c] == 'B') draughtsPiece.textContent = '\u2654'; // king
+			if (true) { // legalMoves.some(m => m.r == r && m.c == c)
 				draughtsSquare.onclick = function(){selectPiece(r,c);};
 				if (highlightOptions) draughtsSquare.className += " clickable";
 			}
-			if (selected && legalMoves.some(m =>  (m.r == selected.r && m.c == selected.c && m.moveSequence[0].r == r && m.moveSequence[0].c == c))) {
+			if (selected  && legalMoves.some(m =>  (m.r == selected.r && m.c == selected.c && m.moveSequence[0].r == r && m.moveSequence[0].c == c))) {  //
 				draughtsSquare.onclick = function(){placePiece(r,c);};
 				if (highlightOptions) draughtsSquare.className += " clickable";
 			}
 		});
 	});
-	infoDiv.innerHTML = ((player == 'W') ? "white" : "black")+"'s move";
-	if (legalMoves.length === 0) infoDiv.innerHTML = ((player == 'W') ? "BLACK" : "WHITE")+" WINS";
+	// infoDiv.innerHTML = ((player == 'W') ? "white" : "black")+"'s move";
+	// if (legalMoves.length === 0) infoDiv.innerHTML = ((player == 'W') ? "BLACK" : "WHITE")+" WINS";
 }
 
-function selectPiece(r,c) { // r = row, c = column
-	if (selected && selected.r == r && selected.c == c) selected = false;
-	else selected = {r: r, c: c};
-	renderBoard();
-}
+// function selectPiece(r,c) { // r = row, c = column
+// 	if (selected && selected.r == r && selected.c == c) selected = false;
+// 	else selected = {r: r, c: c};
+// 	renderBoard();
+// }
 
-function placePiece(r,c) { // r = row, c = column
-	var move = legalMoves.find(m => (m.r == selected.r && m.c == selected.c && m.moveSequence[0].r == r && m.moveSequence[0].c == c));
-	draughts = updateState(draughts,selected.r,selected.c,r,c);
-	if (move.moveSequence.length > 1) {
-		legalMoves = legalMoves.filter(m => (m.r == selected.r && m.c == selected.c && m.moveSequence[0].r == r && m.moveSequence[0].c == c)).map(m => ({r: m.moveSequence[0].r, c: m.moveSequence[0].c, moveSequence: m.moveSequence.slice(1)}));
-		selected = {r:r,c:c};
-	} else {
-		selected = false;
-		player = (player == 'W') ? 'B' : 'W';
-		legalMoves = findLegalMoves(draughts,player);
-	}
-	renderBoard();
-}
+// function placePiece(r,c) { // r = row, c = column
+// 	var move = legalMoves.find(m => (m.r == selected.r && m.c == selected.c && m.moveSequence[0].r == r && m.moveSequence[0].c == c));
+// 	draughts = updateState(draughts,selected.r,selected.c,r,c);
+// 	if (move.moveSequence.length > 1) {
+// 		legalMoves = legalMoves.filter(m => (m.r == selected.r && m.c == selected.c && m.moveSequence[0].r == r && m.moveSequence[0].c == c)).map(m => ({r: m.moveSequence[0].r, c: m.moveSequence[0].c, moveSequence: m.moveSequence.slice(1)}));
+// 		selected = {r:r,c:c};
+// 	} else {
+// 		selected = false;
+// 		player = (player == 'W') ? 'B' : 'W';
+// 		legalMoves = findLegalMoves(draughts,player);
+// 	}
+// 	renderBoard();
+// }
 
 function updateState(board,pieceR,pieceC,destinationR,destinationC) { // p = player
 	board = board.map(r => r.slice()); // copy array
@@ -145,9 +154,7 @@ function findPossibleCaptures(board,r,c,p,king) { // r = row, c = column, p = pl
 		if (furtherCaptures.length === 0) possibleCaptures.push([{r:r+2*dir,c:c-2}]);
 		else possibleCaptures = possibleCaptures.concat(furtherCaptures.map(cap => [{r:r+2*dir,c:c-2}].concat(cap)));
 	}
-	if (c <= 5 && r+2*dir >= 0 && r+2*dir < 8 && // take piece on the right
-		board[r+dir][c+1] != ' ' && board[r+dir][c+1].toUpperCase() != p &&
-		board[r+2*dir][c+2] == ' ') {
+	if (c <= 5 && r+2*dir >= 0 && r+2*dir < 8 && board[r+dir][c+1] != ' ' && board[r+dir][c+1].toUpperCase() != p && board[r+2*dir][c+2] == ' ') { // take piece on the right
 		var simulation = board.map(r => r.slice()); // copy array
 		simulation[r+2*dir][c+2] = simulation[r][c];
 		simulation[r+dir][c+1] = ' ';
@@ -160,9 +167,7 @@ function findPossibleCaptures(board,r,c,p,king) { // r = row, c = column, p = pl
 	// kings can also capture backwards
 	if (king) {
 		dir *= -1;
-		if (c >= 2 && r+2*dir >= 0 && r+2*dir < 8 && // take piece on the left
-			board[r+dir][c-1] != ' ' && board[r+dir][c-1].toUpperCase() != p &&
-			board[r+2*dir][c-2] == ' ') {
+		if (c >= 2 && r+2*dir >= 0 && r+2*dir < 8 && board[r+dir][c-1] != ' ' && board[r+dir][c-1].toUpperCase() != p && board[r+2*dir][c-2] == ' ') { // take piece on the left 
 			var simulation = board.map(r => r.slice()); // copy array
 			simulation[r+2*dir][c-2] = simulation[r][c];
 			simulation[r+dir][c-1] = ' ';
@@ -183,7 +188,6 @@ function findPossibleCaptures(board,r,c,p,king) { // r = row, c = column, p = pl
 			else possibleCaptures = possibleCaptures.concat(furtherCaptures.map(cap => [{r:r+2*dir,c:c+2}].concat(cap)));
 		}
 	}
-	
 	return possibleCaptures;
 }
 
@@ -208,5 +212,27 @@ function findPossibleSteps(board,r,c,p) { // r = row, c = column, p = player
 
 function toggleHighlight() {
 	highlightOptions = !highlightOptions;
+	renderBoard();
+}
+
+// MY FUNCITONS
+
+function selectPiece(r,c) { // r = row, c = column
+	if (selected && selected.r == r && selected.c == c) selected = false;
+	else selected = {r: r, c: c};
+	renderBoard();
+}
+
+function placePiece(r,c) { // r = row, c = column
+	var move = legalMoves.find(m => (m.r == selected.r && m.c == selected.c && m.moveSequence[0].r == r && m.moveSequence[0].c == c));
+	draughts = updateState(draughts,selected.r,selected.c,r,c);
+	if (move.moveSequence.length > 1) {
+		legalMoves = legalMoves.filter(m => (m.r == selected.r && m.c == selected.c && m.moveSequence[0].r == r && m.moveSequence[0].c == c)).map(m => ({r: m.moveSequence[0].r, c: m.moveSequence[0].c, moveSequence: m.moveSequence.slice(1)}));
+		selected = {r:r,c:c};
+	} else {
+		selected = false;
+		player = (player == 'W') ? 'B' : 'W';
+		legalMoves = findLegalMoves(draughts,player);
+	}
 	renderBoard();
 }
