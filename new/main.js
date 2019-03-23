@@ -21,6 +21,7 @@ function initialise() {
 }
 
 function renderBoard() {
+	var gameOver = true;
 	while (boardDiv.firstChild) boardDiv.removeChild(boardDiv.firstChild); // wipes board
 	draughts.forEach((row,r) => {
 		var draughtsRow = document.createElement("div");
@@ -42,39 +43,15 @@ function renderBoard() {
 			// 	if (highlightOptions) draughtsSquare.className += " clickable";
 			// }
 			if (draughts[r][c] == ' ') {
+				gameOver = false;
 				draughtsSquare.onclick = function(){placePiece(r,c);};
 			}
 			// if (highlightOptions) draughtsSquare.className += " clickable";
 		});
 	});
 	infoDiv.innerHTML = ((player == 'W') ? "white" : "black")+"'s move";
-	// if (legalMoves.length === 0) infoDiv.innerHTML = ((player == 'W') ? "BLACK" : "WHITE")+" WINS";
+	if (gameOver == true) infoDiv.innerHTML = ((player == 'W') ? "BLACK" : "WHITE")+" WINS";
 }
-
-// function checkCapture(board, r, c) {
-// 	var direction = [0,0,0,0]; // top bottom left right
-// 	var dir = [1,-1,1,-1];
-// 	for (var i = 0; i < dir.length; i++) {
-// 		var x = 0, y = 0;
-// 		while (checkPlay[board[r - (dir[i]+x)][c - (dir[i]+y)].toUpperCase()] == checkPlay[player]*-1) {
-// 			direction[i] += 1;
-// 			if (i < 2) {
-// 				x = (dir[i] == 1) ? x+1 : x-1;
-// 				y = 0
-// 			} else {
-// 				y = (dir[i] == 1) ? y+1 : y-1;
-// 				x = 0;
-// 			}
-// 		}
-// 		if (checkPlay[board[r - (dir[i]+x)][c].toUpperCase()] == checkPlay[player]) {
-// 			board[r-x][c] = player.toLowerCase();
-// 		} else {
-// 			direction[i] = 0;
-// 		}
-// 	}
-// 	console.log(direction);
-// }
-
 
 function checkCapture(board, r, c) {
 	var direction = [0,0,0,0]; // top bottom left right
