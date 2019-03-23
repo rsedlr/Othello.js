@@ -64,7 +64,7 @@ function renderBoard() {
 }
 
 function checkCapture(board, r, c) {
-	var direction = [0,0,0,0]; // top bottom left right
+	var direction = [0,0,0,0,0,0,0,0]; // top bottom left right topLeft bottomRight BottomLeft TopRight
 	var dir = [1,-1];
 	for (var i = 0; i < dir.length; i++) {
 		var x = 0;
@@ -92,6 +92,38 @@ function checkCapture(board, r, c) {
 			if (checkPlay[board[r][c - (dir[i-2]+y)].toUpperCase()] == checkPlay[player]) {
 				for (var z = 0; z <= direction[i]; z++) {
 					board[r][c - ((dir[i-2] == 1) ? z : -z)] = player.toLowerCase();
+				}
+			} else {
+				direction[i] = 0;
+			}
+		} catch { /* pass; */	}
+	}
+	for (var i = 4; i < dir.length+4; i++) {
+		var x = 0;
+		try {
+			while (checkPlay[board[r - (dir[i-4]+x)][c - (dir[i-4]+x)].toUpperCase()] == checkPlay[player]*-1) {
+				direction[i] += 1;
+				x = (dir[i-4] == 1) ? x+1 : x-1;
+			}
+			if (checkPlay[board[r - (dir[i-4]+x)][c - (dir[i-4]+x)].toUpperCase()] == checkPlay[player]) {
+				for (var z = 0; z <= direction[i]; z++) {
+					board[r - ((dir[i-4] == 1) ? z : -z)][c - ((dir[i-4] == 1) ? z : -z)] = player.toLowerCase();
+				}
+			} else {
+				direction[i] = 0;
+			}
+		} catch { /* pass; */	}
+	}
+	for (var i = 6; i < dir.length+6; i++) {
+		var x = 0;
+		try {
+			while (checkPlay[board[r - (dir[i-6]+x)][c + (dir[i-6]+x)].toUpperCase()] == checkPlay[player]*-1) {
+				direction[i] += 1;
+				x = (dir[i-6] == 1) ? x+1 : x-1;
+			}
+			if (checkPlay[board[r - (dir[i-6]+x)][c + (dir[i-6]+x)].toUpperCase()] == checkPlay[player]) {
+				for (var z = 0; z <= direction[i]; z++) {
+					board[r - ((dir[i-6] == 1) ? z : -z)][c + ((dir[i-6] == 1) ? z : -z)] = player.toLowerCase();
 				}
 			} else {
 				direction[i] = 0;
