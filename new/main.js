@@ -7,6 +7,16 @@ var initialBoard = [ // ' ' is an empty square, 'b' a black piece, 'w' a white p
 	[' ',' ',' ',' ',' ',' ',' ',' '],
 	[' ',' ',' ',' ',' ',' ',' ',' '],
 	[' ',' ',' ',' ',' ',' ',' ',' ']];
+	var initialBoard = [ // ' ' is an empty square, 'b' a black piece, 'w' a white piece; 'B' and 'W' are kings.
+	['w','w','w','w','w','w','w','w'],
+	['w','w','w','w','w','w','w','w'],
+	['w','w','w','w','w','w','w','w'],
+	['w','w','w','w','b','w','w','w'],
+	['w','w','w','b','w','w','w','w'],
+	['w','w','w','w','w','w','w','w'],
+	['w','w','w','w','w','w','w','w'],
+	['w','w','w','w','w','w','w','w']];
+
 var draughts = [];
 var player = 'B'; // current active player
 // var selected; // piece selected to be moved
@@ -50,7 +60,7 @@ function renderBoard() {
 		});
 	});
 	infoDiv.innerHTML = ((player == 'W') ? "white" : "black")+"'s move";
-	if (gameOver == true) infoDiv.innerHTML = ((player == 'W') ? "BLACK" : "WHITE")+" WINS";
+	if (gameOver == true) findWinner(draughts);
 }
 
 function checkCapture(board, r, c) {
@@ -58,40 +68,37 @@ function checkCapture(board, r, c) {
 	var dir = [1,-1];
 	for (var i = 0; i < dir.length; i++) {
 		var x = 0;
-		while (checkPlay[board[r - (dir[i]+x)][c].toUpperCase()] == checkPlay[player]*-1) {
-			direction[i] += 1;
-			x = (dir[i] == 1) ? x+1 : x-1;
-			// console.log(`x: ${x}`);
-		}
-		if (checkPlay[board[r - (dir[i]+x)][c].toUpperCase()] == checkPlay[player]) {
-			// board[r-x][c] = player.toLowerCase();
-			for (var z = 0; z <= direction[i]; z++) {
-				board[r - ((dir[i] == 1) ? z : -z)][c] = player.toLowerCase();
+		try {
+			while (checkPlay[board[r - (dir[i]+x)][c].toUpperCase()] == checkPlay[player]*-1) {
+				direction[i] += 1;
+				x = (dir[i] == 1) ? x+1 : x-1;
 			}
-		} else {
-			// console.log('else');
-			direction[i] = 0;
-		}
+			if (checkPlay[board[r - (dir[i]+x)][c].toUpperCase()] == checkPlay[player]) {
+				for (var z = 0; z <= direction[i]; z++) {
+					board[r - ((dir[i] == 1) ? z : -z)][c] = player.toLowerCase();
+				}
+			} else {
+				direction[i] = 0;
+			}
+		} catch { /* pass; */	}
 	}
 	for (var i = 2; i < dir.length+2; i++) {
 		var y = 0;
-		while (checkPlay[board[r][c - (dir[i-2]+y)].toUpperCase()] == checkPlay[player]*-1) {
-			direction[i] += 1;
-			y = (dir[i-2] == 1) ? y+1 : y-1;
-			// console.log(`y: ${y}`);
-		}
-		if (checkPlay[board[r][c - (dir[i-2]+y)].toUpperCase()] == checkPlay[player]) {
-			for (var z = 0; z <= direction[i]; z++) {
-				board[r][c - ((dir[i-2] == 1) ? z : -z)] = player.toLowerCase();
+		try {
+			while (checkPlay[board[r][c - (dir[i-2]+y)].toUpperCase()] == checkPlay[player]*-1) {
+				direction[i] += 1;
+				y = (dir[i-2] == 1) ? y+1 : y-1;
 			}
-		} else {
-			// console.log('else');
-			direction[i] = 0;
-		}
+			if (checkPlay[board[r][c - (dir[i-2]+y)].toUpperCase()] == checkPlay[player]) {
+				for (var z = 0; z <= direction[i]; z++) {
+					board[r][c - ((dir[i-2] == 1) ? z : -z)] = player.toLowerCase();
+				}
+			} else {
+				direction[i] = 0;
+			}
+		} catch { /* pass; */	}
 	}
-	// console.log(direction);
 }
-
 
 function updateState(board,destinationR,destinationC) {
 	board = board.map(r => r.slice()); // copy array
@@ -108,4 +115,26 @@ function placePiece(r,c) { // r = row, c = column
 	draughts = updateState(draughts,r,c);
 	player = (player == 'W') ? 'B' : 'W';
 	renderBoard();
+}
+
+function findWinner(board) {
+	board = board.map(r => r.slice()); // copy array
+	var blackTotal = 0, whiteTotal = 0;
+	for (i=0; i < board.length; i++) {
+		for (j=0; j < board[i].length; j++) {
+			if (board[i][j] == 'w') {
+				whiteTotal += 1;
+			} else {
+				blackTotal += 1;
+			}
+		}
+	}
+	console.log(`black: ${blackTotal}\nwhite: ${whiteTotal}`);
+	if (whiteTotal > blackTotal) {
+		infoDiv.innerHTML =  "WHITE WINS!";
+	} else if (blackTotal > whiteTotal) {
+		infoDiv.innerHTML =  "BLACK WINS!";
+	} else {
+		infoDiv.innerHTML =  "DRAW!";
+	}
 }
