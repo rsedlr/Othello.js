@@ -105,10 +105,10 @@ function checkCapture(board, r, c) {
 			// console.log(`y: ${y}`);
 		}
 		if (checkPlay[board[r][c - (dir[i-2]+y)].toUpperCase()] == checkPlay[player]) {
-			// board[r][c-y] = player.toLowerCase();
-			for (var i = 0; i < direction[i].length; i++) {
-				board[r][c-i] = player.toLowerCase();
-			}
+			board[r][c-y] = player.toLowerCase();
+			// for (var x = 0; x < dir.length+2; i++) {
+			// 	board[r-x][c] = player.toLowerCase();
+			// }
 		} else {
 			console.log('else');
 			direction[i] = 0;
