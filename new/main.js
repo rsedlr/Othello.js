@@ -51,23 +51,70 @@ function renderBoard() {
 	// if (legalMoves.length === 0) infoDiv.innerHTML = ((player == 'W') ? "BLACK" : "WHITE")+" WINS";
 }
 
+// function checkCapture(board, r, c) {
+// 	var direction = [0,0,0,0]; // top bottom left right
+// 	var dir = [1,-1,1,-1];
+// 	for (var i = 0; i < dir.length; i++) {
+// 		var x = 0, y = 0;
+// 		while (checkPlay[board[r - (dir[i]+x)][c - (dir[i]+y)].toUpperCase()] == checkPlay[player]*-1) {
+// 			direction[i] += 1;
+// 			if (i < 2) {
+// 				x = (dir[i] == 1) ? x+1 : x-1;
+// 				y = 0
+// 			} else {
+// 				y = (dir[i] == 1) ? y+1 : y-1;
+// 				x = 0;
+// 			}
+// 		}
+// 		if (checkPlay[board[r - (dir[i]+x)][c].toUpperCase()] == checkPlay[player]) {
+// 			board[r-x][c] = player.toLowerCase();
+// 		} else {
+// 			direction[i] = 0;
+// 		}
+// 	}
+// 	console.log(direction);
+// }
+
+
 function checkCapture(board, r, c) {
 	var direction = [0,0,0,0]; // top bottom left right
 	var dir = [1,-1];
 	for (var i = 0; i < dir.length; i++) {
-		var x = 0
+		var x = 0;
 		while (checkPlay[board[r - (dir[i]+x)][c].toUpperCase()] == checkPlay[player]*-1) {
-			// console.log(`oponent in ${dir[i]+x} direction`);
 			direction[i] += 1;
 			x = (dir[i] == 1) ? x+1 : x-1;
 			// console.log(`x: ${x}`);
 		}
 		if (checkPlay[board[r - (dir[i]+x)][c].toUpperCase()] == checkPlay[player]) {
 			board[r-x][c] = player.toLowerCase();
+			// for (var x = 0; x < dir.length+2; i++) {
+			// 	board[r-x][c] = player.toLowerCase();
+			// }
 		} else {
+			console.log('else');
 			direction[i] = 0;
 		}
 	}
+	for (var i = 2; i < dir.length+2; i++) {
+		var y = 0;
+		// console.log(checkPlay[board[r][c - (dir[i-2]+y)].toUpperCase()]);
+		while (checkPlay[board[r][c - (dir[i-2]+y)].toUpperCase()] == checkPlay[player]*-1) {
+			direction[i] += 1;
+			y = (dir[i-2] == 1) ? y+1 : y-1;
+			// console.log(`y: ${y}`);
+		}
+		if (checkPlay[board[r][c - (dir[i-2]+y)].toUpperCase()] == checkPlay[player]) {
+			board[r][c-y] = player.toLowerCase();
+			// for (var x = 0; x < dir.length+2; i++) {
+			// 	board[r-x][c] = player.toLowerCase();
+			// }
+		} else {
+			console.log('else');
+			direction[i] = 0;
+		}
+	}
+	console.log(direction);
 }
 
 
