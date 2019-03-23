@@ -10,8 +10,15 @@ button {
 #infoDiv {
 	text-align: center;
 	font-family: Verdana, sans-serif;
-	font-size: 30px;
+	font-size: 40px;
 	margin: 30px 0;
+}
+#scoreDiv {
+	text-align: center;
+	font-family: Verdana, sans-serif;
+	font-size: 20px;
+	margin: 30px 0;
+
 }
 #boardDiv {
 	width: 480px;

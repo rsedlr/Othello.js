@@ -7,20 +7,19 @@ var initialBoard = [ // ' ' is an empty square, 'b' a black piece, 'w' a white p
 	[' ',' ',' ',' ',' ',' ',' ',' '],
 	[' ',' ',' ',' ',' ',' ',' ',' '],
 	[' ',' ',' ',' ',' ',' ',' ',' ']];
-	var initialBoard = [ // ' ' is an empty square, 'b' a black piece, 'w' a white piece; 'B' and 'W' are kings.
-	['w','w','w','w','w','w','w','w'],
-	['w','w','w','w','w','w','w','w'],
-	['w','w','w','w','w','w','w','w'],
-	['w','w','w','w','b','w','w','w'],
-	['w','w','w','b','w','w','w','w'],
-	['w','w','w','w','w','w','w','w'],
-	['w','w','w','w','w','w','w','w'],
-	['w','w','w','w','w','w','w','w']];
-
+	// var initialBoard = [ // ' ' is an empty square, 'b' a black piece, 'w' a white piece; 'B' and 'W' are kings.
+	// ['w','w','w','w','w','w','w','w'],
+	// ['w','w','w','w','w','w','w','w'],
+	// ['w','w','w','w','w','w','w','w'],
+	// ['w','w','w','w','b','w','w','w'],
+	// ['w','w','w','b','w','w','w','w'],
+	// ['w','w','w','w','w','w','w','w'],
+	// ['w','w','w','w','w','w','w','w'],
+	// ['w','w','w','w','w','w','w','w']];
 var draughts = [];
 var player = 'B'; // current active player
-// var selected; // piece selected to be moved
 var checkPlay = {'W':1,'B':-1,' ':0}
+var scoreDiv = document.getElementById("scoreDiv");
 
 initialise();
 
@@ -56,11 +55,12 @@ function renderBoard() {
 				gameOver = false;
 				draughtsSquare.onclick = function(){placePiece(r,c);};
 			}
+			findTotal(draughts);
 			// if (highlightOptions) draughtsSquare.className += " clickable";
 		});
 	});
 	infoDiv.innerHTML = ((player == 'W') ? "white" : "black")+"'s move";
-	if (gameOver == true) findWinner(draughts);
+	// if (gameOver == true) findWinner(draughts);
 }
 
 function checkCapture(board, r, c) {
@@ -117,24 +117,26 @@ function placePiece(r,c) { // r = row, c = column
 	renderBoard();
 }
 
-function findWinner(board) {
+function findTotal(board) {
 	board = board.map(r => r.slice()); // copy array
 	var blackTotal = 0, whiteTotal = 0;
 	for (i=0; i < board.length; i++) {
 		for (j=0; j < board[i].length; j++) {
 			if (board[i][j] == 'w') {
 				whiteTotal += 1;
-			} else {
+			} else if (board[i][j] == 'b') {
 				blackTotal += 1;
 			}
 		}
 	}
-	console.log(`black: ${blackTotal}\nwhite: ${whiteTotal}`);
-	if (whiteTotal > blackTotal) {
-		infoDiv.innerHTML =  "WHITE WINS!";
-	} else if (blackTotal > whiteTotal) {
-		infoDiv.innerHTML =  "BLACK WINS!";
-	} else {
-		infoDiv.innerHTML =  "DRAW!";
+	scoreDiv.innerHTML = (`black: ${blackTotal} | white: ${whiteTotal}`)
+	if (whiteTotal + blackTotal == 64) {
+		if (whiteTotal > blackTotal) {
+			infoDiv.innerHTML =  "WHITE WINS!";
+		} else if (blackTotal > whiteTotal) {
+			infoDiv.innerHTML =  "BLACK WINS!";
+		} else {
+			infoDiv.innerHTML =  "DRAW!";
+		}
 	}
 }
