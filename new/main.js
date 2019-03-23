@@ -87,34 +87,32 @@ function checkCapture(board, r, c) {
 			// console.log(`x: ${x}`);
 		}
 		if (checkPlay[board[r - (dir[i]+x)][c].toUpperCase()] == checkPlay[player]) {
-			board[r-x][c] = player.toLowerCase();
-			// for (var x = 0; x < dir.length+2; i++) {
-			// 	board[r-x][c] = player.toLowerCase();
-			// }
+			// board[r-x][c] = player.toLowerCase();
+			for (var z = 0; z <= direction[i]; z++) {
+				board[r - ((dir[i] == 1) ? z : -z)][c] = player.toLowerCase();
+			}
 		} else {
-			console.log('else');
+			// console.log('else');
 			direction[i] = 0;
 		}
 	}
 	for (var i = 2; i < dir.length+2; i++) {
 		var y = 0;
-		// console.log(checkPlay[board[r][c - (dir[i-2]+y)].toUpperCase()]);
 		while (checkPlay[board[r][c - (dir[i-2]+y)].toUpperCase()] == checkPlay[player]*-1) {
 			direction[i] += 1;
 			y = (dir[i-2] == 1) ? y+1 : y-1;
 			// console.log(`y: ${y}`);
 		}
 		if (checkPlay[board[r][c - (dir[i-2]+y)].toUpperCase()] == checkPlay[player]) {
-			board[r][c-y] = player.toLowerCase();
-			// for (var x = 0; x < dir.length+2; i++) {
-			// 	board[r-x][c] = player.toLowerCase();
-			// }
+			for (var z = 0; z <= direction[i]; z++) {
+				board[r][c - ((dir[i-2] == 1) ? z : -z)] = player.toLowerCase();
+			}
 		} else {
-			console.log('else');
+			// console.log('else');
 			direction[i] = 0;
 		}
 	}
-	console.log(direction);
+	// console.log(direction);
 }
 
 
