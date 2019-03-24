@@ -20,6 +20,7 @@ var draughts = [];
 var player = 'B'; // current active player
 var checkPlay = {'W':1,'B':-1,' ':0}
 var scoreDiv = document.getElementById("scoreDiv");
+var highlightOptions = true;
 
 initialise();
 
@@ -46,20 +47,36 @@ function renderBoard() {
 				draughtsPiece.className = "draughtsPiece " + draughts[r][c];
 				// if (selected && selected.r == r && selected.c == c) draughtsPiece.className += " selected";
 			}
-			// if (draughts[r][c] == 'W' || draughts[r][c] == 'B') draughtsPiece.textContent = '\u2654'; // king
 			// if (!selected) { // legalMoves.some(m => m.r == r && m.c == c)
 			// 	draughtsSquare.onclick = function(){selectPiece(r,c);};
 			// 	if (highlightOptions) draughtsSquare.className += " clickable";
 			// }
-			if (draughts[r][c] == ' ') {
+			var check = checkAvailable(draughts, r, c);
+			if (draughts[r][c] == ' ' && check) {
 				gameOver = false;
 				draughtsSquare.onclick = function(){placePiece(r,c);};
+				if (highlightOptions) draughtsSquare.className += " clickable";
 			}
 			findTotal(draughts);
-			// if (highlightOptions) draughtsSquare.className += " clickable";
 		});
 	});
 	if (gameOver != true) infoDiv.innerHTML = ((player == 'W') ? "white" : "black")+"'s move";
+}
+
+function checkAvailable(board, r, c) {
+	var check = false;
+	var dir = [-1,0,1];
+	for (var x=0; x < dir.length; x++) {
+		for (var y=0; y < dir.length; y++) {
+			try {
+				var temp = board[r+dir[x]][c+dir[y]];
+				if (temp != ' ' && temp != null) {
+					check = true;
+				}
+			} catch { /* pass; */	}
+		}
+	}
+	return check
 }
 
 function checkCapture(board, r, c) {
