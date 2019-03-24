@@ -1,1 +1,1 @@
-# GO.js
+# Othello in pure JavaScript
