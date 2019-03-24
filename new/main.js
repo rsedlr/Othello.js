@@ -44,13 +44,9 @@ function renderBoard() {
 			if (draughts[r][c].toUpperCase() == 'W' || draughts[r][c].toUpperCase() == 'B') {
 				var draughtsPiece = document.createElement("div");
 				draughtsSquare.appendChild(draughtsPiece);
+				draughtsSquare.className += " clickable";
 				draughtsPiece.className = "draughtsPiece " + draughts[r][c];
-				// if (selected && selected.r == r && selected.c == c) draughtsPiece.className += " selected";
 			}
-			// if (!selected) { // legalMoves.some(m => m.r == r && m.c == c)
-			// 	draughtsSquare.onclick = function(){selectPiece(r,c);};
-			// 	if (highlightOptions) draughtsSquare.className += " clickable";
-			// }
 			var check = checkAvailable(draughts, r, c);
 			if (draughts[r][c] == ' ' && check) {
 				gameOver = false;
