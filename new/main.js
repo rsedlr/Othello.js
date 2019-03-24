@@ -59,8 +59,7 @@ function renderBoard() {
 			// if (highlightOptions) draughtsSquare.className += " clickable";
 		});
 	});
-	infoDiv.innerHTML = ((player == 'W') ? "white" : "black")+"'s move";
-	// if (gameOver == true) findWinner(draughts);
+	if (gameOver != true) infoDiv.innerHTML = ((player == 'W') ? "white" : "black")+"'s move";
 }
 
 function checkCapture(board, r, c) {
