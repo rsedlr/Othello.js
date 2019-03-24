@@ -44,7 +44,7 @@ function renderBoard() {
 			if (draughts[r][c].toUpperCase() == 'W' || draughts[r][c].toUpperCase() == 'B') {
 				var draughtsPiece = document.createElement("div");
 				draughtsSquare.appendChild(draughtsPiece);
-				draughtsSquare.className += " filled";
+				// draughtsSquare.className += " clickable";
 				draughtsPiece.className = "draughtsPiece " + draughts[r][c];
 			}
 			var check = checkAvailable(draughts, r, c);
