@@ -47,7 +47,7 @@ function renderBoard() {
 				// draughtsSquare.className += " clickable";
 				draughtsPiece.className = "draughtsPiece " + draughts[r][c];
 			}
-			var check = checkAvailable(draughts, r, c);
+			var check = checkAvailable(draughts, r, c, player);
 			if (draughts[r][c] == ' ' && check) {
 				gameOver = false;
 				draughtsSquare.onclick = function(){placePiece(r,c);};
@@ -59,14 +59,14 @@ function renderBoard() {
 	if (gameOver != true) infoDiv.innerHTML = ((player == 'W') ? "white" : "black")+"'s move";
 }
 
-function checkAvailable(board, r, c) {
-	var check = false;
+function checkAvailable(board, r, c, p) {  // board, row, column, player
+  var check = false;
 	var dir = [-1,0,1];
 	for (var x=0; x < dir.length; x++) {
 		for (var y=0; y < dir.length; y++) {
 			try {
-				var temp = board[r+dir[x]][c+dir[y]];
-				if (temp != ' ' && temp != null) {
+				var temp = board[r+dir[x]][c+dir[y]].toUpperCase();
+				if (temp != p && temp != ' ') {
 					check = true;
 				}
 			} catch { /* pass; */	}
