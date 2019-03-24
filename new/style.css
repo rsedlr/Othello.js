@@ -1,5 +1,7 @@
 html {
 	background-color: rgb(107, 107, 107);
+	font-family: Verdana, sans-serif;
+	text-align: center;
 }
 
 button {
@@ -9,16 +11,17 @@ button {
 	margin-right: -40px;
 }
 
+h1 {
+	font-size: 50px;
+	margin-bottom: 70px;
+}
+
 #infoDiv {
-	text-align: center;
-	font-family: Verdana, sans-serif;
 	font-size: 40px;
 	margin: 30px 0;
 }
 
 #scoreDiv {
-	text-align: center;
-	font-family: Verdana, sans-serif;
 	font-size: 20px;
 	margin: 30px 0;
 }
@@ -47,7 +50,6 @@ button {
 	width: 40px;
 	height: 40px;
 	line-height: 40px;
-	text-align: center;
 	font-size: 30px;
 	border-width: 4px;
 	border-style: solid;
@@ -68,7 +70,6 @@ button {
 #optionsDiv {
 	width: 500px;
 	margin: 0 auto;
-	font-family: Verdana, sans-serif;
 	font-size: 18px;
 }
 
