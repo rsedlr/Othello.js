@@ -60,7 +60,7 @@ function renderBoard() {
 }
 
 function checkAvailable(board, r, c, p) {  // board, row, column, player
-  var check = false;
+  var check = false;		// NEED TO FIX DIS ---------------------------------------------------------------------------------------
 	var dir = [-1,0,1];
 	for (var x=0; x < dir.length; x++) {
 		for (var y=0; y < dir.length; y++) {
