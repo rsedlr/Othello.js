@@ -210,6 +210,10 @@ function findTotal(board) {
 	}
 }
 
+// NOTES
+// -Make check available return a list of all points it would take (empty if none)
+// -Then checkCapture would simply take them onclick 
+
 
 // function checkAvailable(board, r, c, p) {  // board, row, column, player
 //   var check = false;		// NEED TO FIX DIS ---------------------------------------------------------------------------------------
