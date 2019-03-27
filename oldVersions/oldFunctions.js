@@ -16,6 +16,51 @@ function capture(board, r, c, direction) {
 	}
 }
 
+
+// 'CHECAVAILABLE' BEFORE IT STOPPED BEING JUST A CHECK
+function checkAvailable(board, r, c, player) {  // board, row, column, player
+	var check = false, dir = [1,-1];
+	for (var i = 0; i < 8; i++) {
+		var wle = false;
+		if (i < 2) { var x = dir[i], y = 0; }
+		else if (i < 4) { var x = 0, y = dir[i-2]; }
+		else if (i < 6) { var x = dir[i-4], y = x; }
+		else { var x = dir[i-6], y = -x; }
+		try {
+			while (checkPlay[board[r - x][c - y].toUpperCase()] == checkPlay[player]*-1) {
+				wle = true;
+				if (i < 2) { x = (dir[i] == 1) ? x+1 : x-1; }
+				else if (i < 4) { y = (dir[i-2] == 1) ? y+1 : y-1; }
+				else if (i < 6) { x = (dir[i-4] == 1) ? x+1 : x-1; y = x; }
+				else { x = (dir[i-6] == 1) ? x+1 : x-1; y = -x; }
+			}
+			if (checkPlay[board[r - x][c - y].toUpperCase()] == checkPlay[player] && wle == true) {
+				check = true;
+			} 
+		} catch { /* pass; */	}
+	}
+	return check
+}
+
+
+// 'CHECKAVAILABLE' THAT WASNT ACCURATE
+function checkAvailable(board, r, c, p) {  // board, row, column, player
+  var check = false;		// NEED TO FIX DIS ---------------------------------------------------------------------------------------
+	var dir = [-1,0,1];
+	for (var x=0; x < dir.length; x++) {
+		for (var y=0; y < dir.length; y++) {
+			try {
+				var temp = board[r+dir[x]][c+dir[y]].toUpperCase();
+				if (temp != p && temp != ' ') {
+					check = true;
+				}
+			} catch { /* pass; */	}
+		}
+	}
+	return check
+}
+
+
 // OLD VERSION OF 'CHECKAVAILABLE'
 function checkAvailable(board, r, c, player) {  // board, row, column, player
 	var check = false;		// NEED TO FIX DIS -------------------------------------------------------------------------
@@ -66,51 +111,6 @@ function checkAvailable(board, r, c, player) {  // board, row, column, player
 	}
 	return check
 }
-
-
-// NEWER VERSION OF 'CHECKAVAILABLE' THAT WASNT ACCURATE
-function checkAvailable(board, r, c, p) {  // board, row, column, player
-  var check = false;		// NEED TO FIX DIS ---------------------------------------------------------------------------------------
-	var dir = [-1,0,1];
-	for (var x=0; x < dir.length; x++) {
-		for (var y=0; y < dir.length; y++) {
-			try {
-				var temp = board[r+dir[x]][c+dir[y]].toUpperCase();
-				if (temp != p && temp != ' ') {
-					check = true;
-				}
-			} catch { /* pass; */	}
-		}
-	}
-	return check
-}
-
-
-// EVEN NEWER VERSION OF 'CHECAVAILABLE' BEFORE IT STOPPED BEING JUST A CHECK
-function checkAvailable(board, r, c, player) {  // board, row, column, player
-	var check = false, dir = [1,-1];
-	for (var i = 0; i < 8; i++) {
-		var wle = false;
-		if (i < 2) { var x = dir[i], y = 0; }
-		else if (i < 4) { var x = 0, y = dir[i-2]; }
-		else if (i < 6) { var x = dir[i-4], y = x; }
-		else { var x = dir[i-6], y = -x; }
-		try {
-			while (checkPlay[board[r - x][c - y].toUpperCase()] == checkPlay[player]*-1) {
-				wle = true;
-				if (i < 2) { x = (dir[i] == 1) ? x+1 : x-1; }
-				else if (i < 4) { y = (dir[i-2] == 1) ? y+1 : y-1; }
-				else if (i < 6) { x = (dir[i-4] == 1) ? x+1 : x-1; y = x; }
-				else { x = (dir[i-6] == 1) ? x+1 : x-1; y = -x; }
-			}
-			if (checkPlay[board[r - x][c - y].toUpperCase()] == checkPlay[player] && wle == true) {
-				check = true;
-			} 
-		} catch { /* pass; */	}
-	}
-	return check
-}
-
 
 // OLD VERSION OF 'CHECKCAPTURE'
 function checkCapture(board, r, c) {

@@ -51,6 +51,23 @@ function renderBoard() {
 	if (gameOver != true) infoDiv.innerHTML = ((player == 'W') ? "white" : "black")+"'s move";
 }
 
+function placePiece(r,c, direction) { // r = row, c = column
+	draughts = updateState(draughts,r,c, direction);
+	player = (player == 'W') ? 'B' : 'W';
+	renderBoard();
+}
+
+function updateState(board,destinationR,destinationC, direction) {
+	board = board.map(r => r.slice()); // copy array
+	if (player == 'W') {
+		board[destinationR][destinationC] = 'w';
+	} else {
+		board[destinationR][destinationC] = 'b';
+	}
+	capture(board, destinationR, destinationC, direction);
+	return board;
+}
+
 function checkAvailable(board, r, c, player) {  // board, row, column, player
 	var direction = [0,0,0,0,0,0,0,0]; // top bottom left right topLeft bottomRight BottomLeft TopRight
 	for (var i = 0; i < 8; i++) {
@@ -84,23 +101,6 @@ function capture(board, r, c, direction) {
 			board[r - x][c - y] = player.toLowerCase();
 		}
 	}
-}
-
-function updateState(board,destinationR,destinationC, direction) {
-	board = board.map(r => r.slice()); // copy array
-	if (player == 'W') {
-		board[destinationR][destinationC] = 'w';
-	} else {
-		board[destinationR][destinationC] = 'b';
-	}
-	capture(board, destinationR, destinationC, direction);
-	return board;
-}
-
-function placePiece(r,c, direction) { // r = row, c = column
-	draughts = updateState(draughts,r,c, direction);
-	player = (player == 'W') ? 'B' : 'W';
-	renderBoard();
 }
 
 function findTotal(board) {
