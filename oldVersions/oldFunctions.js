@@ -3,6 +3,19 @@
 // -Make check available return a list of all points it would take (empty if none)
 // -Then checkCapture would simply take them onclick 
 
+// CHECKAVAILABLE NEW ISH
+function capture(board, r, c, direction) {
+	for (var i = 0; i <= direction.length; i++) {
+		for (var z = 0; z <= direction[i]-1; z++) {
+			if (i < 2) { var x = (dir[i] > 0) ? dir[i]+z : dir[i]-z, y = 0; }
+			else if (i < 4) { var x = 0, y = (dir[i-2] > 0) ? dir[i-2]+z : dir[i-2]-z; }
+			else if (i < 6) { var x = (dir[i-4] > 0) ? dir[i-4]+z : dir[i-4]-z, y = x; }
+			else { var x = (dir[i-6] > 0) ? dir[i-6]+z : dir[i-6]-z, y = -x; }
+			board[r - x][c - y] = player.toLowerCase();
+		}
+	}
+}
+
 // OLD VERSION OF 'CHECKAVAILABLE'
 function checkAvailable(board, r, c, player) {  // board, row, column, player
 	var check = false;		// NEED TO FIX DIS -------------------------------------------------------------------------
