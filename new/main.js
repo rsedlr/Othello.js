@@ -126,7 +126,3 @@ function findTotal(board) {
 		}
 	}
 }
-
-// NOTES
-// -Make check available return a list of all points it would take (empty if none)
-// -Then checkCapture would simply take them onclick 
