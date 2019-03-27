@@ -50,7 +50,7 @@ function renderBoard() {
 	if (gameOver != true) infoDiv.innerHTML = ((player == 'W') ? "white" : "black")+"'s move";
 }
 
-function checkCapture(board, r, c) {
+function checkAvailable(board, r, c, player) {
 		var direction = [0,0,0,0,0,0,0,0]; // top bottom left right topLeft bottomRight BottomLeft TopRight
 		var dir = [1,-1];
 		for (var i = 0; i < dir.length; i++) {
