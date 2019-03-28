@@ -126,3 +126,7 @@ function findTotal(board) {
 		}
 	}
 }
+
+
+// NOTES
+// -add 'pass' button to alow the player to pass their go when they cant make a move
