@@ -83,10 +83,12 @@ function checkAvailable(board, r, c, player) {  // board, row, column, player
 				else if (i < 6) { x = (dir[i-4] == 1) ? x+1 : x-1; y = x; }
 				else { x = (dir[i-6] == 1) ? x+1 : x-1; y = -x; }
 			}
-			if (!(checkPlay[board[r - x][c - y].toUpperCase()] == checkPlay[player] && direction[i] != 0)) {
+			if (board[r - x][c - y].toUpperCase() != player) {  //  && direction[i] > 0
 				direction[i] = 0;
 			}
-		} catch { /* pass; */	}
+		} catch { 
+			direction[i] = 0;
+		}
 	}
 	return direction;
 }
