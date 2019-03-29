@@ -88,7 +88,7 @@ function checkAvailable(board, r, c, player) {  // board, row, column, player
 			}
 		} catch { /* pass; */	}
 	}
-	return direction
+	return direction;
 }
 
 function capture(board, r, c, direction) {
@@ -101,6 +101,11 @@ function capture(board, r, c, direction) {
 			board[r - x][c - y] = player.toLowerCase();
 		}
 	}
+}
+
+function pass() {
+	player = (player == 'W') ? 'B' : 'W';
+	renderBoard();
 }
 
 function findTotal(board) {

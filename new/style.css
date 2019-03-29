@@ -4,11 +4,14 @@ html {
 	text-align: center;
 }
 
-button {
-	position: absolute;
-	width: 80px;
-	right: 50%;
-	margin-right: -40px;
+.btn {
+  padding: .5rem 1rem;
+	background-color: black; 
+	border-color: black;
+	box-shadow: none;
+	color: white; 
+  font-size: 20px; 
+	font-weight: bold;
 }
 
 h1 {
@@ -18,7 +21,7 @@ h1 {
 
 #infoDiv {
 	font-size: 40px;
-	margin: 30px 0;
+	margin: 20px 0 30px;
 }
 
 #scoreDiv {
@@ -57,13 +60,12 @@ h1 {
 	border-radius: 50%;
 }
 
-.draughtsPiece.w, .draughtsPiece.W {
+.draughtsPiece.w {
 	border-color: #fff;
 	background: #fff;
 }
 
-.draughtsPiece.b, .draughtsPiece.B {
-	/* border-color: #fff; */
+.draughtsPiece.b {
 	background: black;
 }
 
