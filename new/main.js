@@ -18,6 +18,7 @@ initialise();
 
 
 function initialise() {
+	player = 'B';
 	draughts = initialBoard.map(r => r.slice()); // copy initialBoard to draughts
 	renderBoard();
 }
