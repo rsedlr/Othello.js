@@ -7,14 +7,13 @@
   <body>
     <h1>Othello in pure JavaScript</h1>
     <div id="boardDiv"></div>
-    <button type="button" onclick="enableAi();">AI</button>
-    <button type="button" onclick="enable2P();">2 PLAYER</button>
+    <div id="infoDiv"></div>
+    <div id="scoreDiv"></div>
+    <button type="button" onclick="enableAI();" id="ai_btn" class="enabled">AI</button>
+    <button type="button" onclick="enable2P();" id="2p_btn">2 PLAYER</button>
     <br><br>
     <button type="button" onclick="pass();">PASS</button>
     <button type="button" onclick="initialise();">NEW GAME</button>
-    <div id="infoDiv"></div>
-    <div id="scoreDiv"></div>
-    <!-- <button onclick="toggleHighlight();">Toggle Highlight</button> -->
     <script src="main.js"></script>
   </body>
 </html>

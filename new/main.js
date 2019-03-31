@@ -13,6 +13,7 @@ var player = 'B'; // current active player
 var checkPlay = {'W':1,'B':-1,' ':0}
 var scoreDiv = document.getElementById("scoreDiv");
 var highlightOptions = true;
+var aiEnabled = true;
 
 initialise();
 
@@ -24,7 +25,7 @@ function initialise() {
 }
 
 function renderBoard() {
-	var gameOver = true;
+	var gameOver = true, idealMove = [0,0,0,[]];  // idealMove's row, col, scoreSum and direction
 	while (boardDiv.firstChild) boardDiv.removeChild(boardDiv.firstChild); // wipes board
 	draughts.forEach((row,r) => {
 		var draughtsRow = document.createElement("div");
@@ -43,13 +44,24 @@ function renderBoard() {
 			var direction = checkAvailable(draughts, r, c, player);
 			if (draughts[r][c] == ' ' && JSON.stringify(direction) != JSON.stringify([0,0,0,0,0,0,0,0])) {
 				gameOver = false;
+				if (aiEnabled) {
+					var score = direction.reduce(function(a, b) { return a + b; }, 0);
+					if (score > idealMove[2]) {
+						idealMove = [r, c, score, direction]
+					}
+				}
 				draughtsSquare.onclick = function(){ placePiece(r, c, direction); };
 				if (highlightOptions) draughtsSquare.className += " clickable";
 			}
 			findTotal(draughts);
 		});
 	});
-	if (gameOver != true) infoDiv.innerHTML = ((player == 'W') ? "white" : "black")+"'s move";
+	if (gameOver == false && aiEnabled) {
+		infoDiv.innerHTML = ((player == 'W') ? "AI thinking..." : "your move");
+		if (player == 'W') setTimeout(function() { placePiece(idealMove[0], idealMove[1], idealMove[3]) }, 1000);
+	} else if (gameOver == false && !aiEnabled) {
+		infoDiv.innerHTML = ((player == 'W') ? "white" : "black")+"'s move";
+	}
 }
 
 function placePiece(r,c, direction) { // r = row, c = column
@@ -109,6 +121,20 @@ function capture(board, r, c, direction) {
 function pass() {
 	player = (player == 'W') ? 'B' : 'W';
 	renderBoard();
+}
+
+function enableAI() {
+	document.getElementById('2p_btn').className = ""
+	document.getElementById('ai_btn').className = "enabled"
+	aiEnabled = true;
+	initialise();
+}
+
+function enable2P() {
+	document.getElementById('ai_btn').className = ""
+	document.getElementById('2p_btn').className = "enabled"
+	aiEnabled = false;
+	initialise();
 }
 
 function findTotal(board) {
