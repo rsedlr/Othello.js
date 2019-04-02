@@ -25,7 +25,7 @@ function initialise() {
 }
 
 function renderBoard() {
-	var gameOver = true, idealMove = new Array(0, new Array());  // the score of the current ideal (highest capture) moves, followed by all the possible choices (row, col, direction)
+	var gameOver = true, idealMove = [0, []];  // the score of the current ideal (highest capture) moves, followed by all the possible choices (row, col, direction)
 	while (boardDiv.firstChild) boardDiv.removeChild(boardDiv.firstChild); // wipes board
 	draughts.forEach((row,r) => {
 		var draughtsRow = document.createElement("div");
@@ -63,8 +63,8 @@ function renderBoard() {
 			infoDiv.innerHTML = ((player == 'W') ? "AI thinking..." : "your move");
 			if (player == 'W') setTimeout(function() { placePiece(...idealMove[1][Math.floor(Math.random() * idealMove[1].length)].slice()) }, 1000);
 		} else if (aiEnabled == 2) {
+			if (idealMove[0] == 0) pass();
 			infoDiv.innerHTML = ((player == 'W') ? "white AI thinking..." : "black AI thinking...");
-			if (idealMove[1] == []) pass();
 			setTimeout(function() { placePiece(...idealMove[1][Math.floor(Math.random() * idealMove[1].length)].slice()) }, 1500);
 		} else if (aiEnabled == 0) {
 			infoDiv.innerHTML = ((player == 'W') ? "white" : "black")+"'s move";
