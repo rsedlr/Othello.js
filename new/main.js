@@ -52,7 +52,7 @@ function renderBoard() {
 						idealMove[1].push([r, c, direction]);
 					}
 				}
-				if (aiEnabled == 0 || player == 'B') draughtsSquare.onclick = function(){ placePiece(r, c, direction); };
+				if (aiEnabled == 0 || (aiEnabled == 1 && player == 'B')) draughtsSquare.onclick = function(){ placePiece(r, c, direction); };
 				if (highlightOptions) draughtsSquare.className += " clickable";
 			}
 			findTotal(draughts);
