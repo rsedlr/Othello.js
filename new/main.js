@@ -25,7 +25,7 @@ function initialise() {
 }
 
 function renderBoard() {
-	var gameOver = true, idealMove = [0,0,0,[]];  // idealMove's row, col, scoreSum and direction
+	var gameOver = true, idealMove = new Array(0, new Array());  // the score of the current ideal (highest capture) moves, followed by all the possible choices (row, col, direction)
 	while (boardDiv.firstChild) boardDiv.removeChild(boardDiv.firstChild); // wipes board
 	draughts.forEach((row,r) => {
 		var draughtsRow = document.createElement("div");
@@ -38,19 +38,21 @@ function renderBoard() {
 			if (draughts[r][c].toUpperCase() == 'W' || draughts[r][c].toUpperCase() == 'B') {
 				var draughtsPiece = document.createElement("div");
 				draughtsSquare.appendChild(draughtsPiece);
-				// draughtsSquare.className += " clickable";
 				draughtsPiece.className = "draughtsPiece " + draughts[r][c];
 			}
 			var direction = checkAvailable(draughts, r, c, player);
 			if (draughts[r][c] == ' ' && JSON.stringify(direction) != JSON.stringify([0,0,0,0,0,0,0,0])) {
 				gameOver = false;
 				if (aiEnabled) {
-					var score = direction.reduce(function(a, b) { return a + b; }, 0);
-					if (score > idealMove[2]) {
-						idealMove = [r, c, score, direction]
+					var score = direction.reduce(function(a, b) { return a + b; }, 0);  // gets the sum of all captures in each direction
+					if (score > idealMove[0]) {  // if this move scores better than the previous option
+						idealMove[0] = score;
+						idealMove[1] = [[r, c, direction]]
+					} else if (score == idealMove[0]) {
+						idealMove[1].push([r, c, direction]);
 					}
 				}
-				draughtsSquare.onclick = function(){ placePiece(r, c, direction); };
+				if (!aiEnabled || player == 'B') draughtsSquare.onclick = function(){ placePiece(r, c, direction); };
 				if (highlightOptions) draughtsSquare.className += " clickable";
 			}
 			findTotal(draughts);
@@ -58,7 +60,7 @@ function renderBoard() {
 	});
 	if (gameOver == false && aiEnabled) {
 		infoDiv.innerHTML = ((player == 'W') ? "AI thinking..." : "your move");
-		if (player == 'W') setTimeout(function() { placePiece(idealMove[0], idealMove[1], idealMove[3]) }, 1000);
+		if (player == 'W') setTimeout(function() { placePiece(...idealMove[1][Math.floor(Math.random() * idealMove[1].length)].slice()) }, 1000);
 	} else if (gameOver == false && !aiEnabled) {
 		infoDiv.innerHTML = ((player == 'W') ? "white" : "black")+"'s move";
 	}
