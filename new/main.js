@@ -7,12 +7,11 @@ var initialBoard = [ // ' ' = empty square, 'b' = black piece, 'w' = white piece
 	[' ',' ',' ',' ',' ',' ',' ',' '],
 	[' ',' ',' ',' ',' ',' ',' ',' '],
 	[' ',' ',' ',' ',' ',' ',' ',' ']];
-var draughts = [];
+var peices = [];
 var dir = [1,-1];
 var player = 'B'; // current active player
 var checkPlay = {'W':1,'B':-1,' ':0}
 var scoreDiv = document.getElementById("scoreDiv");
-var highlightOptions = true;
 var aiEnabled = 1;
 var move;
 
@@ -22,28 +21,29 @@ initialise();
 function initialise() {
 	clearTimeout(move)
 	player = 'B';
-	draughts = initialBoard.map(r => r.slice()); // copy initialBoard to draughts
+	peices = initialBoard.map(r => r.slice()); // copy initialBoard to peices
 	renderBoard();
 }
 
 function renderBoard() {
 	var gameOver = true, idealMove = [0, []];  // the score of the current ideal (highest capture) moves, followed by all the possible choices (row, col, direction)
 	while (boardDiv.firstChild) boardDiv.removeChild(boardDiv.firstChild); // wipes board
-	draughts.forEach((row,r) => {
-		var draughtsRow = document.createElement("div");
-		boardDiv.appendChild(draughtsRow);
-		draughtsRow.className = "draughtsRow";
+	peices.forEach((row,r) => {
+		var boardRow = document.createElement("div");
+		boardDiv.appendChild(boardRow);
+		boardRow.className = "boardRow";
 		row.forEach((square,c) => {
-			var draughtsSquare = document.createElement("div");
-			draughtsRow.appendChild(draughtsSquare);
-			draughtsSquare.className = "draughtsSquare";
-			if (draughts[r][c].toUpperCase() == 'W' || draughts[r][c].toUpperCase() == 'B') {
-				var draughtsPiece = document.createElement("div");
-				draughtsSquare.appendChild(draughtsPiece);
-				draughtsPiece.className = "draughtsPiece " + draughts[r][c];
+			var boardSquare = document.createElement("div");
+			boardRow.appendChild(boardSquare);
+			boardSquare.className = "boardSquare";
+			if (peices[r][c].toUpperCase() == 'W' || peices[r][c].toUpperCase() == 'B') {
+				var boardPiece = document.createElement("div");
+				boardSquare.appendChild(boardPiece);
+				boardPiece.className = "boardPiece " + peices[r][c].toLowerCase();
 			}
-			var direction = checkAvailable(draughts, r, c, player);
-			if (draughts[r][c] == ' ' && JSON.stringify(direction) != JSON.stringify([0,0,0,0,0,0,0,0])) {
+			var direction = checkAvailable(peices, r, c, player);
+			if (peices[r][c] == ' ' && JSON.stringify(direction) != JSON.stringify([0,0,0,0,0,0,0,0])) {
+				boardSquare.className += " clickable";
 				gameOver = false;
 				if (aiEnabled != 0) {
 					var score = direction.reduce(function(a, b) { return a + b; }, 0);  // gets the sum of all captures in each direction
@@ -54,10 +54,9 @@ function renderBoard() {
 						idealMove[1].push([r, c, direction]);
 					}
 				}
-				if (aiEnabled == 0 || (aiEnabled == 1 && player == 'B')) draughtsSquare.onclick = function(){ placePiece(r, c, direction); };
-				if (highlightOptions) draughtsSquare.className += " clickable";
+				if (aiEnabled == 0 || (aiEnabled == 1 && player == 'B')) boardSquare.onclick = function(){ placePiece(r, c, direction); };
 			}
-			findTotal(draughts);
+			findTotal(peices);
 		});
 	});
 	if (gameOver == false) {
@@ -75,7 +74,7 @@ function renderBoard() {
 }
 
 function placePiece(r,c, direction) { // r = row, c = column
-	draughts = updateState(draughts,r,c, direction);
+	peices = updateState(peices,r,c, direction);
 	player = (player == 'W') ? 'B' : 'W';
 	renderBoard();
 }
