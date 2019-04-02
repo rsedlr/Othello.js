@@ -13,7 +13,7 @@ var player = 'B'; // current active player
 var checkPlay = {'W':1,'B':-1,' ':0}
 var scoreDiv = document.getElementById("scoreDiv");
 var highlightOptions = true;
-var aiEnabled = true;
+var aiEnabled = 1;
 
 initialise();
 
@@ -43,7 +43,7 @@ function renderBoard() {
 			var direction = checkAvailable(draughts, r, c, player);
 			if (draughts[r][c] == ' ' && JSON.stringify(direction) != JSON.stringify([0,0,0,0,0,0,0,0])) {
 				gameOver = false;
-				if (aiEnabled) {
+				if (aiEnabled != 0) {
 					var score = direction.reduce(function(a, b) { return a + b; }, 0);  // gets the sum of all captures in each direction
 					if (score > idealMove[0]) {  // if this move scores better than the previous option
 						idealMove[0] = score;
@@ -52,17 +52,23 @@ function renderBoard() {
 						idealMove[1].push([r, c, direction]);
 					}
 				}
-				if (!aiEnabled || player == 'B') draughtsSquare.onclick = function(){ placePiece(r, c, direction); };
+				if (aiEnabled == 0 || player == 'B') draughtsSquare.onclick = function(){ placePiece(r, c, direction); };
 				if (highlightOptions) draughtsSquare.className += " clickable";
 			}
 			findTotal(draughts);
 		});
 	});
-	if (gameOver == false && aiEnabled) {
-		infoDiv.innerHTML = ((player == 'W') ? "AI thinking..." : "your move");
-		if (player == 'W') setTimeout(function() { placePiece(...idealMove[1][Math.floor(Math.random() * idealMove[1].length)].slice()) }, 1000);
-	} else if (gameOver == false && !aiEnabled) {
-		infoDiv.innerHTML = ((player == 'W') ? "white" : "black")+"'s move";
+	if (gameOver == false) {
+		if (aiEnabled == 1) {
+			infoDiv.innerHTML = ((player == 'W') ? "AI thinking..." : "your move");
+			if (player == 'W') setTimeout(function() { placePiece(...idealMove[1][Math.floor(Math.random() * idealMove[1].length)].slice()) }, 1000);
+		} else if (aiEnabled == 2) {
+			infoDiv.innerHTML = ((player == 'W') ? "white AI thinking..." : "black AI thinking...");
+			if (idealMove[1] == []) pass();
+			setTimeout(function() { placePiece(...idealMove[1][Math.floor(Math.random() * idealMove[1].length)].slice()) }, 1500);
+		} else if (aiEnabled == 0) {
+			infoDiv.innerHTML = ((player == 'W') ? "white" : "black")+"'s move";
+		}
 	}
 }
 
@@ -126,16 +132,26 @@ function pass() {
 }
 
 function enableAI() {
-	document.getElementById('2p_btn').className = ""
-	document.getElementById('ai_btn').className = "enabled"
-	aiEnabled = true;
+	document.getElementById('2p_btn').className = "";
+	document.getElementById('ai_btn').className = "enabled";
+	document.getElementById('AIvAI_btn').className = "";
+	aiEnabled = 1;
+	initialise();
+}
+
+function enableAIvAI() {
+	document.getElementById('2p_btn').className = "";
+	document.getElementById('ai_btn').className = "";
+	document.getElementById('AIvAI_btn').className = "enabled";
+	aiEnabled = 2;
 	initialise();
 }
 
 function enable2P() {
-	document.getElementById('ai_btn').className = ""
-	document.getElementById('2p_btn').className = "enabled"
-	aiEnabled = false;
+	document.getElementById('ai_btn').className = "";
+	document.getElementById('2p_btn').className = "enabled";
+	document.getElementById('AIvAI_btn').className = "";
+	aiEnabled = 0;
 	initialise();
 }
 
