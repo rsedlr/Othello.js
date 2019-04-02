@@ -14,11 +14,13 @@ var checkPlay = {'W':1,'B':-1,' ':0}
 var scoreDiv = document.getElementById("scoreDiv");
 var highlightOptions = true;
 var aiEnabled = 1;
+var move;
 
 initialise();
 
 
 function initialise() {
+	clearTimeout(move)
 	player = 'B';
 	draughts = initialBoard.map(r => r.slice()); // copy initialBoard to draughts
 	renderBoard();
@@ -61,11 +63,11 @@ function renderBoard() {
 	if (gameOver == false) {
 		if (aiEnabled == 1) {
 			infoDiv.innerHTML = ((player == 'W') ? "AI thinking..." : "your move");
-			if (player == 'W') setTimeout(function() { placePiece(...idealMove[1][Math.floor(Math.random() * idealMove[1].length)].slice()) }, 1000);
+			if (player == 'W') move = setTimeout(function() { placePiece(...idealMove[1][Math.floor(Math.random() * idealMove[1].length)].slice()) }, 1000);
 		} else if (aiEnabled == 2) {
 			if (idealMove[0] == 0) pass();
 			infoDiv.innerHTML = ((player == 'W') ? "white AI thinking..." : "black AI thinking...");
-			setTimeout(function() { placePiece(...idealMove[1][Math.floor(Math.random() * idealMove[1].length)].slice()) }, 1500);
+			move = setTimeout(function() { placePiece(...idealMove[1][Math.floor(Math.random() * idealMove[1].length)].slice()) }, 1500);
 		} else if (aiEnabled == 0) {
 			infoDiv.innerHTML = ((player == 'W') ? "white" : "black")+"'s move";
 		}
