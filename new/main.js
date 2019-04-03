@@ -129,8 +129,10 @@ function capture(board, r, c, direction) {
 }
 
 function pass() {
-	player = (player == 'W') ? 'B' : 'W';
-	renderBoard();
+	if (aiEnabled == 2) {
+		player = (player == 'W') ? 'B' : 'W';
+		renderBoard();
+	}
 }
 
 function enableAI() {
