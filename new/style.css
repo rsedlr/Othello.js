@@ -83,3 +83,35 @@ h1 {
 	font-size: 18px;
 }
 
+
+
+
+select {
+  margin-left: 10px;
+  padding: 5px 10px 5px 20px;
+  font-size: 16px;
+	border: 1px solid #000;
+	border-radius: 0;
+  height: 40px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+	background: #000;
+	color: #fff;
+	transition: 0.3s;
+} 
+select:hover {
+	background: #fff;
+	border-color: #fff;
+	color: #000;
+}
+select::-ms-expand { 
+    display: none;
+}
+
+/* @media screen and (min-width:0\0) {
+    select {
+        background:none\9;
+        padding: 5px\9;
+    } 
+} */

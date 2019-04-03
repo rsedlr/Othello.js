@@ -65,7 +65,8 @@ function renderBoard() {
 			if (player == 'B') move = setTimeout(function() { placePiece(...idealMove[1][Math.floor(Math.random() * idealMove[1].length)].slice()) }, 700);  // 1000
 		} else if (aiEnabled == 2) {
 			infoDiv.innerHTML = ((player == 'W') ? "white AI thinking..." : "black AI thinking...");
-			move = setTimeout(function() { placePiece(...idealMove[1][Math.floor(Math.random() * idealMove[1].length)].slice()) }, 1000);  // 1200
+			var e = document.getElementById ("delay");			
+			move = setTimeout(function() { placePiece(...idealMove[1][Math.floor(Math.random() * idealMove[1].length)].slice()) }, e.options[e.selectedIndex].value);  // 1000
 		} else if (aiEnabled == 0) {
 			infoDiv.innerHTML = ((player == 'W') ? "white" : "black")+"'s move";
 		}
