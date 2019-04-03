@@ -2,14 +2,14 @@ var initialBoard = [ // ' ' = empty square, 'b' = black piece, 'w' = white piece
 	[' ',' ',' ',' ',' ',' ',' ',' '],
 	[' ',' ',' ',' ',' ',' ',' ',' '],
 	[' ',' ',' ',' ',' ',' ',' ',' '],
-	[' ',' ',' ','w','b',' ',' ',' '],
 	[' ',' ',' ','b','w',' ',' ',' '],
+	[' ',' ',' ','w','b',' ',' ',' '],
 	[' ',' ',' ',' ',' ',' ',' ',' '],
 	[' ',' ',' ',' ',' ',' ',' ',' '],
 	[' ',' ',' ',' ',' ',' ',' ',' ']];
 var peices = [];
 var dir = [1,-1];
-var player = 'B'; // current active player
+var player = 'W'; // current active player
 var checkPlay = {'W':1,'B':-1,' ':0}
 var scoreDiv = document.getElementById("scoreDiv");
 var aiEnabled = 1;
@@ -20,7 +20,7 @@ initialise();
 
 function initialise() {
 	clearTimeout(move)
-	player = 'B';
+	player = 'W';
 	peices = initialBoard.map(r => r.slice()); // copy initialBoard to peices
 	renderBoard();
 }
@@ -45,7 +45,7 @@ function renderBoard() {
 			if (peices[r][c] == ' ' && JSON.stringify(direction) != JSON.stringify([0,0,0,0,0,0,0,0])) {
 				boardSquare.className += " clickable";
 				gameOver = false;
-				if (aiEnabled != 0) {
+				if (aiEnabled != 0) {  // if one of the ai options is enabled
 					var score = direction.reduce(function(a, b) { return a + b; }, 0);  // gets the sum of all captures in each direction
 					if (score > idealMove[0]) {  // if this move scores better than the previous option
 						idealMove[0] = score;
@@ -54,22 +54,23 @@ function renderBoard() {
 						idealMove[1].push([r, c, direction]);
 					}
 				}
-				if (aiEnabled == 0 || (aiEnabled == 1 && player == 'B')) boardSquare.onclick = function(){ placePiece(r, c, direction); };
+				if (aiEnabled == 0 || (aiEnabled == 1 && player == 'W')) boardSquare.onclick = function(){ placePiece(r, c, direction); };
 			}
-			findTotal(peices);
 		});
 	});
-	if (gameOver == false) {
+	var find = findTotal(peices);
+	if (!gameOver) {
 		if (aiEnabled == 1) {
-			infoDiv.innerHTML = ((player == 'W') ? "AI thinking..." : "your move");
-			if (player == 'W') move = setTimeout(function() { placePiece(...idealMove[1][Math.floor(Math.random() * idealMove[1].length)].slice()) }, 1000);
+			infoDiv.innerHTML = ((player == 'W') ? "your move" : "AI thinking...");
+			if (player == 'B') move = setTimeout(function() { placePiece(...idealMove[1][Math.floor(Math.random() * idealMove[1].length)].slice()) }, 700);  // 1000
 		} else if (aiEnabled == 2) {
-			if (idealMove[0] == 0) pass();
 			infoDiv.innerHTML = ((player == 'W') ? "white AI thinking..." : "black AI thinking...");
-			move = setTimeout(function() { placePiece(...idealMove[1][Math.floor(Math.random() * idealMove[1].length)].slice()) }, 1500);
+			move = setTimeout(function() { placePiece(...idealMove[1][Math.floor(Math.random() * idealMove[1].length)].slice()) }, 1000);  // 1200
 		} else if (aiEnabled == 0) {
 			infoDiv.innerHTML = ((player == 'W') ? "white" : "black")+"'s move";
 		}
+	} else if (!find) {
+		setTimeout(function() { pass() }, 1);
 	}
 }
 
@@ -177,9 +178,12 @@ function findTotal(board) {
 		} else {
 			infoDiv.innerHTML =  "DRAW!";
 		}
+		return true;
 	}
+	return false;
 }
 
 
 // NOTES
-// -add 'pass' button to alow the player to pass their go when they cant make a move
+// add auto pass
+// 
