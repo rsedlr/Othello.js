@@ -10,6 +10,7 @@ var initialBoard = [ // ' ' = empty square, 'b' = black piece, 'w' = white piece
 var peices = [];
 var dir = [1,-1];
 var player = 'B'; // current active player
+var AI_player = 'W';
 var checkPlay = {'W':1,'B':-1,' ':0}
 var scoreDiv = document.getElementById("scoreDiv");
 var aiEnabled = 1;
@@ -62,7 +63,7 @@ function renderBoard() {
 	if (!gameOver) {
 		if (aiEnabled == 1) {
 			infoDiv.innerHTML = ((player == 'W') ? "your move" : "AI thinking...");
-			if (player == 'B') move = setTimeout(function() { placePiece(...idealMove[1][Math.floor(Math.random() * idealMove[1].length)].slice()) }, 700);  // 1000
+			if (player == AI_player) move = setTimeout(function() { placePiece(...idealMove[1][Math.floor(Math.random() * idealMove[1].length)].slice()) }, 700);  // 1000
 		} else if (aiEnabled == 2) {
 			infoDiv.innerHTML = ((player == 'W') ? "white AI thinking..." : "black AI thinking...");
 			var e = document.getElementById ("delay");			
