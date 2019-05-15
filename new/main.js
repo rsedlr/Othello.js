@@ -7,72 +7,73 @@ var initialBoard = [ // ' ' = empty square, 'b' = black piece, 'w' = white piece
 	[' ',' ',' ',' ',' ',' ',' ',' '],
 	[' ',' ',' ',' ',' ',' ',' ',' '],
 	[' ',' ',' ',' ',' ',' ',' ',' ']];
-var peices = [];
+var peices = [];  // instantiate the variables...
 var dir = [1,-1];
-var player = 'B'; // current active player
+var player;
 var AI_player = 'W';
 var checkPlay = {'W':1,'B':-1,' ':0}
 var scoreDiv = document.getElementById("scoreDiv");
 var aiEnabled = 1;
 var move;
 
-initialise();
+initialise();  // perform the inital initialisation
 
 
 function initialise() {
-	clearTimeout(move)
-	player = 'B';
+	clearTimeout(move)  // stops any waiting AI moves from completing
+	player = 'B';  // sets the current player to black as black always goes first
 	peices = initialBoard.map(r => r.slice()); // copy initialBoard to peices
-	renderBoard();
+	renderBoard();  // calls the renderBoard funcion
 }
 
 function renderBoard() {
 	var gameOver = true, idealMove = [0, []];  // the score of the current ideal (highest capture) moves, followed by all the possible choices (row, col, direction)
 	while (boardDiv.firstChild) boardDiv.removeChild(boardDiv.firstChild); // wipes board
-	peices.forEach((row,r) => {
-		var boardRow = document.createElement("div");
-		boardDiv.appendChild(boardRow);
-		boardRow.className = "boardRow";
-		row.forEach((square,c) => {
-			var boardSquare = document.createElement("div");
-			boardRow.appendChild(boardSquare);
-			boardSquare.className = "boardSquare";
-			if (peices[r][c].toUpperCase() == 'W' || peices[r][c].toUpperCase() == 'B') {
-				var boardPiece = document.createElement("div");
-				boardSquare.appendChild(boardPiece);
-				boardPiece.className = "boardPiece " + peices[r][c].toLowerCase();
+	peices.forEach((row,r) => {  // loops over board rows
+		var boardRow = document.createElement("div");  // instantiates a HTML div element
+		boardDiv.appendChild(boardRow);  // makes the div a child of boardDiv
+		boardRow.className = "boardRow";  // appends the classname 'boardRow' to the div
+		row.forEach((square,c) => {  // loops over the squares in the row
+			var boardSquare = document.createElement("div");  // instantiates a HTML div element
+			boardRow.appendChild(boardSquare);  // makes the div a child of the boardRow div
+			boardSquare.className = "boardSquare";  // appends the classname 'boardSquare' to the div
+			if (peices[r][c].toUpperCase() == 'W' || peices[r][c].toUpperCase() == 'B') {  // checks if the current square contains a piece
+				var boardPiece = document.createElement("div");  // instantiates a HTML div element
+				boardSquare.appendChild(boardPiece);  // makes the piece a child of the square div
+				boardPiece.className = "boardPiece " + peices[r][c].toLowerCase();  // appends the classname 'boardPiece ' along with the letter of the piece's colour
 			}
-			var direction = checkAvailable(peices, r, c, player);
-			if (peices[r][c] == ' ' && JSON.stringify(direction) != JSON.stringify([0,0,0,0,0,0,0,0])) {
-				boardSquare.className += " clickable";
-				gameOver = false;
+			var direction = checkAvailable(peices, r, c, player);  // checks the available moves for the piece
+			if (peices[r][c] == ' ' && JSON.stringify(direction) != JSON.stringify([0,0,0,0,0,0,0,0])) {  // if the square is empty and a move can be made on it
+				boardSquare.className += " clickable";  // append ' clickable' to the className of the square so that it appears a different colour
+				gameOver = false;  // the game isnt over as moves can be made
 				if (aiEnabled != 0) {  // if one of the ai options is enabled
 					var score = direction.reduce(function(a, b) { return a + b; }, 0);  // gets the sum of all captures in each direction
 					if (score > idealMove[0]) {  // if this move scores better than the previous option
-						idealMove[0] = score;
-						idealMove[1] = [[r, c, direction]]
-					} else if (score == idealMove[0]) {
-						idealMove[1].push([r, c, direction]);
+						idealMove[0] = score;  // assigns the first item in the array to the new high score
+						idealMove[1] = [[r, c, direction]]  // assigns the row, column and direction of the move to the second item in the array
+					} else if (score == idealMove[0]) {  // if the score is equal to the previous
+						idealMove[1].push([r, c, direction]);  // add another row, column and direction to the second item of the array
 					}
 				}
-				if (aiEnabled == 0 || (aiEnabled == 1 && player == 'B')) boardSquare.onclick = function(){ placePiece(r, c, direction); };
+				if (aiEnabled == 0 || (aiEnabled == 1 && player == 'B')) boardSquare.onclick = function(){ placePiece(r, c, direction); };  // if its a humans move, allow the player to click the squares
 			}
 		});
 	});
 	var find = findTotal(peices);
 	if (!gameOver) {
-		if (aiEnabled == 1) {
+		if (aiEnabled == 1) {  // if the game mode is 1player
 			infoDiv.innerHTML = ((player == 'B') ? "your move" : "AI thinking...");
-			if (player == AI_player) move = setTimeout(function() { placePiece(...idealMove[1][Math.floor(Math.random() * idealMove[1].length)].slice()) }, 700);  // 1000
-		} else if (aiEnabled == 2) {
+			if (player == AI_player) move = setTimeout(function() { placePiece(...idealMove[1][Math.floor(Math.random() * idealMove[1].length)].slice()) }, 700);  // if the current player is the AI 
+		} else if (aiEnabled == 2) {  // else if the game mode is 2player
 			infoDiv.innerHTML = ((player == 'W') ? "white AI thinking..." : "black AI thinking...");
 			var e = document.getElementById ("delay");			
-			move = setTimeout(function() { placePiece(...idealMove[1][Math.floor(Math.random() * idealMove[1].length)].slice()) }, e.options[e.selectedIndex].value);  // 1000
-		} else if (aiEnabled == 0) {
+			move = setTimeout(function() { placePiece(...idealMove[1][Math.floor(Math.random() * idealMove[1].length)].slice()) }, e.options[e.selectedIndex].value);  // 
+		} else if (aiEnabled == 0) {  // else if the game mode is AI vs AI
 			infoDiv.innerHTML = ((player == 'W') ? "white" : "black")+"'s move";
 		}
-	} else if (!find) {
-		setTimeout(function() { pass() }, 1);
+	} else if (!find) {  // if there are still empty spaces available to play
+		console.log('passing');
+		setTimeout(function() { pass() }, 1);  // pass the current players go automatically
 	}
 }
 

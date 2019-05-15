@@ -91,7 +91,7 @@ h1 {
 	color: white; 
   font-size: 20px; 
 	font-weight: bold;
-	margin: auto 0;
+	margin: auto 0 auto 10px;
 	transition: 0.3s;
 	display: inline;
 }
