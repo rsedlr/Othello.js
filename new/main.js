@@ -55,14 +55,14 @@ function renderBoard() {
 						idealMove[1].push([r, c, direction]);
 					}
 				}
-				if (aiEnabled == 0 || (aiEnabled == 1 && player == 'W')) boardSquare.onclick = function(){ placePiece(r, c, direction); };
+				if (aiEnabled == 0 || (aiEnabled == 1 && player == 'B')) boardSquare.onclick = function(){ placePiece(r, c, direction); };
 			}
 		});
 	});
 	var find = findTotal(peices);
 	if (!gameOver) {
 		if (aiEnabled == 1) {
-			infoDiv.innerHTML = ((player == 'W') ? "your move" : "AI thinking...");
+			infoDiv.innerHTML = ((player == 'B') ? "your move" : "AI thinking...");
 			if (player == AI_player) move = setTimeout(function() { placePiece(...idealMove[1][Math.floor(Math.random() * idealMove[1].length)].slice()) }, 700);  // 1000
 		} else if (aiEnabled == 2) {
 			infoDiv.innerHTML = ((player == 'W') ? "white AI thinking..." : "black AI thinking...");
