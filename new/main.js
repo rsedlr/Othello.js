@@ -63,11 +63,11 @@ function renderBoard() {
 	if (!gameOver) {
 		if (aiEnabled == 1) {  // if the game mode is 1player
 			infoDiv.innerHTML = ((player == 'B') ? "your move" : "AI thinking...");
-			if (player == AI_player) move = setTimeout(function() { placePiece(...idealMove[1][Math.floor(Math.random() * idealMove[1].length)].slice()) }, 700);  // if the current player is the AI 
+			if (player == AI_player) move = setTimeout(function() { placePiece(...idealMove[1][Math.floor(Math.random() * idealMove[1].length)].slice()) }, 700);  // if the current player is the AI then pick a random ideal move from the array of moves in 700 milliseconds
 		} else if (aiEnabled == 2) {  // else if the game mode is 2player
 			infoDiv.innerHTML = ((player == 'W') ? "white AI thinking..." : "black AI thinking...");
 			var e = document.getElementById ("delay");			
-			move = setTimeout(function() { placePiece(...idealMove[1][Math.floor(Math.random() * idealMove[1].length)].slice()) }, e.options[e.selectedIndex].value);  // 
+			move = setTimeout(function() { placePiece(...idealMove[1][Math.floor(Math.random() * idealMove[1].length)].slice()) }, e.options[e.selectedIndex].value);  // if the current player is the AI then pick a random ideal move from the array of moves in the dealy defined by the dropdown
 		} else if (aiEnabled == 0) {  // else if the game mode is AI vs AI
 			infoDiv.innerHTML = ((player == 'W') ? "white" : "black")+"'s move";
 		}
