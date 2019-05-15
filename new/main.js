@@ -9,7 +9,7 @@ var initialBoard = [ // ' ' = empty square, 'b' = black piece, 'w' = white piece
 	[' ',' ',' ',' ',' ',' ',' ',' ']];
 var peices = [];
 var dir = [1,-1];
-var player = 'W'; // current active player
+var player = 'B'; // current active player
 var checkPlay = {'W':1,'B':-1,' ':0}
 var scoreDiv = document.getElementById("scoreDiv");
 var aiEnabled = 1;
@@ -20,7 +20,7 @@ initialise();
 
 function initialise() {
 	clearTimeout(move)
-	player = 'W';
+	player = 'B';
 	peices = initialBoard.map(r => r.slice()); // copy initialBoard to peices
 	renderBoard();
 }
