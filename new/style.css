@@ -1,11 +1,11 @@
 html {
 	background-color: rgb(107, 107, 107);
-	font-family: Verdana, sans-serif;
+	font-family: Arial, Helvetica, sans-serif;  /* Verdana, sans-serif; */
 	text-align: center;
 }
 
 button {
-  padding: .5rem 1rem;
+  padding: 8px 16px;
 	background-color: black; 
 	border: none;
 	box-shadow: none;
@@ -83,16 +83,26 @@ h1 {
 	font-size: 18px;
 }
 
-
-
+.prefix {
+  padding: 8px 16px 9px;
+	background-color: black; 
+	border: none;
+	box-shadow: none;
+	color: white; 
+  font-size: 20px; 
+	font-weight: bold;
+	margin: auto 0;
+	transition: 0.3s;
+	display: inline;
+}
 
 select {
-  margin-left: 10px;
-  padding: 5px 10px 5px 20px;
-  font-size: 16px;
-	border: 1px solid #000;
-	border-radius: 0;
-  height: 40px;
+  margin-left: -10px;
+	padding: 8px 6px 8px 7px;
+  font-size: 20px; 
+	font-weight: bold;
+	border: none;
+  height: 39px;
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
@@ -100,13 +110,13 @@ select {
 	color: #fff;
 	transition: 0.3s;
 } 
-select:hover {
+select:hover, select:focus {
 	background: #fff;
 	border-color: #fff;
 	color: #000;
 }
 select::-ms-expand { 
-    display: none;
+	display: none;
 }
 
 /* @media screen and (min-width:0\0) {
