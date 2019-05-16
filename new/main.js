@@ -8,12 +8,12 @@ var initialBoard = [ // ' ' = empty square, 'b' = black piece, 'w' = white piece
 	[' ',' ',' ',' ',' ',' ',' ',' '],
 	[' ',' ',' ',' ',' ',' ',' ',' ']];
 var peices = [];  // instantiate the variables...
+var modeBtn = ['2p_btn', 'ai_btn', 'AIvAI_btn']
 var dir = [1,-1];
-var player;
-var AI_player = 'W';
 var checkPlay = {'W':1,'B':-1,' ':0}
 var scoreDiv = document.getElementById("scoreDiv");
 var aiEnabled = 1;
+var player;
 var move;
 
 initialise();  // perform the inital initialisation
@@ -63,7 +63,7 @@ function renderBoard() {
 	if (!gameOver) {
 		if (aiEnabled == 1) {  // if the game mode is 1player
 			infoDiv.innerHTML = ((player == 'B') ? "your move" : "AI thinking...");
-			if (player == AI_player) move = setTimeout(function() { placePiece(...idealMove[1][Math.floor(Math.random() * idealMove[1].length)].slice()) }, 700);  // if the current player is the AI then pick a random ideal move from the array of moves in 700 milliseconds
+			if (player == 'W') move = setTimeout(function() { placePiece(...idealMove[1][Math.floor(Math.random() * idealMove[1].length)].slice()) }, 700);  // if the current player is the AI then pick a random ideal move from the array of moves in 700 milliseconds
 		} else if (aiEnabled == 2) {  // else if the game mode is 2player
 			infoDiv.innerHTML = ((player == 'W') ? "white AI thinking..." : "black AI thinking...");
 			var e = document.getElementById ("delay");			
@@ -138,29 +138,18 @@ function pass() {
 	}
 }
 
-function enableAI() {
-	document.getElementById('2p_btn').className = "";
-	document.getElementById('ai_btn').className = "enabled";
-	document.getElementById('AIvAI_btn').className = "";
-	aiEnabled = 1;
+function gameMode(mode) {
+	modeBtn.forEach(function(option) {
+		if (modeBtn[mode] == option) {
+			document.getElementById(option).className = "enabled";
+		} else {
+			document.getElementById(option).className = "";
+		}
+	});
+	aiEnabled = mode;
 	initialise();
 }
 
-function enableAIvAI() {
-	document.getElementById('2p_btn').className = "";
-	document.getElementById('ai_btn').className = "";
-	document.getElementById('AIvAI_btn').className = "enabled";
-	aiEnabled = 2;
-	initialise();
-}
-
-function enable2P() {
-	document.getElementById('ai_btn').className = "";
-	document.getElementById('2p_btn').className = "enabled";
-	document.getElementById('AIvAI_btn').className = "";
-	aiEnabled = 0;
-	initialise();
-}
 
 function findTotal(board) {
 	board = board.map(r => r.slice()); // copy array
@@ -188,7 +177,6 @@ function findTotal(board) {
 	return false;
 }
 
-
 // NOTES
-// add auto pass
+// 
 // 

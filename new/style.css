@@ -84,14 +84,15 @@ h1 {
 }
 
 .prefix {
-  padding: 8px 16px 9px;
+  padding: 9px 16px 8px;
 	background-color: black; 
 	border: none;
 	box-shadow: none;
 	color: white; 
+	border-radius: 0;
   font-size: 20px; 
 	font-weight: bold;
-	margin: auto 0 auto 10px;
+	margin: 0 0 0 10px;
 	transition: 0.3s;
 	display: inline;
 }
@@ -102,6 +103,7 @@ select {
   font-size: 20px; 
 	font-weight: bold;
 	border: none;
+	border-radius: 0;
   height: 39px;
   -webkit-appearance: none;
   -moz-appearance: none;
