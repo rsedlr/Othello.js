@@ -9,13 +9,15 @@
     <div id="boardDiv"></div>
     <div id="infoDiv"></div>
     <div id="scoreDiv"></div>
-    <button type="button" onclick="gameMode(1);" id="ai_btn" class="enabled">1 Player</button>
-    <button type="button" onclick="gameMode(0);" id="2p_btn">2 Player</button>
-    <button type="button" onclick="gameMode(2);" id="AIvAI_btn">AI vs AI</button>
+    <button type="button" onclick="setMode(1);" id="ai_btn" class="enabled">1 Player</button>
+    <button type="button" onclick="setMode(2);" id="2p_btn">2 Player</button>
+    <button type="button" onclick="setMode(0);" id="AIvAI_btn">AI vs AI</button>
     <br><br>
     <button type="button" onclick="pass();">Pass</button>
+    <button type="button" onclick="undo();">Undo</button>
     <button type="button" onclick="initialise();">New Game</button>
-    <label class="prefix">AI vs AI Delay:</label>
+    <br><br>
+    <div class="prefix">AI vs AI Delay:</div>
     <select id="delay">
       <option value="100">0.05s</option>
       <option value="200">0.25s</option>
