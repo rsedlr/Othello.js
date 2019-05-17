@@ -141,7 +141,7 @@ function undo() {
 		board = boardBackup;	// set the board back to how it was one move ago
 		pass();  // swap players back
 	} else if (gameMode == 1) {
-		console.log(' NEED TO SORT THIS BIT OUT');
+		console.log('not yet complete');
 		// if its GM1 backup must go back 2 moves :/
 		// then might as well make running backup of entire game with pointer 
 		// should get on that soon
