@@ -14,6 +14,7 @@ var dir = [1,-1];
 var checkPlay = {'w':1,'b':-1,' ':0}
 var scoreDiv = document.getElementById("scoreDiv");
 var gameMode = 1;
+var passCount = 0;
 var player;
 var move;
 
@@ -38,7 +39,7 @@ function renderBoard() {
 			var boardSquare = document.createElement("div");  // instantiates a HTML div element
 			boardRow.appendChild(boardSquare);  // makes the div a child of the boardRow div
 			boardSquare.className = "boardSquare";  // appends the classname 'boardSquare' to the div
-			if (board[r][c] == 'w' || board[r][c] == 'b') {  // checks if the current square contains a board						if (['w','b'].includes(board[r][c]))
+			if (['w','b'].includes(board[r][c])) {  // checks if the current square contains a board
 				var boardPiece = document.createElement("div");  // instantiates a HTML div element
 				boardSquare.appendChild(boardPiece);  // makes the board a child of the square div
 				boardPiece.className = "boardPiece " + board[r][c].toLowerCase();  // appends the classname 'boardPiece ' along with the letter of the board's colour
@@ -48,7 +49,7 @@ function renderBoard() {
 				boardSquare.className += " clickable";  // append ' clickable' to the className of the square so that it appears a different colour
 				gameOver = false;  // the game isnt over as moves can be made
 				if (gameMode != 2) {  // if one of the ai options is enabled
-					var score = direction.reduce(function(a, b) { return a + b; }, 0);  // gets the sum of all captures in each direction
+					var score = direction.reduce(function(a, b) { return a + b }, 0);  // gets the sum of all captures in each direction
 					if (score > idealMove[0]) {  // if this move scores better than the previous option
 						idealMove[0] = score;  // assigns the first item in the array to the new high score
 						idealMove[1] = [[r, c, direction]]  // assigns the row, column and direction of the move to the second item in the array
@@ -89,7 +90,7 @@ function updateState(board,destinationR,destinationC, direction) {
 	board = board.map(r => r.slice()); // make a deep clone of array
 	board[destinationR][destinationC] = player.toLowerCase();
 	capture(board, destinationR, destinationC, direction);
-	return board;
+	return board
 }
 
 function checkAvailable(board, r, c, player) {  // board, row, column, player
@@ -114,7 +115,7 @@ function checkAvailable(board, r, c, player) {  // board, row, column, player
 			direction[i] = 0;
 		}
 	}
-	return direction;
+	return direction
 }
 
 function capture(board, r, c, direction) {
@@ -131,8 +132,9 @@ function capture(board, r, c, direction) {
 
 function pass() {
 	if (gameMode != 0) {
+		passCount += 1;
 		player = (player == 'w') ? 'b' : 'w';
-		renderBoard();
+		renderBoard();  // render changes
 	}
 }
 
@@ -175,7 +177,7 @@ function findTotal(board) {
 		}
 	}
 	scoreDiv.innerHTML = (`black: ${blackTotal} | white: ${whiteTotal}`)
-	if (whiteTotal + blackTotal == 64) {
+	if (whiteTotal + blackTotal == 64 || whiteTotal == 0 || blackTotal == 0) {
 		if (whiteTotal > blackTotal) {
 			infoDiv.innerHTML =  "WHITE WINS!";
 		} else if (blackTotal > whiteTotal) {
@@ -183,11 +185,12 @@ function findTotal(board) {
 		} else {
 			infoDiv.innerHTML =  "DRAW!";
 		}
-		return true;
+		return true
 	}
-	return false;
+	return false
 }
 
 // NOTES
-// 
+// if theres none of one colour on the board show who wins
+// pass button only works if a pass isnt happening already
 // 
