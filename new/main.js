@@ -1,4 +1,4 @@
-var initialBoard = [ // ' ' = empty square, 'b' = black board, 'w' = white board;
+var initialBoard = [ // ' ' = empty square, 'b' = black piece, 'w' = white piece;
 	[' ',' ',' ',' ',' ',' ',' ',' '],
 	[' ',' ',' ',' ',' ',' ',' ',' '],
 	[' ',' ',' ',' ',' ',' ',' ',' '],
@@ -7,28 +7,28 @@ var initialBoard = [ // ' ' = empty square, 'b' = black board, 'w' = white board
 	[' ',' ',' ',' ',' ',' ',' ',' '],
 	[' ',' ',' ',' ',' ',' ',' ',' '],
 	[' ',' ',' ',' ',' ',' ',' ',' ']];
-var board = [];  // instantiate the variables...
-var boardBackup = [];
-var modeBtn = ['AIvAI_btn', 'ai_btn', '2p_btn']
-var dir = [1,-1];
-var checkPlay = {'w':1,'b':-1,' ':0}
-var scoreDiv = document.getElementById("scoreDiv");
-var gameMode = 1;
-var passCount = 0;
-var player;
-var move;
+var board = [];  // stores the current board layout
+var boardBackup = [];  // stores a clone of the board but move behind
+var modeBtn = ['ai_btn', '1p_btn', '2p_btn']  // stores the id's of the game mode buttons
+var dir = [1,-1];  // an array of two directions
+var checkPlay = {'w':1,'b':-1,' ':0}  // converts player colour into a number. This alows enemy pieces to be found by multiplying current by -1
+var scoreDiv = document.getElementById("scoreDiv");  // stores a reference to the score html element
+var gameMode = 1;  // 0 - AIvsAI, 1 - 1player, 2 - 2player 
+var passCount = 0;  // how many consecutive passes have occured
+var player;  // current player
+var move;  // stores a reference to the timeout function which allows it to be cleared on new game
 
 initialise();  // perform the inital initialisation
 
 
-function initialise() {
+function initialise() {  // initialise the game
 	clearTimeout(move)  // stops any waiting AI moves from completing
 	player = 'b';  // sets the current player to black as black always goes first
 	board = initialBoard.map(r => r.slice(0)); // copy a deep clone of initialBoard to board
 	renderBoard();  // calls the renderBoard funcion
 }
 
-function renderBoard() {
+function renderBoard() {  // renders the board
 	var gameOver = true, idealMove = [0, []];  // the score of the current ideal (highest capture) moves, followed by all the possible choices (row, col, direction)
 	while (boardDiv.firstChild) boardDiv.removeChild(boardDiv.firstChild); // wipes board
 	board.forEach((row,r) => {  // loops over board rows
@@ -63,18 +63,18 @@ function renderBoard() {
 	});
 	var find = findTotal(board);
 	if (!gameOver) {
+		passCount = 0;
 		if (gameMode == 1) {  // if the game mode is 1player
 			infoDiv.innerHTML = ((player == 'b') ? "your move" : "AI thinking...");
 			if (player == 'w') move = setTimeout(function() { placePiece(...idealMove[1][Math.floor(Math.random() * idealMove[1].length)].slice()) }, 700);  // if the current player is the AI then pick a random ideal move from the array of moves in 700 milliseconds
 		} else if (gameMode == 0) {  // else if the game mode is AI vs AI
 			infoDiv.innerHTML = ((player == 'w') ? "white AI thinking..." : "black AI thinking...");
 			var e = document.getElementById ("delay");			
-			move = setTimeout(function() { placePiece(...idealMove[1][Math.floor(Math.random() * idealMove[1].length)].slice()) }, e.options[e.selectedIndex].value);  // if the current player is the AI then pick a random ideal move from the array of moves in the dealy defined by the dropdown
+			move = setTimeout(function() { placePiece(...idealMove[1][Math.floor(Math.random() * idealMove[1].length)].slice()) }, e.options[e.selectedIndex].value);  // if the current player is the AI then pick a random ideal move from the array of moves after the dealy defined by the html dropdown
 		} else if (gameMode == 2) {  // else if the game mode is 2 player
 			infoDiv.innerHTML = ((player == 'w') ? "white" : "black")+"'s move";
 		}
 	} else if (!find) {  // if there are still empty spaces available to play
-		console.log('passing');
 		setTimeout(function() { pass() }, 1);  // pass the current players go automatically
 	}
 }
@@ -131,10 +131,13 @@ function capture(board, r, c, direction) {
 }
 
 function pass() {
-	if (gameMode != 0) {
+	if (gameMode != 2 && passCount < 2) {  // if game mode is not 2 player and less than 2 consecutive passes have occured
 		passCount += 1;
 		player = (player == 'w') ? 'b' : 'w';
 		renderBoard();  // render changes
+	} else if (passCount >= 2) {  // no moves can be made as 2 passes occured (neither player can make a move)
+		console.log('more than 2 passes bro');
+		findTotal(board, true);
 	}
 }
 
@@ -143,7 +146,7 @@ function undo() {
 		board = boardBackup;	// set the board back to how it was one move ago
 		pass();  // swap players back
 	} else if (gameMode == 1) {
-		console.log('not yet complete');
+		console.log('1player undo not yet complete, sry');
 		// if its GM1 backup must go back 2 moves :/
 		// then might as well make running backup of entire game with pointer 
 		// should get on that soon
@@ -163,8 +166,7 @@ function setMode(mode) {
 	initialise();
 }
 
-
-function findTotal(board) {
+function findTotal(board, end=false) {
 	board = board.map(r => r.slice()); // copy array
 	var blackTotal = 0, whiteTotal = 0;
 	for (i=0; i < board.length; i++) {
@@ -177,7 +179,7 @@ function findTotal(board) {
 		}
 	}
 	scoreDiv.innerHTML = (`black: ${blackTotal} | white: ${whiteTotal}`)
-	if (whiteTotal + blackTotal == 64 || whiteTotal == 0 || blackTotal == 0) {
+	if (whiteTotal + blackTotal == 64 || whiteTotal == 0 || blackTotal == 0 || end) {
 		if (whiteTotal > blackTotal) {
 			infoDiv.innerHTML =  "WHITE WINS!";
 		} else if (blackTotal > whiteTotal) {
