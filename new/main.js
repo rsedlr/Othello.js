@@ -9,6 +9,7 @@ var initialBoard = [ // ' ' = empty square, 'b' = black piece, 'w' = white piece
 	[' ',' ',' ',' ',' ',' ',' ',' ']];
 var board = [];  // stores the current board layout
 var boardBackup = [];  // stores a clone of the board but move behind
+var boardBackup2 = [];
 var modeBtn = ['ai_btn', '1p_btn', '2p_btn']  // stores the id's of the game mode buttons
 var dir = [1,-1];  // an array of two directions
 var checkPlay = {'w':1,'b':-1,' ':0}  // converts player colour into a number. This alows enemy pieces to be found by multiplying current by -1
@@ -17,12 +18,14 @@ var gameMode = 1;  // 0 - AIvsAI, 1 - 1player, 2 - 2player
 var passCount = 0;  // how many consecutive passes have occured
 var player;  // current player
 var move;  // stores a reference to the timeout function which allows it to be cleared on new game
+var undoable;
 
 initialise();  // perform the inital initialisation
 
 
 function initialise() {  // initialise the game
 	clearTimeout(move)  // stops any waiting AI moves from completing
+	undoable = false;
 	player = 'b';  // sets the current player to black as black always goes first
 	board = initialBoard.map(r => r.slice(0)); // copy a deep clone of initialBoard to board
 	renderBoard();  // calls the renderBoard funcion
@@ -82,12 +85,13 @@ function renderBoard() {  // renders the board
 function placePiece(r,c, direction) { // r = row, c = column
 	board = updateState(board,r,c, direction);
 	player = (player == 'w') ? 'b' : 'w';
+	undoable = true;
 	renderBoard();
 }
 
 function updateState(board,destinationR,destinationC, direction) {
+	boardBackup2 = boardBackup.map(r => r.slice(0));  // make a clone of the board in case of undo
 	boardBackup = board.map(r => r.slice(0));  // make a clone of the board in case of undo
-	board = board.map(r => r.slice()); // make a deep clone of array
 	board[destinationR][destinationC] = player.toLowerCase();
 	capture(board, destinationR, destinationC, direction);
 	return board
@@ -142,16 +146,16 @@ function pass() {
 }
 
 function undo() {
-	if (gameMode == 2) {  // if it is a human game
-		board = boardBackup;	// set the board back to how it was one move ago
-		pass();  // swap players back
-	} else if (gameMode == 1) {
-		console.log('1player undo not yet complete, sry');
-		// if its GM1 backup must go back 2 moves :/
-		// then might as well make running backup of entire game with pointer 
-		// should get on that soon
+	if (undoable == true && gameMode != 0) {
+		if (gameMode == 2) {  // if it is a human game
+			board = boardBackup;	// set the board back to how it was one move ago
+			player = (player == 'w') ? 'b' : 'w'; 
+		} else if (gameMode == 1) {
+			board = boardBackup2;  // set the board back to how it was two moves ago
+		}
+		undoable = false;
+		renderBoard();  // render changes
 	}
-	renderBoard();  // render changes
 }
 
 function setMode(mode) {
