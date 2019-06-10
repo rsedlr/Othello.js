@@ -83,18 +83,13 @@ function renderBoard() {  // renders the board
 }
 
 function placePiece(r,c, direction) { // r = row, c = column
-	board = updateState(board,r,c, direction);
+	boardBackup2 = boardBackup.map(r => r.slice(0));  // make a clone of the board in case of undo
+	boardBackup = board.map(r => r.slice(0));  // make a clone of the board in case of undo
+	board[r][c] = player.toLowerCase();
+	capture(board, r, c, direction);
 	player = (player == 'w') ? 'b' : 'w';
 	undoable = true;
 	renderBoard();
-}
-
-function updateState(board,destinationR,destinationC, direction) {
-	boardBackup2 = boardBackup.map(r => r.slice(0));  // make a clone of the board in case of undo
-	boardBackup = board.map(r => r.slice(0));  // make a clone of the board in case of undo
-	board[destinationR][destinationC] = player.toLowerCase();
-	capture(board, destinationR, destinationC, direction);
-	return board
 }
 
 function checkAvailable(board, r, c, player) {  // board, row, column, player
