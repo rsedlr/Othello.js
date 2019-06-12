@@ -29,7 +29,7 @@ function initialise() {  // initialise the game
 	player = 'b';  // sets the current player to black as black always goes first
 	board = initialBoard.map(r => r.slice(0)); // copy a deep clone of initialBoard to board
 	renderBoard();  // calls the renderBoard funcion
-}
+} 
 
 function renderBoard() {  // renders the board
 	var gameOver = true, idealMove = [0, []];  // the score of the current ideal (highest capture) moves, followed by all the possible choices (row, col, direction)
@@ -190,8 +190,3 @@ function findTotal(board, end=false) {
 	}
 	return false
 }
-
-// NOTES
-// if theres none of one colour on the board show who wins
-// pass button only works if a pass isnt happening already
-// 
