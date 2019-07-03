@@ -6,8 +6,8 @@ var initialBoard = [[' ',' ',' ',' ',' ',' ',' ',' '], // ' ' = empty square, 'b
 										[' ',' ',' ',' ',' ',' ',' ',' '],
 										[' ',' ',' ',' ',' ',' ',' ',' '],
 										[' ',' ',' ',' ',' ',' ',' ',' ']];
-var board = [];  // stores the current board layout
-var boardBackup =  [[' ',' ',' ',' ',' ',' ',' ',' '],
+										
+var cleanBoard =   [[' ',' ',' ',' ',' ',' ',' ',' '],
 										[' ',' ',' ',' ',' ',' ',' ',' '],
 										[' ',' ',' ',' ',' ',' ',' ',' '],
 										[' ',' ',' ',' ',' ',' ',' ',' '],
@@ -15,6 +15,8 @@ var boardBackup =  [[' ',' ',' ',' ',' ',' ',' ',' '],
 										[' ',' ',' ',' ',' ',' ',' ',' '],
 										[' ',' ',' ',' ',' ',' ',' ',' '],
 										[' ',' ',' ',' ',' ',' ',' ',' ']];  // stores a clone of the board one move behind
+var board = [];  // stores the current board layout
+var boardBackup = cleanBoard.map(r => r.slice(0));
 var boardBackup2 = [];  // stores a clone of the board two moves behind
 var modeBtn = ['ai_btn', '1p_btn', '2p_btn']  // stores the id's of the game mode buttons
 var dir = [1,-1];  // an array of two directions
@@ -26,18 +28,20 @@ var undoable = false;
 var player;  // current player
 var move;  // stores a reference to the timeout function which allows it to be cleared on new game
 
-newGame(true);
+newGame();
 
 function newGame(init=false) {  // initialise the game
 	clearTimeout(move)  // stops any waiting AI moves from completing
 	undoable = false;
 	player = 'b';
 	board = initialBoard.map(r => r.slice(0)); // copy a deep clone of initialBoard to board
-	if (init) firstRender();
+	boardBackup = cleanBoard.map(r => r.slice(0));
+	firstRender();
 	renderBoard(init);
 } 
 
 function firstRender() {
+	while (boardDiv.firstChild) boardDiv.removeChild(boardDiv.firstChild); // wipes board
 	board.forEach((row,r) => {  // loops over board rows
 		var boardRow = document.createElement("div");  // instantiates a HTML div element
 		boardDiv.appendChild(boardRow);  // makes the div a child of boardDiv
