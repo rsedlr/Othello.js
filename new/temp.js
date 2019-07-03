@@ -1,12 +1,11 @@
-var initialBoard = [
-	[' ',' ',' ',' ',' ',' ',' ',' '],
-	[' ',' ',' ',' ',' ',' ',' ',' '],
-	[' ',' ',' ',' ',' ',' ',' ',' '],
-	[' ',' ',' ','b','w',' ',' ',' '],
-	[' ',' ',' ','w','b',' ',' ',' '],
-	[' ',' ',' ',' ',' ',' ',' ',' '],
-	[' ',' ',' ',' ',' ',' ',' ',' '],
-	[' ',' ',' ',' ',' ',' ',' ',' ']];
+var initialBoard = [[' ',' ',' ',' ',' ',' ',' ',' '],
+										[' ',' ',' ',' ',' ',' ',' ',' '],
+										[' ',' ',' ',' ',' ',' ',' ',' '],
+										[' ',' ',' ','b','w',' ',' ',' '],
+										[' ',' ',' ','w','b',' ',' ',' '],
+										[' ',' ',' ',' ',' ',' ',' ',' '],
+										[' ',' ',' ',' ',' ',' ',' ',' '],
+										[' ',' ',' ',' ',' ',' ',' ',' ']];
 var board = [];
 var boardBackup = [];
 var boardBackup2 = [];
@@ -23,7 +22,7 @@ var undoable;
 initialise();
 
 
-function initialise() {
+function initialise() {		// done
 	clearTimeout(move)
 	undoable = false;
 	player = 'b';
@@ -31,7 +30,7 @@ function initialise() {
 	renderBoard();
 } 
 
-function renderBoard() {
+function renderBoard() {		// done
 	var gameOver = true, idealMove = [0, []];
 	while (boardDiv.firstChild) boardDiv.removeChild(boardDiv.firstChild)
 	board.forEach((row,r) => {
@@ -82,7 +81,7 @@ function renderBoard() {
 	}
 }
 
-function placePiece(r,c, direction) {
+function placePiece(r,c, direction) {		// done
 	boardBackup2 = boardBackup.map(r => r.slice(0));
 	boardBackup = board.map(r => r.slice(0));
 	board[r][c] = player.toLowerCase();
@@ -92,32 +91,32 @@ function placePiece(r,c, direction) {
 	renderBoard();
 }
 
-function checkAvailable(board, r, c, player) {
-	var direction = [0,0,0,0,0,0,0,0]
-	for (var i = 0; i < 8; i++) {
-		if (i < 2) { var x = dir[i], y = 0; }
-		else if (i < 4) { var x = 0, y = dir[i-2]; }
-		else if (i < 6) { var x = dir[i-4], y = x; }
-		else { var x = dir[i-6], y = -x; }
-		try {
-			while (checkPlay[board[r - x][c - y]] == checkPlay[player]*-1) {
-				direction[i] += 1;
-				if (i < 2) { x = (dir[i] == 1) ? x+1 : x-1; }
-				else if (i < 4) { y = (dir[i-2] == 1) ? y+1 : y-1; }
-				else if (i < 6) { x = (dir[i-4] == 1) ? x+1 : x-1; y = x; }
-				else { x = (dir[i-6] == 1) ? x+1 : x-1; y = -x; }
+function checkAvailable(board, r, c, player) { 		// done
+	var direction = [0,0,0,0,0,0,0,0];
+	for (var i = 0; i < 8; i++) { 
+		if (i < 2) { var x = dir[i], y = 0; } 
+		else if (i < 4) { var x = 0, y = dir[i-2]; } 
+		else if (i < 6) { var x = dir[i-4], y = x; } 
+		else { var x = dir[i-6], y = -x; } 
+		try { 
+			while (checkPlay[board[r - x][c - y]] == checkPlay[player]*-1) { 
+				direction[i] += 1; 
+				if (i < 2) { x += dir[i]; } 
+				else if (i < 4) { y += dir[i-2]; } 
+				else if (i < 6) { x += dir[i-4]; y = x; } 
+				else { x += dir[i-6]; y = -x; } 
 			}
-			if (board[r - x][c - y] != player) {
-				direction[i] = 0;
+			if (board[r - x][c - y] != player) { 
+				direction[i] = 0; 
 			}
-		} catch { 
-			direction[i] = 0;
+		} catch {
+			direction[i] = 0; 
 		}
 	}
-	return direction
+	return direction 
 }
 
-function capture(board, r, c, direction) {
+function capture(board, r, c, direction) {		// done
 	for (var i = 0; i <= direction.length; i++) {
 		for (var z = 1; z <= direction[i]; z++) {
 			if (i < 2) { var x = dir[i]*z, y = 0; }
@@ -129,7 +128,7 @@ function capture(board, r, c, direction) {
 	}
 }
 
-function pass() {
+function pass() {		// done
 	if (gameMode != 2 && passCount < 2) {
 		passCount += 1;
 		player = (player == 'w') ? 'b' : 'w';
@@ -140,7 +139,7 @@ function pass() {
 	}
 }
 
-function undo() {
+function undo() {		// done
 	if (undoable == true && gameMode != 0) {
 		if (gameMode == 2) {
 			board = boardBackup
@@ -153,7 +152,7 @@ function undo() {
 	}
 }
 
-function setMode(mode) {
+function setMode(mode) {		// done
 	modeBtn.forEach(function(option) {
 		if (modeBtn[mode] == option) {
 			document.getElementById(option).className = "enabled";
@@ -165,7 +164,7 @@ function setMode(mode) {
 	initialise();
 }
 
-function findTotal(board, end=false) {
+function findTotal(board, end=false) {		// done
 	board = board.map(r => r.slice())
 	var blackTotal = 0, whiteTotal = 0;
 	for (i=0; i < board.length; i++) {

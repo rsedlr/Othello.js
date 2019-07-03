@@ -47,7 +47,7 @@ function renderBoard() {  // renders the board
 				boardSquare.appendChild(boardPiece);  // makes the board a child of the square div
 				boardPiece.className = "boardPiece " + board[r][c].toLowerCase();  // appends the classname 'boardPiece ' along with the letter of the board's colour
 			}
-			var direction = checkAvailable(board, r, c, player);  // checks the available moves for the board
+			var direction = checkMove(board, r, c, player);  // checks the available moves for the board
 			if (board[r][c] == ' ' && JSON.stringify(direction) != JSON.stringify([0,0,0,0,0,0,0,0])) {  // if the square is empty and a move can be made on it
 				boardSquare.className += " clickable";  // append ' clickable' to the className of the square so that it appears a different colour
 				gameOver = false;  // the game isnt over as moves can be made
@@ -92,7 +92,7 @@ function placePiece(r,c, direction) { // r = row, c = column
 	renderBoard();  // renders the changes
 }
 
-function checkAvailable(board, r, c, player) {  // board, row, column, player
+function checkMove(board, r, c, player) {  // board, row, column, player
 	var direction = [0,0,0,0,0,0,0,0]; // top bottom left right topLeft bottomRight BottomLeft TopRight
 	for (var i = 0; i < 8; i++) {  // loops over the directions
 		if (i < 2) { var x = dir[i], y = 0; }  // first checks horizontal...
@@ -102,10 +102,10 @@ function checkAvailable(board, r, c, player) {  // board, row, column, player
 		try {  // try because it may be referencing a coordinate that doesn't exist (off the board)
 			while (checkPlay[board[r - x][c - y]] == checkPlay[player]*-1) {  // while there are consecutive enemy peices
 				direction[i] += 1;  // increases the count of direction
-				if (i < 2) { x = (dir[i] == 1) ? x+1 : x-1; }  // first incriments the horizontal...
-				else if (i < 4) { y = (dir[i-2] == 1) ? y+1 : y-1; }  // then the vertical...
-				else if (i < 6) { x = (dir[i-4] == 1) ? x+1 : x-1; y = x; }  // then diagonal...
-				else { x = (dir[i-6] == 1) ? x+1 : x-1; y = -x; }  // then the other diagonal
+				if (i < 2) { x += dir[i]; }  // first incriments the horizontal...
+				else if (i < 4) { y += dir[i-2]; }  // then the vertical...
+				else if (i < 6) { x += dir[i-4]; y = x; }  // then diagonal...
+				else { x += dir[i-6]; y = -x; }  // then the other diagonal
 			}
 			if (board[r - x][c - y] != player) {  // if consective enemy pieces aren't surrounded by a friendly piece
 				direction[i] = 0;  // reset this direction to 0

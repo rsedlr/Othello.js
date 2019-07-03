@@ -1,15 +1,25 @@
-initialBoard = [[' ',' ',' ',' ',' ',' ',' ',' '], [' ',' ',' ',' ',' ',' ',' ',' '], [' ',' ',' ',' ',' ',' ',' ',' '], [' ',' ',' ',' ',' ',' ',' ',' '], [' ',' ',' ',' ',' ',' ',' ',' '], [' ',' ',' ',' ',' ',' ',' ',' '], [' ',' ',' ',' ',' ',' ',' ',' '], [' ',' ',' ',' ',' ',' ',' ',' ']]
+initialBoard = [[' ',' ',' ',' ',' ',' ',' ',' '], 
+                [' ',' ',' ',' ',' ',' ',' ',' '], 
+                [' ',' ',' ',' ',' ',' ',' ',' '], 
+                [' ',' ',' ',' ',' ',' ',' ',' '], 
+                [' ',' ',' ',' ',' ',' ',' ',' '], 
+                [' ',' ',' ',' ',' ',' ',' ',' '], 
+                [' ',' ',' ',' ',' ',' ',' ',' '], 
+                [' ',' ',' ',' ',' ',' ',' ',' ']]
 board = initialBoard
-boardElem = CREATE HTML BOARD ELEM
+boardElem = HTML DIV ELEMENT
+infoDiv = HTML DIV ELEMENT
+scoreDiv = HTML DIV ELEMENT
 gameMode = '1player'
 player = 'black'
 
 init()
 
+
 SUBPROCESS init():
   player = 'black'
   render()
-END-SUBPROCESS
+
 
 SUBPROCESS render():
   board = initialBoard
@@ -28,27 +38,48 @@ SUBPROCESS render():
         boardSquare ADD CLASS NAME 'clickable'
         IF gameMode == '2player' OR (gameMode == '1player' AND player == 'black'):
           boardSquare ADD onClick event to placePeice(row,col)
-        ELSE:
-          AI MAKE MOVE
       ELSE:
         pass()
-  total = findTotal()
+  updateInfo(gameOver)
+
+
+SUBPROCESS updateInfo(gameOver):
   IF NOT gameOver:
     IF gameMode == '1player':
       IF player == 'black':
-        infoDiv = 'Black\'s move'
+        infoDiv.text = 'Black\'s move'
       ELSE:
-        infoDiv = 'AI\'s move'
+        infoDiv.text = 'AI\'s move'
     ELSE IF gameMode == '2player':
       IF player == 'black':
-        infoDiv = 'Black\'s move'
+        infoDiv.text = 'Black\'s move'
       ELSE:
-        infoDiv = 'White\'s move'
+        infoDiv.text = 'White\'s move'
     ELSE:
       IF player == 'black':
-        infoDiv = 'Black AI\'s move'
+        infoDiv.text = 'Black AI\'s move'
       ELSE:
-        infoDiv = 'White AI\'s move'
+        infoDiv.text = 'White AI\'s move'
+    IF gameMode == 'AIvsAI':
+      AI MAKE MOVE AFTER 1 SECOND DELAY
+  findTotal()
+
+
+SUBPROCESS findTotal():
+  FOR row TO board.length:
+    FOR col TO board[row].length:
+      IF board[row][col] == 'white:
+        whiteTotal += 1
+      ELSE IF board[row][col] == 'black':
+        blackTotal += 1
+  scoreDiv.text = 'black: ' + blackTotal + ' | white: ' + whiteTotal
+  IF whiteTotal + blackTotal == 64:
+    IF whiteTotal > blackTotal:
+      infoDiv.text = 'WHITE WINS!'
+    ELSE IF whiteTotal < blackTotal:
+      infoDiv.text = 'BLACK WINS!'
+    ELSE:
+      infoDiv.text = 'DRAW!'
 
 
 SUBPROCESS placePeice(row, col):
@@ -57,19 +88,72 @@ SUBPROCESS placePeice(row, col):
   player = changePlayer()
   render()
 
+
+SUBPROCESS check(row, col):
+	var direction = [0,0,0,0,0,0,0,0]
+	FOR i = 0 TO 7:
+		IF i < 2:
+      x = dir[i]
+      y = 0
+		ELSE IF i < 4:
+      x = 0
+      y = dir[i-2]
+		ELSE IF i < 6:
+      x = dir[i-4]
+      y = x
+		ELSE :
+      x = dir[i-6]
+      y = -x
+		TRY:
+      IF player == 'white':
+        otherPlayer = 'black'
+      ELSE:
+        otherPlayer = 'white'
+			WHILE board[row][col] == otherPlayer:
+				direction[i] += 1; 
+				IF i < 2:
+          x += dir[i]
+				ELSE IF i < 4:
+          y += dir[i-2]
+				ELSE IF i < 6:
+          x += dir[i-4]
+          y = x
+				ELSE: 
+          x += dir[i-6]
+          y = -x
+			IF board[r - x][c - y] != player:
+				direction[i] = 0
+		CATCH:
+			direction[i] = 0
+	RETURN direction
+
+
 SUBPROCESS capture(row, col):
-  FOR i = 0 TO board.length - 1:
+  FOR i = 0 TO 7:
     FOR z = 0 TO board[i].length - 1:
-      
+      IF i < 2:
+        x = dir[i] * z
+        y = 0
+			ELSE IF i < 4: 
+        x = 0
+        y = dir[i-2] * z
+			ELSE IF i < 6:
+        x = dir[i-4] * z 
+        y = x
+			ELSE:
+        x = dir[i-6] * z
+        y = -x
       board[row - x][col - y] = player
       
         
 SUBPROCESS pass():
-  IF gameMode != 2:
-
+  IF gameMode != 2 AND passCount < 2:
+    passCount += 1
+    changePlayer()
     render()
-  ELSE:
+  ELSE IF passCount >= 2:
     findTotal()
+
 
 SUBPROCESS undo():
 	IF (undoable == true AND gameMode != 0) {
@@ -82,6 +166,15 @@ SUBPROCESS undo():
 		undoable = false;
 		renderBoard();
 
+SUBPROCESS setMode(mode):
+  IF mode == '1player':
+    gameMode = 1
+  ELSE IF mode = '2player':
+    gameMode = 2
+  ELSE IF mode = 'AIvsAI':
+    gameMode = 0
+  ELSE:
+    OUTPUT('error - invalid game mode')
 
 
 SUBPROCESS changePlayer():
@@ -90,5 +183,6 @@ SUBPROCESS changePlayer():
   ELSE:
     player = 'black'
   return player
+
 
 
