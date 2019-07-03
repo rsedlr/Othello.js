@@ -6,8 +6,8 @@ var initialBoard = [[' ',' ',' ',' ',' ',' ',' ',' '], // ' ' = empty square, 'b
 										[' ',' ',' ',' ',' ',' ',' ',' '],
 										[' ',' ',' ',' ',' ',' ',' ',' '],
 										[' ',' ',' ',' ',' ',' ',' ',' ']];
-										
-var cleanBoard =   [[' ',' ',' ',' ',' ',' ',' ',' '],
+
+var cleanBoard =   [[' ',' ',' ',' ',' ',' ',' ',' '],  // NOT A NICE WAY TO DO IT ------------------------------
 										[' ',' ',' ',' ',' ',' ',' ',' '],
 										[' ',' ',' ',' ',' ',' ',' ',' '],
 										[' ',' ',' ',' ',' ',' ',' ',' '],
@@ -35,7 +35,7 @@ function newGame(init=false) {  // initialise the game
 	undoable = false;
 	player = 'b';
 	board = initialBoard.map(r => r.slice(0)); // copy a deep clone of initialBoard to board
-	boardBackup = cleanBoard.map(r => r.slice(0));
+	boardBackup = cleanBoard.map(r => r.slice(0));  // NOT IDEAL ------------------------------
 	firstRender();
 	renderBoard(init);
 } 
