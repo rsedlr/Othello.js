@@ -12,6 +12,9 @@ infoDiv = HTML DIV ELEMENT
 scoreDiv = HTML DIV ELEMENT
 gameMode = '1player'
 player = 'black'
+dir = [1, -1]
+passCount = 0
+undoable = False
 
 init()
 
@@ -163,7 +166,7 @@ SUBPROCESS undo():
 		} else IF (gameMode == 1) {
 			board = boardBackup2;
 		}
-		undoable = false;
+		undoable = False;
 		renderBoard();
 
 SUBPROCESS setMode(mode):
