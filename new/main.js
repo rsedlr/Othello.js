@@ -1,39 +1,36 @@
-var initialBoard = [ // ' ' = empty square, 'b' = black piece, 'w' = white piece;
-	[' ',' ',' ',' ',' ',' ',' ',' '],
-	[' ',' ',' ',' ',' ',' ',' ',' '],
-	[' ',' ',' ',' ',' ',' ',' ',' '],
-	[' ',' ',' ','b','w',' ',' ',' '],
-	[' ',' ',' ','w','b',' ',' ',' '],
-	[' ',' ',' ',' ',' ',' ',' ',' '],
-	[' ',' ',' ',' ',' ',' ',' ',' '],
-	[' ',' ',' ',' ',' ',' ',' ',' ']];
+var initialBoard = [[' ',' ',' ',' ',' ',' ',' ',' '], // ' ' = empty square, 'b' = black piece, 'w' = white piece;
+										[' ',' ',' ',' ',' ',' ',' ',' '],
+										[' ',' ',' ',' ',' ',' ',' ',' '],
+										[' ',' ',' ','b','w',' ',' ',' '],
+										[' ',' ',' ','w','b',' ',' ',' '],
+										[' ',' ',' ',' ',' ',' ',' ',' '],
+										[' ',' ',' ',' ',' ',' ',' ',' '],
+										[' ',' ',' ',' ',' ',' ',' ',' ']];
 var board = [];  // stores the current board layout
-var boardBackup = [];  // stores a clone of the board but move behind
-var boardBackup2 = [];
+var boardBackup =  [];  // stores a clone of the board one move behind
+var boardBackup2 = [];  // stores a clone of the board two moves behind
 var modeBtn = ['ai_btn', '1p_btn', '2p_btn']  // stores the id's of the game mode buttons
 var dir = [1,-1];  // an array of two directions
 var checkPlay = {'w':1,'b':-1,' ':0}  // converts player colour into a number. This alows enemy pieces to be found by multiplying current by -1
 var scoreDiv = document.getElementById("scoreDiv");  // stores a reference to the score html element
 var gameMode = 1;  // 0 - AIvsAI, 1 - 1player, 2 - 2player 
 var passCount = 0;  // how many consecutive passes have occured
+var undoable = false;
 var player;  // current player
 var move;  // stores a reference to the timeout function which allows it to be cleared on new game
-var undoable;
 
-initialise();  // perform the inital initialisation
+newGame(true);
 
-
-function initialise() {  // initialise the game
+function newGame(init=false) {  // initialise the game
 	clearTimeout(move)  // stops any waiting AI moves from completing
 	undoable = false;
-	player = 'b';  // sets the current player to black as black always goes first
+	player = 'b';
 	board = initialBoard.map(r => r.slice(0)); // copy a deep clone of initialBoard to board
-	renderBoard();  // calls the renderBoard funcion
+	if (init) firstRender();
+	renderBoard(init);
 } 
 
-function renderBoard() {  // renders the board
-	var gameOver = true, idealMove = [0, []];  // the score of the current ideal (highest capture) moves, followed by all the possible choices (row, col, direction)
-	while (boardDiv.firstChild) boardDiv.removeChild(boardDiv.firstChild); // wipes board
+function firstRender() {
 	board.forEach((row,r) => {  // loops over board rows
 		var boardRow = document.createElement("div");  // instantiates a HTML div element
 		boardDiv.appendChild(boardRow);  // makes the div a child of boardDiv
@@ -42,14 +39,29 @@ function renderBoard() {  // renders the board
 			var boardSquare = document.createElement("div");  // instantiates a HTML div element
 			boardRow.appendChild(boardSquare);  // makes the div a child of the boardRow div
 			boardSquare.className = "boardSquare";  // appends the classname 'boardSquare' to the div
-			if (['w','b'].includes(board[r][c])) {  // checks if the current square contains a board
-				var boardPiece = document.createElement("div");  // instantiates a HTML div element
-				boardSquare.appendChild(boardPiece);  // makes the board a child of the square div
-				boardPiece.className = "boardPiece " + board[r][c].toLowerCase();  // appends the classname 'boardPiece ' along with the letter of the board's colour
+			boardSquare.id = `sq-${r}${c}`; 
+		});
+	});
+}
+
+function renderBoard(init=false) {  // renders the board
+	var gameOver = true, idealMove = [0, []];  // the score of the current ideal (highest capture) moves, followed by all the possible choices (row, col, direction)
+	board.forEach((row,r) => {  // loops over board rows
+		row.forEach((square,c) => {  // loops over the squares in the row
+			var boardSquare = document.getElementById(`sq-${r}${c}`);  
+			if (init || board[r][c] != boardBackup[r][c]) {  // if the piece is not in the square already
+				while (boardSquare.firstChild) boardSquare.removeChild(boardSquare.firstChild);
+				if (['w','b'].includes(board[r][c])) {  // checks if the current square contains a piece
+					var boardPiece = document.createElement("div");  // instantiates a HTML div element
+					boardSquare.appendChild(boardPiece);  // makes the board a child of the square div
+					boardPiece.className = "boardPiece " + board[r][c].toLowerCase();  // appends the classname 'boardPiece ' along with the letter of the board's colour
+				}
 			}
+			boardSquare.className = boardSquare.className.replace(' clickable','');  // removes the square's darker colour
+			boardSquare.onclick = null;  // removes the square's previous onClick funcion
 			var direction = checkMove(board, r, c, player);  // checks the available moves for the board
 			if (board[r][c] == ' ' && JSON.stringify(direction) != JSON.stringify([0,0,0,0,0,0,0,0])) {  // if the square is empty and a move can be made on it
-				boardSquare.className += " clickable";  // append ' clickable' to the className of the square so that it appears a different colour
+				boardSquare.className += ' clickable';  // append ' clickable' to the className of the square so that it appears a different colour
 				gameOver = false;  // the game isnt over as moves can be made
 				if (gameMode != 2) {  // if one of the ai options is enabled
 					var score = direction.reduce(function(a, b) { return a + b }, 0);  // gets the sum of all captures in each direction
@@ -61,7 +73,7 @@ function renderBoard() {  // renders the board
 					}
 				}
 				if (gameMode == 2 || (gameMode == 1 && player == 'b')) boardSquare.onclick = function(){ placePiece(r, c, direction); };  // if its a humans move, allow the player to click the squares
-			}
+			} 
 		});
 	});
 	var find = findTotal(board);
@@ -85,7 +97,7 @@ function renderBoard() {  // renders the board
 function placePiece(r,c, direction) { // r = row, c = column
 	boardBackup2 = boardBackup.map(r => r.slice(0));  // make a clone of the board in case of undo
 	boardBackup = board.map(r => r.slice(0));  // make a clone of the board in case of undo
-	board[r][c] = player.toLowerCase();  // assigns square with piece
+	board[r][c] = player;  // assigns square with piece
 	capture(board, r, c, direction);  // performs the capture
 	player = (player == 'w') ? 'b' : 'w';  // changes player
 	undoable = true;  // allows undo
@@ -135,7 +147,6 @@ function pass() {
 		player = (player == 'w') ? 'b' : 'w';  // switch current player
 		renderBoard();  // render changes
 	} else if (passCount >= 2) {  // no moves can be made as 2 passes occured (neither player can make a move)
-		console.log('more than 2 passes bro');  // cant pass more than twice as that means neither player can make a move
 		findTotal(board, true);  // find the total as the game is over
 	}
 }
@@ -143,10 +154,10 @@ function pass() {
 function undo() {
 	if (undoable == true && gameMode != 0) {  // if undo is allowed and its not in AIvsAI mode
 		if (gameMode == 2) {  // if it is a human game
-			board = boardBackup;	// set the board back to how it was one move ago
+			board = boardBackup.map(r => r.slice(0));	// set the board back to how it was one move ago
 			player = (player == 'w') ? 'b' : 'w';  // switch current player
 		} else if (gameMode == 1) {  // if its 1player
-			board = boardBackup2;  // set the board back to how it was two moves ago as the AI also made a move
+			board = boardBackup2.map(r => r.slice(0));  // set the board back to how it was two moves ago as the AI also made a move
 		}
 		undoable = false;  // cannot do another undo after this
 		renderBoard();  // render changes
@@ -162,7 +173,7 @@ function setMode(mode) {
 		}
 	});
 	gameMode = mode;  // set game mode
-	initialise();  // reset board
+	newGame();  // reset board
 }
 
 function findTotal(board, end=false) {
@@ -190,3 +201,6 @@ function findTotal(board, end=false) {
 	}
 	return false  // false as game is not over yet
 }
+
+
+// IF UNDOABLE, MAKE UNOD BUTTON DIFF COLOUR

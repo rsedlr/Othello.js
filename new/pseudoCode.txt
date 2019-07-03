@@ -1,18 +1,19 @@
 initialBoard = [[' ',' ',' ',' ',' ',' ',' ',' '], 
                 [' ',' ',' ',' ',' ',' ',' ',' '], 
                 [' ',' ',' ',' ',' ',' ',' ',' '], 
-                [' ',' ',' ',' ',' ',' ',' ',' '], 
-                [' ',' ',' ',' ',' ',' ',' ',' '], 
+                [' ',' ',' ','b','w',' ',' ',' '], 
+                [' ',' ',' ','w','b',' ',' ',' '], 
                 [' ',' ',' ',' ',' ',' ',' ',' '], 
                 [' ',' ',' ',' ',' ',' ',' ',' '], 
                 [' ',' ',' ',' ',' ',' ',' ',' ']]
 board = initialBoard
+checkPlay = {'w': 1, 'b': -1, ' ': 0}
+dir = [1, -1]
 boardElem = HTML DIV ELEMENT
 infoDiv = HTML DIV ELEMENT
 scoreDiv = HTML DIV ELEMENT
-gameMode = '1player'
-player = 'black'
-dir = [1, -1]
+gameMode = '1'  // 1 - 1player, 2 - 2player, 0 - AIvsAI
+player = 'b'  // b - black, w - white
 passCount = 0
 undoable = False
 
@@ -20,20 +21,22 @@ init()
 
 
 SUBPROCESS init():
-  player = 'black'
+  undoable = False
+  player = 'b'
+  board = initialBoard
   render()
 
 
 SUBPROCESS render():
-  board = initialBoard
   gameOver = True
+  idealMove = []
   FOR row IN board:
     boardRow = CREATE BOARD ROW
     ADD boardRow TO HTML boardElem
     FOR col IN row:
       boardSquare = CREATE HTML BOARD SQUARE
       ADD boardSquare TO HTML boardRow
-      IF board[row][col] == 'white' OR board[row][col] == 'black':
+      IF board[row][col] == 'w' OR board[row][col] == 'b':
         boardPeice = CREATE HTML BOARD PEICE
       playable = check(row, col, player)
       IF playable:
