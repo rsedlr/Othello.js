@@ -92,6 +92,18 @@ function placePiece(r,c, direction) { // r = row, c = column
 	renderBoard();
 }
 
+function capture(board, r, c, direction) {
+	for (var i = 0; i <= direction.length; i++) {
+		for (var z = 1; z <= direction[i]; z++) {
+			if (i < 2) { var x = dir[i]*z, y = 0; }
+			else if (i < 4) { var x = 0, y = dir[i-2]*z; }
+			else if (i < 6) { var x = dir[i-4]*z, y = x; }
+			else { var x = dir[i-6]*z, y = -x; }
+			board[r - x][c - y] = player.toLowerCase();
+		}
+	}
+}
+
 function checkAvailable(board, r, c, player) {  // board, row, column, player
 	var direction = [0,0,0,0,0,0,0,0]; // top bottom left right topLeft bottomRight BottomLeft TopRight
 	for (var i = 0; i < 8; i++) {
@@ -115,18 +127,6 @@ function checkAvailable(board, r, c, player) {  // board, row, column, player
 		}
 	}
 	return direction
-}
-
-function capture(board, r, c, direction) {
-	for (var i = 0; i <= direction.length; i++) {
-		for (var z = 1; z <= direction[i]; z++) {
-			if (i < 2) { var x = dir[i]*z, y = 0; }
-			else if (i < 4) { var x = 0, y = dir[i-2]*z; }
-			else if (i < 6) { var x = dir[i-4]*z, y = x; }
-			else { var x = dir[i-6]*z, y = -x; }
-			board[r - x][c - y] = player.toLowerCase();
-		}
-	}
 }
 
 function pass() {

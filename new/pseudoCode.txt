@@ -1,0 +1,94 @@
+initialBoard = [[' ',' ',' ',' ',' ',' ',' ',' '], [' ',' ',' ',' ',' ',' ',' ',' '], [' ',' ',' ',' ',' ',' ',' ',' '], [' ',' ',' ',' ',' ',' ',' ',' '], [' ',' ',' ',' ',' ',' ',' ',' '], [' ',' ',' ',' ',' ',' ',' ',' '], [' ',' ',' ',' ',' ',' ',' ',' '], [' ',' ',' ',' ',' ',' ',' ',' ']]
+board = initialBoard
+boardElem = CREATE HTML BOARD ELEM
+gameMode = '1player'
+player = 'black'
+
+init()
+
+SUBPROCESS init():
+  player = 'black'
+  render()
+END-SUBPROCESS
+
+SUBPROCESS render():
+  board = initialBoard
+  gameOver = True
+  FOR row IN board:
+    boardRow = CREATE BOARD ROW
+    ADD boardRow TO HTML boardElem
+    FOR col IN row:
+      boardSquare = CREATE HTML BOARD SQUARE
+      ADD boardSquare TO HTML boardRow
+      IF board[row][col] == 'white' OR board[row][col] == 'black':
+        boardPeice = CREATE HTML BOARD PEICE
+      playable = check(row, col, player)
+      IF playable:
+        gameOver = True
+        boardSquare ADD CLASS NAME 'clickable'
+        IF gameMode == '2player' OR (gameMode == '1player' AND player == 'black'):
+          boardSquare ADD onClick event to placePeice(row,col)
+        ELSE:
+          AI MAKE MOVE
+      ELSE:
+        pass()
+  total = findTotal()
+  IF NOT gameOver:
+    IF gameMode == '1player':
+      IF player == 'black':
+        infoDiv = 'Black\'s move'
+      ELSE:
+        infoDiv = 'AI\'s move'
+    ELSE IF gameMode == '2player':
+      IF player == 'black':
+        infoDiv = 'Black\'s move'
+      ELSE:
+        infoDiv = 'White\'s move'
+    ELSE:
+      IF player == 'black':
+        infoDiv = 'Black AI\'s move'
+      ELSE:
+        infoDiv = 'White AI\'s move'
+
+
+SUBPROCESS placePeice(row, col):
+  board[r][c] = player
+  capture(row, col)
+  player = changePlayer()
+  render()
+
+SUBPROCESS capture(row, col):
+  FOR i = 0 TO board.length - 1:
+    FOR z = 0 TO board[i].length - 1:
+      
+      board[row - x][col - y] = player
+      
+        
+SUBPROCESS pass():
+  IF gameMode != 2:
+
+    render()
+  ELSE:
+    findTotal()
+
+SUBPROCESS undo():
+	IF (undoable == true AND gameMode != 0) {
+		IF (gameMode == 2) {
+			board = boardBackup
+			player = (player == 'w') ? 'b' : 'w'; 
+		} else IF (gameMode == 1) {
+			board = boardBackup2;
+		}
+		undoable = false;
+		renderBoard();
+
+
+
+SUBPROCESS changePlayer():
+  IF player == 'black':
+    player = 'white'
+  ELSE:
+    player = 'black'
+  return player
+
+
