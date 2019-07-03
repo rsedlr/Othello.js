@@ -7,11 +7,18 @@ var initialBoard = [[' ',' ',' ',' ',' ',' ',' ',' '], // ' ' = empty square, 'b
 										[' ',' ',' ',' ',' ',' ',' ',' '],
 										[' ',' ',' ',' ',' ',' ',' ',' ']];
 var board = [];  // stores the current board layout
-var boardBackup =  [];  // stores a clone of the board one move behind
+var boardBackup =  [[' ',' ',' ',' ',' ',' ',' ',' '],
+										[' ',' ',' ',' ',' ',' ',' ',' '],
+										[' ',' ',' ',' ',' ',' ',' ',' '],
+										[' ',' ',' ',' ',' ',' ',' ',' '],
+										[' ',' ',' ',' ',' ',' ',' ',' '],
+										[' ',' ',' ',' ',' ',' ',' ',' '],
+										[' ',' ',' ',' ',' ',' ',' ',' '],
+										[' ',' ',' ',' ',' ',' ',' ',' ']];  // stores a clone of the board one move behind
 var boardBackup2 = [];  // stores a clone of the board two moves behind
 var modeBtn = ['ai_btn', '1p_btn', '2p_btn']  // stores the id's of the game mode buttons
 var dir = [1,-1];  // an array of two directions
-var checkPlay = {'w':1,'b':-1,' ':0}  // converts player colour into a number. This alows enemy pieces to be found by multiplying current by -1
+var checkPlay = {'w': 1, 'b': -1, ' ': 0}  // converts player colour into a number. This alows enemy pieces to be found by multiplying current by -1
 var scoreDiv = document.getElementById("scoreDiv");  // stores a reference to the score html element
 var gameMode = 1;  // 0 - AIvsAI, 1 - 1player, 2 - 2player 
 var passCount = 0;  // how many consecutive passes have occured
@@ -49,7 +56,7 @@ function renderBoard(init=false) {  // renders the board
 	board.forEach((row,r) => {  // loops over board rows
 		row.forEach((square,c) => {  // loops over the squares in the row
 			var boardSquare = document.getElementById(`sq-${r}${c}`);  
-			if (init || board[r][c] != boardBackup[r][c]) {  // if the piece is not in the square already
+			if (board[r][c] != boardBackup[r][c]) {  // if the piece is not in the square already
 				while (boardSquare.firstChild) boardSquare.removeChild(boardSquare.firstChild);
 				if (['w','b'].includes(board[r][c])) {  // checks if the current square contains a piece
 					var boardPiece = document.createElement("div");  // instantiates a HTML div element
@@ -177,6 +184,7 @@ function setMode(mode) {
 }
 
 function findTotal(board, end=false) {
+	document.getElementById('undo').className = ((undoable) ? 'enabled' : '');
 	board = board.map(r => r.slice()); // deep clone of array
 	var blackTotal = 0, whiteTotal = 0;  // reset totals
 	for (i=0; i < board.length; i++) {  // loop over board rows
