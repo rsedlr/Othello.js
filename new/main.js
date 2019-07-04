@@ -1,4 +1,4 @@
-var initialBoard = [[' ',' ',' ',' ',' ',' ',' ',' '], // ' ' = empty square, 'b' = black piece, 'w' = white piece;
+var initialBoard = [[' ',' ',' ',' ',' ',' ',' ',' '],  // ' ' = empty square, 'b' = black piece, 'w' = white piece;
 										[' ',' ',' ',' ',' ',' ',' ',' '],
 										[' ',' ',' ',' ',' ',' ',' ',' '],
 										[' ',' ',' ','b','w',' ',' ',' '],
@@ -6,17 +6,9 @@ var initialBoard = [[' ',' ',' ',' ',' ',' ',' ',' '], // ' ' = empty square, 'b
 										[' ',' ',' ',' ',' ',' ',' ',' '],
 										[' ',' ',' ',' ',' ',' ',' ',' '],
 										[' ',' ',' ',' ',' ',' ',' ',' ']];
-
-var cleanBoard =   [[' ',' ',' ',' ',' ',' ',' ',' '],  // NOT A NICE WAY TO DO IT ------------------------------
-										[' ',' ',' ',' ',' ',' ',' ',' '],
-										[' ',' ',' ',' ',' ',' ',' ',' '],
-										[' ',' ',' ',' ',' ',' ',' ',' '],
-										[' ',' ',' ',' ',' ',' ',' ',' '],
-										[' ',' ',' ',' ',' ',' ',' ',' '],
-										[' ',' ',' ',' ',' ',' ',' ',' '],
-										[' ',' ',' ',' ',' ',' ',' ',' ']];  // stores a clone of the board one move behind
+var cleanBoard = Array(8).fill(Array(8).fill(' '));  // creates an 8 by 8 2d array of ' ' which is equivalent to a blank board
 var board = [];  // stores the current board layout
-var boardBackup = cleanBoard.map(r => r.slice(0));
+var boardBackup = [];  // stores a clone of the board one move behind
 var boardBackup2 = [];  // stores a clone of the board two moves behind
 var modeBtn = ['ai_btn', '1p_btn', '2p_btn']  // stores the id's of the game mode buttons
 var dir = [1,-1];  // an array of two directions
@@ -215,4 +207,4 @@ function findTotal(board, end=false) {
 }
 
 
-// IF UNDOABLE, MAKE UNOD BUTTON DIFF COLOUR
+// IF SKIP OCCURS, UPDATE INFO DIV TO INFORM USER SO THEY AINT BAFFED
