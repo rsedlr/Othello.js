@@ -15,7 +15,7 @@ button {
 	margin: auto 10px;
 	transition: 0.3s;
 }
-button:hover, button.enabled {
+button:hover:not(#undo), button.enabled {
 	color: black; 
 	background-color: white; 
 }
