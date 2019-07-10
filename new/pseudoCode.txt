@@ -74,7 +74,7 @@ SUBPROCESS updateInfo(gameOver):
 SUBPROCESS findTotal():
   FOR row TO board.length:
     FOR col TO board[row].length:
-      IF board[row][col] == 'white:
+      IF board[row][col] == 'white':
         whiteTotal += 1
       ELSE IF board[row][col] == 'black':
         blackTotal += 1
