@@ -155,20 +155,19 @@ SUBPROCESS capture(row, col):
 SUBPROCESS pass():
   IF gameMode != 2 AND passCount < 2:
     passCount += 1
-    changePlayer()
+    player = changePlayer()
     render()
   ELSE IF passCount >= 2:
     findTotal()
 
 
 SUBPROCESS undo():
-	IF (undoable == true AND gameMode != 0) {
-		IF (gameMode == 2) {
+	IF (undoable == true AND gameMode != 0):
+		IF (gameMode == 2):
 			board = boardBackup
-			player = (player == 'w') ? 'b' : 'w'; 
-		} else IF (gameMode == 1) {
+      player = changePlayer()
+    ELSE IF (gameMode == 1):
 			board = boardBackup2;
-		}
 		undoable = False;
 		renderBoard();
 
@@ -189,6 +188,4 @@ SUBPROCESS changePlayer():
   ELSE:
     player = 'black'
   return player
-
-
 
