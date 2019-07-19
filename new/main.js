@@ -22,6 +22,7 @@ var move;  // stores a reference to the timeout function which allows it to be c
 
 newGame();
 
+
 function newGame(init=false) {  // initialise the game
 	clearTimeout(move)  // stops any waiting AI moves from completing
 	undoable = false;

@@ -64,6 +64,7 @@ h1 {
 	/* border-style: solid; */
 	margin: 10px;
 	border-radius: 50%;
+	animation: slide-up 0.4s ease;
 }
 
 .boardPiece.w {
@@ -118,6 +119,17 @@ select:hover, select:focus {
 }
 select::-ms-expand { 
 	display: none;
+}
+
+@keyframes slide-up {
+	0% {
+			opacity: 0;
+			transform: translateY(10px);
+	}
+	100% {
+			opacity: 1;
+			transform: translateY(0);
+	}
 }
 
 /* @media screen and (min-width:0\0) {
