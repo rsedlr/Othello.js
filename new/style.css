@@ -1,3 +1,10 @@
+::selection {
+  background: #0f0; /* highlight colour */
+}
+::-moz-selection {
+  background: #0f0; /* highlight colour */
+}
+
 html {
 	background-color: rgb(69, 69, 69);
 	font-family: Arial, Helvetica, sans-serif;  /* Verdana, sans-serif; */
