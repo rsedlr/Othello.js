@@ -1,12 +1,6 @@
-::selection {
-  background: #0f0; /* highlight colour */
-}
-::-moz-selection {
-  background: #0f0; /* highlight colour */
-}
 
 html {
-	background-color: rgb(69, 69, 69);
+	background-color: rgb(119, 119, 119);
 	font-family: Arial, Helvetica, sans-serif;  /* Verdana, sans-serif; */
 	text-align: center;
 }
@@ -55,11 +49,11 @@ h1 {
 	height: 60px;
 	vertical-align: top;
 	background-color: rgb(4, 114, 0);
-	box-shadow: inset 0 0 0 1px rgb(0, 0, 0);
+	box-shadow: inset 0 0 0 2px rgb(0, 0, 0);
 }
 
 .boardSquare.clickable {
-	background-color: rgb(0, 80, 0);
+	background-color: rgb(0, 70, 0);
 }
 
 .boardPiece {
@@ -71,7 +65,6 @@ h1 {
 	/* border-style: solid; */
 	margin: 10px;
 	border-radius: 50%;
-	animation: slide-up 0.4s ease;
 }
 
 .boardPiece.w {
@@ -127,21 +120,3 @@ select:hover, select:focus {
 select::-ms-expand { 
 	display: none;
 }
-
-@keyframes slide-up {
-	0% {
-			opacity: 0;
-			transform: translateY(10px);
-	}
-	100% {
-			opacity: 1;
-			transform: translateY(0);
-	}
-}
-
-/* @media screen and (min-width:0\0) {
-    select {
-        background:none\9;
-        padding: 5px\9;
-    } 
-} */

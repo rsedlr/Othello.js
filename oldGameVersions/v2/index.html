@@ -2,7 +2,7 @@
 <html>
   <head>
     <title>Othello.js</title>
-    <link rel="stylesheet" href="style.css?v=1.4">
+    <link rel="stylesheet" href="style.css?v=2.1">
   </head>
   <body>
     <h1>Othello in JavaScript</h1>
@@ -11,23 +11,10 @@
     <div id="scoreDiv"></div>
     <button type="button" onclick="setMode(1);" id="1p_btn" class="enabled">1 Player</button>
     <button type="button" onclick="setMode(2);" id="2p_btn">2 Player</button>
-    <button type="button" onclick="setMode(0);" id="ai_btn">AI vs AI</button>
     <br><br>
     <button type="button" onclick="pass();">Pass</button>
     <button type="button" onclick="undo();" id="undo">Undo</button>
     <button type="button" onclick="newGame();">New Game</button>
-    <br><br>
-    <div class="prefix">AI vs AI Delay:</div>
-    <select id="delay">
-      <option value="10">0.01s</option>
-      <option value="50">0.05s</option>
-      <option value="250">0.25s</option>
-      <option value="500" selected="selected">0.50s</option>
-      <option value="750">0.75s</option>
-      <option value="1000">1.00s</option>
-    </select>
-    <script src="main.js?v=1.5"></script>
+    <script src="main.js?v=2.5"></script>
   </body>
 </html>
-
-<!-- maybe change order of score and info div -->
