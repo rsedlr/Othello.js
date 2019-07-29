@@ -219,3 +219,4 @@ function findTotal(board, end=false) {
 
 // IF SKIP OCCURS, UPDATE INFO DIV TO INFORM USER SO THEY AINT BAFFED
 // undo  broken :/
+// hihglight pass when the current player cannot make a move, rather than doing it automatically
