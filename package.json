@@ -1,0 +1,47 @@
+{
+  "name": "Othello.js",
+  "productName": "Othello.js",
+  "version": "1.0.0",
+  "description": "Othello in JavaScript",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "electron-forge start",
+    "package": "electron-forge package",
+    "make": "electron-forge make",
+    "publish": "electron-forge publish",
+    "lint": "echo \"No linting configured\""
+  },
+  "keywords": [],
+  "author": "rsedlr",
+  "license": "",
+  "config": {
+    "certificateFile": "./cert.pfx",
+    "certificatePassword": "this-is-a-secret",
+    "forge": {
+      "packagerConfig": {},
+      "makers": [
+        {
+          "name": "@electron-forge/maker-zip"
+        }
+      ]
+    }
+  },
+  "dependencies": {
+    "bootstrap": "^4.3.1",
+    "bootstrap-material-design": "^4.1.2",
+    "custom-electron-titlebar": "^3.0.9",
+    "electron-squirrel-startup": "^1.0.0",
+    "electron-titlebar-windows": "^3.0.0",
+    "jquery": "^3.4.1"
+  },
+  "devDependencies": {
+    "@electron-forge/cli": "^6.0.0-beta.39",
+    "@electron-forge/maker-deb": "^6.0.0-beta.39",
+    "@electron-forge/maker-rpm": "^6.0.0-beta.39",
+    "@electron-forge/maker-squirrel": "^6.0.0-beta.39",
+    "@electron-forge/maker-zip": "^6.0.0-beta.39",
+    "electron": "^5.0.7",
+    "electron-prebuilt-compile": "4.0.0",
+    "electron-winstaller": "^3.0.4"
+  }
+}
