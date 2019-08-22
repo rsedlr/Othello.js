@@ -1,1 +1,1 @@
-# Othello in pure JavaScript
+# Othello in JavaScript
