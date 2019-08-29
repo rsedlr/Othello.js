@@ -71,6 +71,10 @@ h1 {
 	/* border-style: solid; */
 	margin: 10px;
 	border-radius: 50%;
+	animation: none;
+}
+
+.boardPiece.anims {
 	animation: slide-up 0.4s ease;
 }
 

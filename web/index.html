@@ -17,6 +17,24 @@
     <button type="button" onclick="undo();" id="undo">Undo</button>
     <button type="button" onclick="newGame();">New Game</button>
     <br><br>
+    <div class="prefix">Board rows</div>
+    <select id="rows">
+      <option value="6">6</option>
+      <option value="8" selected="selected">8</option>
+      <option value="10">10</option>
+      <option value="12">12</option>
+      <option value="14">14</option>
+    </select>
+    <div class="prefix">Board columns</div>
+    <select id="cols">
+      <option value="6">6</option>
+      <option value="8" selected="selected">8</option>
+      <option value="10">10</option>
+      <option value="12">12</option>
+      <option value="14">14</option>
+    </select>
+    <br><br>
+    <button type="button" onclick="anims();" class="enabled" id="anims_button">Animations</button>
     <div class="prefix">AI vs AI Delay:</div>
     <select id="delay">
       <option value="10">0.01s</option>

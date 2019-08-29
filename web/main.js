@@ -1,12 +1,3 @@
-var initialBoard = [[' ',' ',' ',' ',' ',' ',' ',' '],  // ' ' = empty square, 'b' = black piece, 'w' = white piece;
-										[' ',' ',' ',' ',' ',' ',' ',' '],
-										[' ',' ',' ',' ',' ',' ',' ',' '],
-										[' ',' ',' ','b','w',' ',' ',' '],
-										[' ',' ',' ','w','b',' ',' ',' '],
-										[' ',' ',' ',' ',' ',' ',' ',' '],
-										[' ',' ',' ',' ',' ',' ',' ',' '],
-										[' ',' ',' ',' ',' ',' ',' ',' ']];
-var cleanBoard = Array(8).fill(Array(8).fill(' '));  // creates an 8 by 8 2d array of ' ' which is equivalent to a blank board
 var board = [];  // stores the current board layout
 var boardBackup = [];  // stores a clone of the board one move behind
 var boardBackup2 = [];  // stores a clone of the board two moves behind
@@ -14,23 +5,34 @@ var modeBtn = ['ai_btn', '1p_btn', '2p_btn']  // stores the id's of the game mod
 var dir = [1,-1];  // an array of two directions
 var checkPlay = {'w': 1, 'b': -1, ' ': 0}  // converts player colour into a number. This alows enemy pieces to be found by multiplying current by -1
 var scoreDiv = document.getElementById("scoreDiv");  // stores a reference to the score html element
+var delay = document.getElementById("delay");  // get the AI delay dropdown
+var rowDrop = document.getElementById("rows");
+var colDrop = document.getElementById("cols");
 var gameMode = 1;  // 0 - AIvsAI, 1 - 1player, 2 - 2player 
 var passCount = 0;  // how many consecutive passes have occured
 var undoable = false;  // player cannot undo as no move has been made
+var animations = true;
 var player;  // current player
 var move;  // stores a reference to the timeout function which allows it to be cleared on new game
 
 newGame();  // start a new game
 
 // sets the board up for a new game
-function newGame(init=false) {  // initialise the game
+function newGame() {  // initialise the game
 	clearTimeout(move)  // stops any waiting AI moves from completing
+	var rows = parseInt(rowDrop.value);
+	var cols = parseInt(colDrop.value);
 	undoable = false;  // the player cannot undo a move as no move has been made yet
 	player = 'b';  // black player always goes first
-	board = initialBoard.map(r => r.slice(0)); // copy a deep clone of initialBoard to board
-	boardBackup = cleanBoard.map(r => r.slice(0));  // clean the board
+	boardDiv.style.width = `${60 * cols}px`;
+	board = Array(rows).fill(Array(cols).fill(' ')).map(r => r.slice(0));  // TODO: not pretty but works
+	boardBackup = board.map(r => r.slice(0));  // clone the board
+	board[rows/2 - 1][cols/2] = 'w';
+	board[rows/2][cols/2 - 1] = 'w';
+	board[rows/2 - 1][cols/2 - 1] = 'b';
+	board[rows/2][cols/2] = 'b';
 	firstRender();  // render the board
-	renderBoard(init);  // render the pieces on the board
+	renderBoard();  // render the pieces on the board
 } 
 
 // creats the board without any pieces
@@ -50,7 +52,7 @@ function firstRender() {
 }
 
 // adds the pieces to the board along with darker squares to indicate available moves
-function renderBoard(init=false) {  // renders the board
+function renderBoard() {  // renders the board
 	var gameOver = true, idealMove = [0, []];  // the score of the current ideal (highest capture) moves, followed by all the possible choices (row, col, direction)
 	board.forEach((row,r) => {  // loops over board rows
 		row.forEach((square,c) => {  // loops over the squares in the row
@@ -61,6 +63,7 @@ function renderBoard(init=false) {  // renders the board
 					var boardPiece = document.createElement("div");  // instantiates a HTML div element
 					boardSquare.appendChild(boardPiece);  // makes the board a child of the square div
 					boardPiece.className = "boardPiece " + board[r][c].toLowerCase();  // appends the classname 'boardPiece ' along with the letter of the board's colour
+					if (animations) boardPiece.className += ' anims';
 				}
 			}
 			boardSquare.className = boardSquare.className.replace(' clickable','');  // removes the square's darker colour
@@ -90,8 +93,7 @@ function renderBoard(init=false) {  // renders the board
 			if (player == 'w') move = setTimeout(function() { placePiece(...idealMove[1][Math.floor(Math.random() * idealMove[1].length)].slice()) }, 700);  // if the current player is the AI then pick a random ideal move from the array of moves in 700 milliseconds
 		} else if (gameMode == 0) {  // else if the game mode is AI vs AI
 			infoDiv.innerHTML = ((player == 'w') ? "white AI thinking..." : "black AI thinking...");  // update info div 
-			var e = document.getElementById("delay");  // get the AI delay dropdown
-			move = setTimeout(function() { placePiece(...idealMove[1][Math.floor(Math.random() * idealMove[1].length)].slice()) }, e.options[e.selectedIndex].value);  // if the current player is the AI then pick a random ideal move from the array of moves after the dealy defined by the html dropdown
+			move = setTimeout(function() { placePiece(...idealMove[1][Math.floor(Math.random() * idealMove[1].length)].slice()) }, delay.options[delay.selectedIndex].value);  // if the current player is the AI then pick a random ideal move from the array of moves after the dealy defined by the html dropdown
 		} else if (gameMode == 2) {  // else if the game mode is 2 player
 			infoDiv.innerHTML = ((player == 'w') ? "white" : "black")+"'s move";  // set the info div to current player
 		}
@@ -203,7 +205,7 @@ function findTotal(board, end=false) {
 		}
 	}
 	scoreDiv.innerHTML = (`black: ${blackTotal} | white: ${whiteTotal}`)  // update score div with info
-	if (whiteTotal + blackTotal == 64 || whiteTotal == 0 || blackTotal == 0 || end) {  // if the game is over
+	if (whiteTotal + blackTotal == (parseInt(rowDrop.value) * parseInt(colDrop.value)) || whiteTotal == 0 || blackTotal == 0 || end) {  // if the game is over
 		if (whiteTotal > blackTotal) {  // if white scored higher
 			infoDiv.innerHTML =  "WHITE WINS!";  // white won
 		} else if (blackTotal > whiteTotal) {  // if black scored higher
@@ -214,6 +216,17 @@ function findTotal(board, end=false) {
 		return true  // true as game is over
 	}
 	return false  // false as game is not over yet
+}
+
+function anims() {
+	var animButton = document.getElementById('anims_button');
+	if (animations) {
+		animations = false;
+		animButton.className = '';
+	} else {
+		animations = true;
+		animButton.className = 'enabled';
+	}
 }
 
 
