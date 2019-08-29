@@ -231,6 +231,12 @@ function anims() {
 	}
 }
 
+function showHowTo() {
+	document.getElementById('howToModal').style.display = 'block';
+}
+function hideHowTo() {
+	document.getElementById('howToModal').style.display = 'none';
+}
 
 // IF SKIP OCCURS, UPDATE INFO DIV TO INFORM USER SO THEY AINT BAFFED
 // undo  broken :/
