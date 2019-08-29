@@ -103,15 +103,16 @@ h1 {
 	border-radius: 0;
   font-size: 20px; 
 	font-weight: bold;
-	margin: 0 0 0 10px;
+	/* margin: 0 0 0 10px; */
 	transition: 0.3s;
 	display: inline-block;
+	height: 100%;
 }
 
 select {
-  margin-left: -10px;
+  /* margin-left: -10px; */
 	padding: 8px 6px 8px 7px;
-	height: 39px;
+	height: 100%;
   font-size: 20px; 
 	font-weight: bold;
 	border: none;
@@ -130,6 +131,11 @@ select:hover, select:focus {
 }
 select::-ms-expand { 
 	display: none;
+}
+
+.container {
+	height: 39px;
+
 }
 
 .container > select {
