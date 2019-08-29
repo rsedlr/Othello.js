@@ -46,7 +46,7 @@ function firstRender() {
 			var boardSquare = document.createElement("div");  // instantiates a HTML div element
 			boardRow.appendChild(boardSquare);  // makes the div a child of the boardRow div
 			boardSquare.className = "boardSquare";  // appends the classname 'boardSquare' to the div
-			boardSquare.id = `sq-${r}${c}`; 
+			boardSquare.id = `sq-${r}:${c}`; 
 		});
 	});
 }
@@ -56,7 +56,7 @@ function renderBoard() {  // renders the board
 	var gameOver = true, idealMove = [0, []];  // the score of the current ideal (highest capture) moves, followed by all the possible choices (row, col, direction)
 	board.forEach((row,r) => {  // loops over board rows
 		row.forEach((square,c) => {  // loops over the squares in the row
-			var boardSquare = document.getElementById(`sq-${r}${c}`);  
+			var boardSquare = document.getElementById(`sq-${r}:${c}`);  
 			if (board[r][c] != boardBackup[r][c]) {  // if the piece is not in the square already
 				while (boardSquare.firstChild) boardSquare.removeChild(boardSquare.firstChild);
 				if (['w','b'].includes(board[r][c])) {  // checks if the current square contains a piece
