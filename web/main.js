@@ -16,14 +16,12 @@ var player;  // current player
 var move;  // stores a reference to the timeout function which allows it to be cleared on new game
 var isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;  // maybe
 
-if (getCookie('anims') == 'False') {
-	anims() ;
-}
-
 try {
-	var boardSize = getCookie('board');
-	rowDrop.value = boardSize.split('-')[0];
-	colDrop.value = boardSize.split('-')[1];
+	if (getCookie('anims') == 'False') anims();
+
+	var dimensions = getCookie('board').split('-');
+	rowDrop.value = dimensions[0];
+	colDrop.value = dimensions[1];
 } catch { }
 
 newGame();  // start a new game

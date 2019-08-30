@@ -20,46 +20,56 @@
       </div>
     </div>
     <h1>Othello in JavaScript</h1>
-    <div id="boardDiv"></div>
-    <div id="scoreDiv"></div>
-    <div id="infoDiv"></div>
-    <button type="button" onclick="setMode(1);" id="1p_btn" class="enabled">1 Player</button>
-    <button type="button" onclick="setMode(2);" id="2p_btn">2 Player</button>
-    <button type="button" onclick="setMode(0);" id="ai_btn">AI vs AI</button>
-    <br><br>
-    <button type="button" onclick="pass();">Pass</button>
-    <button type="button" onclick="undo();" id="undo">Undo</button>
-    <button type="button" onclick="newGame();">New Game</button>
-    <br><br>
-    <div class="prefix">Board rows:</div>
-    <select class="boardSelect" id="rows">
-      <option value="6">6</option>
-      <option value="8" selected="selected">8</option>
-      <option value="10">10</option>
-      <option value="12">12</option>
-      <option value="14">14</option>
-    </select>
-    <div class="prefix">Board columns:</div>
-    <select class="boardSelect" id="cols">
-      <option value="6">6</option>
-      <option value="8" selected="selected">8</option>
-      <option value="10">10</option>
-      <option value="12">12</option>
-      <option value="14">14</option>
-    </select>
-    <br><br>
-    <button type="button" onclick="anims();" class="enabled" id="anims">Animations</button>
-    <div class="prefix">AI vs AI Delay:</div>
-    <select id="delay">
-      <option value="10">0.01s</option>
-      <option value="50">0.05s</option>
-      <option value="250">0.25s</option>
-      <option value="500" selected="selected">0.50s</option>
-      <option value="750">0.75s</option>
-      <option value="1000">1.00s</option>
-    </select>
-    <br><br>
-    <button type="button" onclick="showHowTo();" id="howto">How To Play</button>
+    <div class="wrapper">
+      <div class="row">
+        <div class="column" id="boardContainer">
+          <div id="boardDiv"></div>
+        </div>
+        <div class="column">
+          <div id="buttonContainer">
+            <div id="scoreDiv"></div>
+            <div id="infoDiv"></div>
+            <button type="button" onclick="setMode(1);" id="1p_btn" class="enabled">1 Player</button>
+            <button type="button" onclick="setMode(2);" id="2p_btn">2 Player</button>
+            <button type="button" onclick="setMode(0);" id="ai_btn">AI vs AI</button>
+            <br><br>
+            <button type="button" onclick="pass();">Pass</button>
+            <button type="button" onclick="undo();" id="undo">Undo</button>
+            <button type="button" onclick="newGame();">New Game</button>
+            <br><br>
+            <div class="prefix">Board rows:</div>
+            <select class="boardSelect" id="rows">
+              <option value="6">6</option>
+              <option value="8" selected="selected">8</option>
+              <option value="10">10</option>
+              <option value="12">12</option>
+              <option value="14">14</option>
+            </select>
+            <div class="prefix">Board columns:</div>
+            <select class="boardSelect" id="cols">
+              <option value="6">6</option>
+              <option value="8" selected="selected">8</option>
+              <option value="10">10</option>
+              <option value="12">12</option>
+              <option value="14">14</option>
+            </select>
+            <br><br>
+            <button type="button" onclick="anims();" class="enabled" id="anims">Animations</button>
+            <div class="prefix">AI vs AI Delay:</div>
+            <select id="delay">
+              <option value="10">0.01s</option>
+              <option value="50">0.05s</option>
+              <option value="250">0.25s</option>
+              <option value="500" selected="selected">0.50s</option>
+              <option value="750">0.75s</option>
+              <option value="1000">1.00s</option>
+            </select>
+            <br><br>
+            <button type="button" onclick="showHowTo();" id="howto">How To Play</button>
+          </div>
+        </div>
+      </div>
+    </div>
     <script src="main.js?v=3.7"></script>
   </body>
 </html>

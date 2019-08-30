@@ -5,7 +5,7 @@
   background: rgb(4, 131, 0); /* highlight colour */
 }
 
-html {
+html, body {
 	background-color: rgb(128, 128, 128);
 	font-family: Arial, Helvetica, sans-serif;  /* Verdana, sans-serif; */
 	text-align: center;
@@ -200,9 +200,41 @@ select::-ms-expand {
   to { transform: scale(1) }
 }
 
-@media (max-width: 998px) {
-	#howToBlock {
-		width: 80% !important;
-	}
+
+/* grid stuff */
+
+.row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  flex-basis: 100%;
+  /* flex: 1; */
+}
+
+#buttonContainer {
+	display: block;
+	width: 480px;
+	margin: auto;
+}
+
+#boardContainer {
+	padding-left: 20px;
+}
+
+#howto {
+	margin-bottom: 20px;
+}
+
+@media screen and (min-width: 1100px) {
+	.column { flex: 1; }
+	#boardDiv {	margin: 0 10px 0 auto;	}
+	#buttonContainer { margin-left: 10px; }
+	#howToBlock {	width: 80% !important; }
 }
 
