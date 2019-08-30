@@ -1,8 +1,8 @@
 ::selection {
-  background: #0f0; /* highlight colour */
+  background: rgb(4, 131, 0); /* highlight colour */
 }
 ::-moz-selection {
-  background: #0f0; /* highlight colour */
+  background: rgb(4, 131, 0); /* highlight colour */
 }
 
 html {
@@ -22,7 +22,9 @@ button {
 	margin: auto 10px;
 	transition: 0.3s;
 }
-button:hover:not(#undo), button.enabled {
+
+button.enabled,
+button:hover:not(#undo):not(#anims) {
 	color: black; 
 	background-color: white; 
 }
@@ -110,7 +112,7 @@ h1 {
 
 select {
   margin-left: -10px;
-	padding: 8px 6px 8px 7px;
+	padding: 8px 7px 8px 9px;
 	height: 39px;
   font-size: 20px; 
 	font-weight: bold;
@@ -123,13 +125,17 @@ select {
 	color: #fff;
 	transition: 0.3s;
 } 
-select:hover, select:focus {
+select:hover {
 	background: #fff;
 	border-color: #fff;
 	color: #000;
 }
 select::-ms-expand { 
 	display: none;
+}
+
+#rows, #cols {
+	padding: 8px 10px 8px 17px;
 }
 
 #howToModal {

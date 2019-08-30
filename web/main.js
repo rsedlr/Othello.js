@@ -221,7 +221,7 @@ function findTotal(board, end=false) {
 }
 
 function anims() {
-	var animButton = document.getElementById('anims_button');
+	var animButton = document.getElementById('anims');
 	if (animations) {
 		animations = false;
 		animButton.className = '';
