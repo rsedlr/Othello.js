@@ -20,6 +20,9 @@ if (getCookie('anims') == 'False') {
 	anims() ;
 }
 
+var boardSize = getCookie('board');
+rowDrop.value = boardSize.split('-')[0];
+colDrop.value = boardSize.split('-')[1];
 
 newGame();  // start a new game
 
@@ -229,11 +232,11 @@ function anims() {
 	if (animations) {
 		animations = false;
 		animButton.className = '';
-		setCookie('anims', 'False')
+		setCookie('anims', 'False');
 	} else {
 		animations = true;
 		animButton.className = 'enabled';
-		setCookie('anims', 'True')
+		setCookie('anims', 'True');
 	}
 }
 
@@ -261,6 +264,7 @@ function getCookie(name) {
 
 document.addEventListener('change', function() {
 	if (event.target.matches('.boardSelect')) {
+		setCookie('board', (rowDrop.value + '-' + colDrop.value));
 		newGame();
 	}
 });
