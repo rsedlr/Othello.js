@@ -20,9 +20,11 @@ if (getCookie('anims') == 'False') {
 	anims() ;
 }
 
-var boardSize = getCookie('board');
-rowDrop.value = boardSize.split('-')[0];
-colDrop.value = boardSize.split('-')[1];
+try {
+	var boardSize = getCookie('board');
+	rowDrop.value = boardSize.split('-')[0];
+	colDrop.value = boardSize.split('-')[1];
+} catch { }
 
 newGame();  // start a new game
 
