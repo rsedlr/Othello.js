@@ -46,11 +46,10 @@ p {
 
 #scoreDiv {
 	font-size: 32px;
+	margin-bottom: 25px;
+	margin-top: 15px;
 }
 
-#infoDiv {
-	margin-bottom: 35px;
-}
 
 #boardDiv {
 	width: 480px;
