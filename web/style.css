@@ -157,9 +157,8 @@ select::-ms-expand {
 	width: 50%;
 	padding: 10px;
 	background-color: white;
-	animation-name: zoom;
-	animation-duration: 0.5s;
-	top: 50%;
+	animation: zoom 0.5s;
+	/* top: 50%; */
 }
 
 .img-close {
@@ -193,9 +192,9 @@ select::-ms-expand {
   to { transform: scale(1) }
 }
 
-/* @media screen and (min-width:0\0) {
-    select {
-        background:none\9;
-        padding: 5px\9;
-    } 
-} */
+@media (max-width: 998px) {
+	#howToBlock {
+		width: 80% !important;
+	}
+}
+
