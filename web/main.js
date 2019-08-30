@@ -16,7 +16,7 @@ var player;  // current player
 var move;  // stores a reference to the timeout function which allows it to be cleared on new game
 var isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;  // maybe
 
-if (getCookie('anims') == 'False') {
+if (getCookie('anims') == 'True') {
 	anims() ;
 }
 
