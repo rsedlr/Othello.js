@@ -14,8 +14,12 @@ var undoable = false;  // player cannot undo as no move has been made
 var animations = true;
 var player;  // current player
 var move;  // stores a reference to the timeout function which allows it to be cleared on new game
-
 var isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;  // maybe
+
+if (getCookie('anims') == 'False') {
+	anims() ;
+}
+
 
 newGame();  // start a new game
 
@@ -225,9 +229,11 @@ function anims() {
 	if (animations) {
 		animations = false;
 		animButton.className = '';
+		setCookie('anims', 'False')
 	} else {
 		animations = true;
 		animButton.className = 'enabled';
+		setCookie('anims', 'True')
 	}
 }
 
@@ -238,6 +244,28 @@ function hideHowTo() {
 	document.getElementById('howToModal').style.display = 'none';
 }
 
+function setCookie(name, value) {
+	document.cookie = name + "=" + (value || "")  + "; path=/";
+}
+
+function getCookie(name) {
+	var nameEQ = name + "=";
+	var ca = document.cookie.split(';');
+	for(var i=0;i < ca.length;i++) {
+		var c = ca[i];
+		while (c.charAt(0)==' ') c = c.substring(1,c.length);
+		if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+	}
+	return null;
+}
+
+document.addEventListener('change', function() {
+	if (event.target.matches('.boardSelect')) {
+		newGame();
+	}
+});
+
 // IF SKIP OCCURS, UPDATE INFO DIV TO INFORM USER SO THEY AINT BAFFED
 // undo  broken :/
 // hihglight pass when the current player cannot make a move, rather than doing it automatically
+
