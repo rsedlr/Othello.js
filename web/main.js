@@ -11,7 +11,7 @@ var colDrop = document.getElementById("cols");
 var gameMode = 1;  // 0 - AIvsAI, 1 - 1player, 2 - 2player 
 var passCount = 0;  // how many consecutive passes have occured
 var undoable = false;  // player cannot undo as no move has been made
-var animations = true;
+var animations = false;
 var player;  // current player
 var move;  // stores a reference to the timeout function which allows it to be cleared on new game
 var isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;  // maybe
