@@ -123,7 +123,8 @@ function placePiece(r,c, direction) { // r = row, c = column
 
 // captures all the surrounded pieces
 function capture(r, c, direction) {  // capture funcion
-	for (var i = 0; i <= direction.length; i++) {  // loop over direction
+	var dirLen = direction.length;  // stores the length of the direction array
+	for (var i = 0; i <= dirLen; i++) {  // loop over direction
 		for (var z = 1; z <= direction[i]; z++) {  // loop over amount in current direction
 			if (i < 2) { var x = dir[i]*z, y = 0; }  // first capture horizontal pieces...
 			else if (i < 4) { var x = 0, y = dir[i-2]*z; }  // then vertical pieces...
