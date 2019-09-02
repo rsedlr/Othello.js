@@ -76,7 +76,7 @@ function updateBoard() {  // renders the board
 			}
 			boardSquare.className = boardSquare.className.replace(' clickable','');  // removes the square's darker colour
 			boardSquare.onclick = null;  // removes the square's previous onClick funcion
-			var direction = checkMove(board, r, c, player);  // checks the available moves for the board
+			var direction = checkMove( r, c, player);  // checks the available moves for the board
 			if (board[r][c] == ' ' && direction.reduce((a, b) => a + b) != 0) {  // if the square is empty and a move can be made on it
 				boardSquare.className += ' clickable';  // append ' clickable' to the className of the square so that it appears a different colour
 				gameOver = false;  // the game isnt over as moves can be made
@@ -93,7 +93,7 @@ function updateBoard() {  // renders the board
 			} 
 		});
 	});
-	var find = findTotal(board);
+	var find = findTotal();
 	if (!gameOver) {
 		passCount = 0;  // reset pass count as a move has occured
 		if (gameMode == 1) {  // if the game mode is 1player
@@ -115,14 +115,14 @@ function placePiece(r,c, direction) { // r = row, c = column
 	boardBackup2 = boardBackup.map(r => r.slice(0));  // make a clone of the board in case of undo
 	boardBackup = board.map(r => r.slice(0));  // make a clone of the board in case of undo
 	board[r][c] = player;  // assigns square with piece
-	capture(board, r, c, direction);  // performs the capture
+	capture(r, c, direction);  // performs the capture
 	player = (player == 'w') ? 'b' : 'w';  // changes player
 	undoable = true;  // allows undo
 	updateBoard();  // renders the changes
 }
 
 // captures all the surrounded pieces
-function capture(board, r, c, direction) {  // capture funcion
+function capture(r, c, direction) {  // capture funcion
 	for (var i = 0; i <= direction.length; i++) {  // loop over direction
 		for (var z = 1; z <= direction[i]; z++) {  // loop over amount in current direction
 			if (i < 2) { var x = dir[i]*z, y = 0; }  // first capture horizontal pieces...
@@ -135,7 +135,7 @@ function capture(board, r, c, direction) {  // capture funcion
 }
 
 // checks which squares are viable moves
-function checkMove(board, r, c, player) {  // board, row, column, player
+function checkMove(r, c, player) {  // board, row, column, player
 	var direction = [0,0,0,0,0,0,0,0]; // top bottom left right topLeft bottomRight BottomLeft TopRight
 	for (var i = 0; i < 8; i++) {  // loops over the directions
 		if (i < 2) { var x = dir[i], y = 0; }  // first checks horizontal...
@@ -199,7 +199,7 @@ function setMode(mode) {
 }
 
 // finds the total for each player
-function findTotal(board, end=false) {
+function findTotal(end=false) {
 	document.getElementById('undo').className = ((undoable) ? 'enabled' : '');
 	board = board.map(r => r.slice()); // deep clone of array
 	var blackTotal = 0, whiteTotal = 0;  // reset totals
