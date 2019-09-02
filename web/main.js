@@ -269,6 +269,7 @@ document.addEventListener('change', function() {
 	}
 });
 
+// make settings on seperate window or somin like that so theres less clutter on the page
 // IF SKIP OCCURS, UPDATE INFO DIV TO INFORM USER SO THEY AINT BAFFED
 // undo  broken :/
 // hihglight pass when the current player cannot make a move, rather than doing it automatically
