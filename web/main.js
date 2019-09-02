@@ -16,13 +16,12 @@ var player;  // current player, either 'b' for black or 'w' for white
 var move;  // stores a reference to the timeout function which allows it to be cleared on new game
 // var isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;  // maybe
 
-try {
-	if (getCookie('anims') == 'False') anims();
-
-	var dimensions = getCookie('board').split('-');
-	rowDrop.value = dimensions[0];
-	colDrop.value = dimensions[1];
-} catch { }
+try {  // if no cookies are available an error is thrown. Try catch stops this crashing the code
+	if (getCookie('anims') == 'False') anims();  // if animations were off previously, turn them off
+	var dimensions = getCookie('board').split('-');  // get the board dimensions cookie
+	rowDrop.value = dimensions[0];  // set the board width to the saved value
+	colDrop.value = dimensions[1];  // set the board height to the saved value
+} catch { }  // if the code fails, do nothing
 
 newGame();  // start a new game
 
@@ -34,17 +33,17 @@ function newGame() {  // initialise the game
 	undoable = false;  // the player cannot undo a move as no move has been made yet
 	player = 'b';  // black player always goes first
 	boardDiv.style.width = `${60 * cols}px`;
-	board = Array(rows).fill(Array(cols).fill(' ')).map(r => r.slice(0));  // TODO: not pretty but works
+	board = Array(rows).fill(Array(cols).fill(' ')).map(r => r.slice(0));  // makes a 2d array of ' '
 	boardBackup = board.map(r => r.slice(0));  // clone the board
-	board[rows/2 - 1][cols/2] = 'w';
-	board[rows/2][cols/2 - 1] = 'w';
-	board[rows/2 - 1][cols/2 - 1] = 'b';
-	board[rows/2][cols/2] = 'b';
+	board[rows/2 - 1][cols/2] = 'w';  // adds the first white piece
+	board[rows/2][cols/2 - 1] = 'w';  // adds the second white piece
+	board[rows/2 - 1][cols/2 - 1] = 'b';  // adds the first black piece
+	board[rows/2][cols/2] = 'b';  // adds the second black piece
 	firstRender();  // render the board
-	renderBoard();  // render the pieces on the board
+	updateBoard();  // render the pieces on the board
 } 
 
-// creats the board without any pieces
+// creates the board without any pieces
 function firstRender() {
 	while (boardDiv.firstChild) boardDiv.removeChild(boardDiv.firstChild); // wipes board
 	board.forEach((row,r) => {  // loops over board rows
@@ -55,13 +54,13 @@ function firstRender() {
 			var boardSquare = document.createElement("div");  // instantiates a HTML div element
 			boardRow.appendChild(boardSquare);  // makes the div a child of the boardRow div
 			boardSquare.className = "boardSquare";  // appends the classname 'boardSquare' to the div
-			boardSquare.id = `sq-${r}:${c}`; 
+			boardSquare.id = `sq-${r}:${c}`;  // updates the square's id with coordinates for later reference
 		});
 	});
 }
 
 // adds the pieces to the board along with darker squares to indicate available moves
-function renderBoard() {  // renders the board
+function updateBoard() {  // renders the board
 	var gameOver = true, idealMove = [0, []];  // the score of the current ideal (highest capture) moves, followed by all the possible choices (row, col, direction)
 	board.forEach((row,r) => {  // loops over board rows
 		row.forEach((square,c) => {  // loops over the squares in the row
@@ -119,7 +118,20 @@ function placePiece(r,c, direction) { // r = row, c = column
 	capture(board, r, c, direction);  // performs the capture
 	player = (player == 'w') ? 'b' : 'w';  // changes player
 	undoable = true;  // allows undo
-	renderBoard();  // renders the changes
+	updateBoard();  // renders the changes
+}
+
+// captures all the surrounded pieces
+function capture(board, r, c, direction) {  // capture funcion
+	for (var i = 0; i <= direction.length; i++) {  // loop over direction
+		for (var z = 1; z <= direction[i]; z++) {  // loop over amount in current direction
+			if (i < 2) { var x = dir[i]*z, y = 0; }  // first capture horizontal pieces...
+			else if (i < 4) { var x = 0, y = dir[i-2]*z; }  // then vertical pieces...
+			else if (i < 6) { var x = dir[i-4]*z, y = x; }  // then diagonal...
+			else { var x = dir[i-6]*z, y = -x; }  // then the other diagonal
+			board[r - x][c - y] = player.toLowerCase();  // set current piece to players colour
+		}
+	}
 }
 
 // checks which squares are viable moves
@@ -148,25 +160,12 @@ function checkMove(board, r, c, player) {  // board, row, column, player
 	return direction  // return the result
 }
 
-// captures all the surrounded pieces
-function capture(board, r, c, direction) {  // capture funcion
-	for (var i = 0; i <= direction.length; i++) {  // loop over direction
-		for (var z = 1; z <= direction[i]; z++) {  // loop over amount in current direction
-			if (i < 2) { var x = dir[i]*z, y = 0; }  // first capture horizontal pieces...
-			else if (i < 4) { var x = 0, y = dir[i-2]*z; }  // then vertical pieces...
-			else if (i < 6) { var x = dir[i-4]*z, y = x; }  // then diagonal...
-			else { var x = dir[i-6]*z, y = -x; }  // then the other diagonal
-			board[r - x][c - y] = player.toLowerCase();  // set current piece to players colour
-		}
-	}
-}
-
 // passes the current players go
 function pass() {
 	if (gameMode != 2 && passCount < 2) {  // if game mode is not 2 player and less than 2 consecutive passes have occured
 		passCount += 1;  // incriment pass count
 		player = (player == 'w') ? 'b' : 'w';  // switch current player
-		renderBoard();  // render changes
+		updateBoard();  // render changes
 	} else if (passCount >= 2) {  // no moves can be made as 2 passes occured (neither player can make a move)
 		findTotal(board, true);  // find the total as the game is over
 	}
@@ -182,7 +181,7 @@ function undo() {
 			board = boardBackup2.map(r => r.slice(0));  // set the board back to how it was two moves ago as the AI also made a move
 		}
 		undoable = false;  // cannot do another undo after this
-		renderBoard();  // render changes
+		updateBoard();  // render changes
 	}
 }
 
