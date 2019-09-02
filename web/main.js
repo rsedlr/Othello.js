@@ -3,18 +3,18 @@ var boardBackup = [];  // stores a clone of the board one move behind
 var boardBackup2 = [];  // stores a clone of the board two moves behind
 var modeBtn = ['ai_btn', '1p_btn', '2p_btn']  // stores the id's of the game mode buttons
 var dir = [1,-1];  // an array of two directions
-var checkPlay = {'w': 1, 'b': -1, ' ': 0}  // converts player colour into a number. This alows enemy pieces to be found by multiplying current by -1
+var checkPlay = {'w': 1, 'b': -1, ' ': 0}  // converts player colour into a number. This allows enemy pieces to be found by multiplying current by -1
 var scoreDiv = document.getElementById("scoreDiv");  // stores a reference to the score html element
 var delay = document.getElementById("delay");  // get the AI delay dropdown
-var rowDrop = document.getElementById("rows");
-var colDrop = document.getElementById("cols");
+var rowDrop = document.getElementById("rows");  // get the row dropdown
+var colDrop = document.getElementById("cols");  // get the column dropdown
 var gameMode = 1;  // 0 - AIvsAI, 1 - 1player, 2 - 2player 
-var passCount = 0;  // how many consecutive passes have occured
+var passCount = 0;  // how many consecutive passes have occurred
 var undoable = false;  // player cannot undo as no move has been made
-var animations = true;
-var player;  // current player
+var animations = true;  // whether the user has animations enabled or disabled
+var player;  // current player, either 'b' for black or 'w' for white
 var move;  // stores a reference to the timeout function which allows it to be cleared on new game
-var isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;  // maybe
+// var isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;  // maybe
 
 try {
 	if (getCookie('anims') == 'False') anims();
