@@ -25,8 +25,7 @@ try {  // if no cookies are available an error is thrown. Try catch stops this c
 
 newGame();  // start a new game
 
-// sets the board up for a new game
-function newGame() {  // initialise the game
+function newGame() {  // sets the board up for a new game
 	clearTimeout(move)  // stops any waiting AI moves from completing
 	var rows = parseInt(rowDrop.value);
 	var cols = parseInt(colDrop.value);
@@ -39,12 +38,11 @@ function newGame() {  // initialise the game
 	board[rows/2][cols/2 - 1] = 'w';  // adds the second white piece
 	board[rows/2 - 1][cols/2 - 1] = 'b';  // adds the first black piece
 	board[rows/2][cols/2] = 'b';  // adds the second black piece
-	firstRender();  // render the board
+	renderBoard();  // render the board
 	updateBoard();  // render the pieces on the board
 } 
 
-// creates the board without any pieces
-function firstRender() {
+function renderBoard() {  // creates the board without any pieces
 	while (boardDiv.firstChild) boardDiv.removeChild(boardDiv.firstChild); // wipes board
 	board.forEach((row,r) => {  // loops over board rows
 		var boardRow = document.createElement("div");  // instantiates a HTML div element
@@ -59,8 +57,7 @@ function firstRender() {
 	});
 }
 
-// adds the pieces to the board along with darker squares to indicate available moves
-function updateBoard() {  // renders the board
+function updateBoard() {  // adds the pieces to the board along with darker squares to indicate available moves
 	var gameOver = true, idealMove = [0, []];  // the score of the current ideal (highest capture) moves, followed by all the possible choices (row, col, direction)
 	board.forEach((row,r) => {  // loops over board rows
 		row.forEach((square,c) => {  // loops over the squares in the row
@@ -110,7 +107,7 @@ function updateBoard() {  // renders the board
 	}
 }
 
-// places a piece on the specifed board co-ordinate
+// places a piece on the specified board co-ordinate
 function placePiece(r,c, direction) { // r = row, c = column
 	boardBackup2 = boardBackup.map(r => r.slice(0));  // make a clone of the board in case of undo
 	boardBackup = board.map(r => r.slice(0));  // make a clone of the board in case of undo
@@ -121,8 +118,7 @@ function placePiece(r,c, direction) { // r = row, c = column
 	updateBoard();  // renders the changes
 }
 
-// captures all the surrounded pieces
-function capture(r, c, direction) {  // capture funcion
+function capture(r, c, direction) {  // captures all the surrounded pieces
 	var dirLen = direction.length;  // stores the length of the direction array
 	for (var i = 0; i <= dirLen; i++) {  // loop over direction
 		for (var z = 1; z <= direction[i]; z++) {  // loop over amount in current direction
@@ -161,8 +157,7 @@ function checkMove(r, c, player) {  // board, row, column, player
 	return direction  // return the result
 }
 
-// passes the current players go
-function pass() {
+function pass() {  // passes the current players go
 	if (gameMode != 2 && passCount < 2) {  // if game mode is not 2 player and less than 2 consecutive passes have occured
 		passCount += 1;  // incriment pass count
 		player = (player == 'w') ? 'b' : 'w';  // switch current player
@@ -172,8 +167,7 @@ function pass() {
 	}
 }
 
-// undoes the last move
-function undo() {
+function undo() {  // undoes the last move
 	if (undoable && gameMode != 0) {  // if undo is allowed and its not in AIvsAI mode
 		if (gameMode == 2) {  // if it is a human game
 			board = boardBackup.map(r => r.slice(0));	// set the board back to how it was one move ago
@@ -186,8 +180,7 @@ function undo() {
 	}
 }
 
-// sets the game mode
-function setMode(mode) {
+function setMode(mode) {  // sets the game mode
 	modeBtn.forEach(function(option) {  // for every game mode button (currently 3)
 		if (modeBtn[mode] == option) {  // if the current one is what was clicked
 			document.getElementById(option).className = "enabled";  // change it's appearance
@@ -199,8 +192,7 @@ function setMode(mode) {
 	newGame();  // reset board
 }
 
-// finds the total for each player
-function findTotal(end=false) {
+function findTotal(end=false) {  // finds the total for each player
 	document.getElementById('undo').className = ((undoable) ? 'enabled' : '');
 	board = board.map(r => r.slice()); // deep clone of array
 	var blackTotal = 0, whiteTotal = 0;  // reset totals
@@ -227,45 +219,45 @@ function findTotal(end=false) {
 	return false  // false as game is not over yet
 }
 
-function anims() {
-	var animButton = document.getElementById('anims');
-	if (animations) {
-		animations = false;
-		animButton.className = '';
-		setCookie('anims', 'False');
-	} else {
-		animations = true;
-		animButton.className = 'enabled';
-		setCookie('anims', 'True');
+function anims() {  // toggles animations
+	var animButton = document.getElementById('anims');  // gets the animation button
+	if (animations) {  // if animations are enabled 
+		animations = false;  // disable animations
+		animButton.className = '';  // remove the 'enabled' class name
+		setCookie('anims', 'False');  // update the cookie
+	} else {  // if animations are disabled
+		animations = true;  // enable animations
+		animButton.className = 'enabled';  // add the enabled class name to the button
+		setCookie('anims', 'True');  // update the cookie
 	}
 }
 
-function showHowTo() {
-	document.getElementById('howToModal').style.display = 'block';
+function showHowTo() {  // show the how to modal
+	document.getElementById('howToModal').style.display = 'block';  // change the modals display to 'block'
 }
-function hideHowTo() {
-	document.getElementById('howToModal').style.display = 'none';
-}
-
-function setCookie(name, value) {
-	document.cookie = name + "=" + (value || "")  + "; path=/";
+function hideHowTo() {  // hide the how to modal
+	document.getElementById('howToModal').style.display = 'none';  // change the modals display to 'none'
 }
 
-function getCookie(name) {
-	var nameEQ = name + "=";
-	var ca = document.cookie.split(';');
-	for(var i=0;i < ca.length;i++) {
-		var c = ca[i];
-		while (c.charAt(0)==' ') c = c.substring(1,c.length);
-		if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+function setCookie(name, value) {  // modifies the value of a cookie
+	document.cookie = name + "=" + (value || "")  + "; path=/";  // changes the value of the cookie document object
+}
+
+function getCookie(name) {  // gets the value of a cookie
+	name += "=";  //  the equal symbol to the end of the name
+	var cookies = document.cookie.split(';');  // gets all the cookies in the document
+	for(var i=0;i < cookies.length;i++) {  // loops over all the present cookies
+		var cookie = cookies[i];  // grabs the current cookie for this iteration
+		while (cookie.charAt(0)==' ') cookie = cookie.substring(1, cookie.length);  // while theres empty space, remove it
+		if (cookie.indexOf(name) == 0) return cookie.substring(name.length, cookie.length);  // if the cookie's name matches, return it
 	}
-	return null;
+	return null;  // cookie not present
 }
 
-document.addEventListener('change', function() {
-	if (event.target.matches('.boardSelect')) {
-		setCookie('board', (rowDrop.value + '-' + colDrop.value));
-		newGame();
+document.addEventListener('change', function() {  // when a dropdown element is changed
+	if (event.target.matches('.boardSelect')) {  // if its a board row or board col dropdown
+		setCookie('board', (rowDrop.value + '-' + colDrop.value));  // update the cookie
+		newGame();  // start a new game
 	}
 });
 
