@@ -220,7 +220,7 @@ function findTotal(end=false) {  // finds the total for each player
 }
 
 function anims() {  // toggles animations
-	var animButton = document.getElementById('anims');  // gets the animation button
+	var animButton = document.getElementById('anims');  // gets the animation button 
 	if (animations) {  // if animations are enabled 
 		animations = false;  // disable animations
 		animButton.className = '';  // remove the 'enabled' class name
@@ -234,7 +234,8 @@ function anims() {  // toggles animations
 
 function showHowTo() {  // show the how to modal
 	document.getElementById('howToModal').style.display = 'block';  // change the modals display to 'block'
-}
+}	
+
 function hideHowTo() {  // hide the how to modal
 	document.getElementById('howToModal').style.display = 'none';  // change the modals display to 'none'
 }
