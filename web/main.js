@@ -14,7 +14,7 @@ var undoable = false;  // player cannot undo as no move has been made
 var animations = true;  // whether the user has animations enabled or disabled
 var player;  // current player, either 'b' for black or 'w' for white
 var move;  // stores a reference to the timeout function which allows it to be cleared on new game
-// var isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;  // maybe
+// var isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;  // maybe, maybe
 
 try {  // if no cookies are available an error is thrown. Try catch stops this crashing the code
 	if (getCookie('anims') == 'False') anims();  // if animations were off previously, turn them off
