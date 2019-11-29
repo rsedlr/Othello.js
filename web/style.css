@@ -1,3 +1,9 @@
+:root {
+	--green: rgb(4, 114, 0);
+	--dark-green: rgb(0, 70, 0);
+
+}
+
 ::selection {
   background: rgb(4, 131, 0); /* highlight colour */
 }
@@ -31,7 +37,11 @@ button:hover:not(#undo):not(#anims) {
 
 h1 {
 	font-size: 50px;
-	margin-bottom: 40px;
+}
+
+h2 {
+	font-size: 30px;
+	margin-top: 40px;
 }
 
 p {
@@ -63,12 +73,12 @@ p {
 	width: 60px;
 	height: 60px;
 	vertical-align: top;
-	background-color: rgb(4, 114, 0);
+	background-color: var(--green);
 	box-shadow: inset 0 0 0 1px rgb(0, 0, 0);
 }
 
 .boardSquare.clickable {
-	background-color: rgb(0, 70, 0);
+	background-color: var(--dark-green);
 }
 
 .boardPiece {
@@ -164,6 +174,7 @@ select::-ms-expand {
 	width: 50%;
 	padding: 1px 20px;
 	background-color: white;
+	border: 8px solid rgb(4, 114, 0);
 	animation: zoom 0.5s;
 	/* top: 50%; */
 }
@@ -199,9 +210,6 @@ select::-ms-expand {
   to { transform: scale(1) }
 }
 
-
-/* grid stuff */
-
 .row {
   display: flex;
   flex-direction: row;
@@ -228,6 +236,13 @@ select::-ms-expand {
 
 #howto {
 	margin-bottom: 20px;
+	background-color: var(--green);
+	border: 4px solid #000;
+}
+
+#howto:hover {
+	background-color: var(--dark-green) !important;
+	color: white !important;
 }
 
 @media screen and (min-width: 1100px) {
