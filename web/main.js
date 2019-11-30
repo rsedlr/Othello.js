@@ -25,8 +25,7 @@ try {  // if no cookies are available an error is thrown. Try catch stops this c
 
 if (isMac) {
 	var x = document.getElementsByClassName('prefix');
-	console.log(x);
-	for (var i=0; i < 3; i++) {
+	for (var i=0; i < x.length; i++) {
 		x[i].classList += ' mac'
 	}
 }
