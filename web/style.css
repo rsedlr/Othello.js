@@ -18,8 +18,8 @@ html, body {
 }
 
 button {
-	/* padding: 8px 16px; */
-	height: 42px !important;
+	padding: 8px 16px;
+	/* height: 42px !important; */
 	background-color: black; 
 	border: none;
 	box-shadow: none;
@@ -36,8 +36,13 @@ button:hover:not(#undo):not(#anims) {
 	background-color: white; 
 }
 
-.boardSelect {
+/* .boardSelect {
 	height: 39px !important;
+} */
+
+.prefix.mac {
+	position: relative;
+	top: -1px;
 }
 
 h1 {
@@ -118,7 +123,7 @@ p {
 }
 
 .prefix {
-	padding: 8px 16px;
+	padding: 8px 5px 8px 16px;
 	display: inline-block;
 	background-color: black; 
 	border: none;
@@ -154,6 +159,10 @@ select:hover {
 }
 select::-ms-expand { 
 	display: none;
+}
+
+#delay {
+	padding-left: 15px;
 }
 
 #rows, #cols {

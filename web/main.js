@@ -14,7 +14,7 @@ var undoable = false;  // player cannot undo as no move has been made
 var animations = true;  // whether the user has animations enabled or disabled
 var player;  // current player, either 'b' for black or 'w' for white
 var move;  // stores a reference to the timeout function which allows it to be cleared on new game
-// var isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;  // maybe, maybe
+var isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;  // maybe, maybe
 
 try {  // if no cookies are available an error is thrown. Try catch stops this crashing the code
 	if (getCookie('anims') == 'False') anims();  // if animations were off previously, turn them off
@@ -22,6 +22,14 @@ try {  // if no cookies are available an error is thrown. Try catch stops this c
 	rowDrop.value = dimensions[0];  // set the board width to the saved value
 	colDrop.value = dimensions[1];  // set the board height to the saved value
 } catch { }  // if the code fails, do nothing
+
+if (isMac) {
+	var x = document.getElementsByClassName('prefix');
+	console.log(x);
+	for (var i=0; i < 3; i++) {
+		x[i].classList += ' mac'
+	}
+}
 
 newGame();  // start a new game
 
