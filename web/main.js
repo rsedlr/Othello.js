@@ -269,8 +269,9 @@ document.addEventListener('change', function() {  // when a dropdown element is 
 	}
 });
 
+// TODO:
 // make settings on seperate window or somin like that so theres less clutter on the page
 // IF SKIP OCCURS, UPDATE INFO DIV TO INFORM USER SO THEY AINT BAFFED
-// undo  broken :/
+// undo  broken - have pieces animate out the opposite way they animate in.
 // hihglight pass when the current player cannot make a move, rather than doing it automatically
 
