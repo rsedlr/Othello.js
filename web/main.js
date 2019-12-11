@@ -1,7 +1,7 @@
-var board = [];  //
+var board = []; 
 var boardBackup = [];  
 var boardBackup2 = [];  
-var modeBtn = ['ai_btn', '1p_btn', '2p_btn']  
+var modeBtn = ['ai_btn', '1p_btn', '2p_btn'];
 var dir = [1,-1];  
 var checkPlay = {'w': 1, 'b': -1, ' ': 0}  
 var scoreDiv = document.getElementById("scoreDiv");  
@@ -12,9 +12,10 @@ var gameMode = 1;
 var passCount = 0;  
 var undoable = false;  
 var animations = true;  
+var waiting = false;
+var isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;  
 var player;  
 var move;  
-var isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;  
 
 try {  
 	if (getCookie('anims') == 'False') anims();  
@@ -26,14 +27,14 @@ try {
 if (isMac) {
 	var x = document.getElementsByClassName('prefix');
 	for (var i=0; i < x.length; i++) {
-		x[i].classList += ' mac'
+		x[i].classList += ' mac';
 	}
 }
 
 newGame();  
 
 function newGame() {  
-	clearTimeout(move)  
+	clearTimeout(move);
 	var rows = parseInt(rowDrop.value);
 	var cols = parseInt(colDrop.value);
 	undoable = false;  
@@ -65,22 +66,23 @@ function renderBoard() {
 }
 
 function updateBoard() {  
+	waiting = false;
 	var gameOver = true, idealMove = [0, []];  
 	board.forEach((row,r) => {  
 		row.forEach((square,c) => {  
 			var boardSquare = document.getElementById(`sq-${r}:${c}`);  
-			if (board[r][c] != boardBackup[r][c]) {  
+			if (board[r][c] != boardBackup[r][c]) {  // || board[r][c] == ' '
 				while (boardSquare.firstChild) boardSquare.removeChild(boardSquare.firstChild);
 				if (['w','b'].includes(board[r][c])) {  
 					var boardPiece = document.createElement("div");  
 					boardSquare.appendChild(boardPiece);  
-					boardPiece.className = "boardPiece " + board[r][c].toLowerCase();  
+					boardPiece.className = "boardPiece " + board[r][c];  // .tolowercase()
 					if (animations) boardPiece.className += ' anims';
 				}
 			}
 			boardSquare.className = boardSquare.className.replace(' clickable','');  
 			boardSquare.onclick = null;  
-			var direction = checkMove( r, c, player);  
+			var direction = checkMove(r, c, player);  
 			if (board[r][c] == ' ' && direction.reduce((a, b) => a + b) != 0) {  
 				boardSquare.className += ' clickable';  
 				gameOver = false;  
@@ -102,18 +104,19 @@ function updateBoard() {
 		passCount = 0;  
 		if (gameMode == 1) {  
 			infoDiv.innerHTML = ((player == 'b') ? "your move" : "AI thinking...");  
-			if (player == 'w') move = setTimeout(function() { placePiece(...idealMove[1][Math.floor(Math.random() * idealMove[1].length)].slice()) }, 700);  
+			waiting = true;
+			if (player == 'w') move = setTimeout(function() { placePiece(...idealMove[1][Math.floor(Math.random() * idealMove[1].length)].slice()); waiting = false; }, 700);  
 		} else if (gameMode == 0) {  
 			infoDiv.innerHTML = ((player == 'w') ? "white AI thinking..." : "black AI thinking...");  
-			move = setTimeout(function() { placePiece(...idealMove[1][Math.floor(Math.random() * idealMove[1].length)].slice()) }, delay.options[delay.selectedIndex].value);  
+			waiting = true;
+			move = setTimeout(function() { placePiece(...idealMove[1][Math.floor(Math.random() * idealMove[1].length)].slice()); waiting = false; }, delay.options[delay.selectedIndex].value);  
 		} else if (gameMode == 2) {  
-			infoDiv.innerHTML = ((player == 'w') ? "white" : "black")+"'s move";  
+			infoDiv.innerHTML = ((player == 'w') ? "white" : "black") + "'s move";  
 		}
 	} else if (!find) {  
-		setTimeout(function() { pass() }, 1);  
+		setTimeout(pass, 1);  
 	}
 }
-
 
 function placePiece(r,c, direction) { 
 	boardBackup2 = boardBackup.map(r => r.slice(0));  
@@ -137,7 +140,6 @@ function capture(r, c, direction) {
 		}
 	}
 }
-
 
 function checkMove(r, c, player) {  
 	var direction = [0,0,0,0,0,0,0,0]; 
@@ -176,11 +178,15 @@ function pass() {
 
 function undo() {  
 	if (undoable && gameMode != 0) {  
-		if (gameMode == 2) {  
+		var tempBoard = board.map(r => r.slice(0));	
+		if (gameMode == 2 || waiting == true) {  
+			clearTimeout(move);
 			board = boardBackup.map(r => r.slice(0));	
+			boardBackup = tempBoard.map(r => r.slice(0));	
 			player = (player == 'w') ? 'b' : 'w';  
-		} else if (gameMode == 1) {  
+		} else if (gameMode == 1) { 
 			board = boardBackup2.map(r => r.slice(0));  
+			boardBackup = tempBoard.map(r => r.slice(0));	
 		}
 		undoable = false;  
 		updateBoard();  
@@ -213,7 +219,7 @@ function findTotal(end=false) {
 		}
 	}
 	scoreDiv.innerHTML = (`black: ${blackTotal} | white: ${whiteTotal}`)  
-	if (whiteTotal + blackTotal == (parseInt(rowDrop.value) * parseInt(colDrop.value)) || whiteTotal == 0 || blackTotal == 0 || end) {  
+	if (whiteTotal + blackTotal == parseInt(rowDrop.value) * parseInt(colDrop.value) || whiteTotal == 0 || blackTotal == 0 || end) {  
 		if (whiteTotal > blackTotal) {  
 			infoDiv.innerHTML =  "WHITE WINS!";  
 		} else if (blackTotal > whiteTotal) {  
@@ -270,8 +276,8 @@ document.addEventListener('change', function() {
 });
 
 // TODO:
+// undo button lights up on AI vs AI
 // make settings on seperate window or somin like that so theres less clutter on the page
 // IF SKIP OCCURS, UPDATE INFO DIV TO INFORM USER SO THEY AINT BAFFED
-// undo  broken - have pieces animate out the opposite way they animate in.
 // hihglight pass when the current player cannot make a move, rather than doing it automatically
 
