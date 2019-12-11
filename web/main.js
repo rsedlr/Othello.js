@@ -206,7 +206,7 @@ function setMode(mode) {
 }
 
 function findTotal(end=false) {  
-	document.getElementById('undo').className = ((undoable) ? 'enabled' : '');
+	document.getElementById('undo').className = ((undoable && gameMode != 0) ? 'enabled' : '');
 	board = board.map(r => r.slice()); 
 	var blackTotal = 0, whiteTotal = 0;  
 	for (i=0; i < board.length; i++) {  
