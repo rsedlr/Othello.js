@@ -10,7 +10,8 @@ var rowDrop = document.getElementById("rows");
 var colDrop = document.getElementById("cols");  
 var gameMode = 1;  
 var passCount = 0;  
-var undoable = false;  
+var undoable = false;
+var passable = false;
 var animations = true;  
 var waiting = false;
 var isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;  
@@ -114,7 +115,14 @@ function updateBoard() {
 			infoDiv.innerHTML = ((player == 'w') ? "white" : "black") + "'s move";  
 		}
 	} else if (!find) {  
-		setTimeout(pass, 1);  
+		passable = true;
+		if (gameMode == 0 || (gameMode == 1 && player == 'w')) {
+			infoDiv.innerHTML = "AI passing the move...";
+			setTimeout(pass, 1000);
+		} else {
+			infoDiv.innerHTML = "cannot make a move, you have to pass";
+			document.getElementById('pass').className = 'enabled';
+		}
 	}
 }
 
@@ -167,12 +175,17 @@ function checkMove(r, c, player) {
 }
 
 function pass() {  
-	if (gameMode != 2 && passCount < 2) {  
-		passCount += 1;  
-		player = (player == 'w') ? 'b' : 'w';  
-		updateBoard();  
-	} else if (passCount >= 2) {  
-		findTotal(board, true);  
+	if (passable) {
+		document.getElementById('pass').className = '';
+		passable = false;
+		console.log('passing');
+		if (gameMode != 2 && passCount < 2) {  
+			passCount += 1;  
+			player = (player == 'w') ? 'b' : 'w';  
+			updateBoard();  
+		} else if (passCount >= 2) {  
+			findTotal(board, true);  
+		}
 	}
 }
 
@@ -280,4 +293,6 @@ document.addEventListener('change', function() {
 // make settings on seperate window or somin like that so theres less clutter on the page
 // IF SKIP OCCURS, UPDATE INFO DIV TO INFORM USER SO THEY AINT BAFFED
 // hihglight pass when the current player cannot make a move, rather than doing it automatically
+
+// [['b', 'b', 'b', 'b', 'b', 'b', 'w', ' '], ['b', 'b', 'b', 'b', 'b', 'b', 'b', 'w'], ['b', 'b', 'b', 'b', 'b', 'b', 'b', 'b'], ['b', 'b', 'b', 'b', 'b', 'b', 'b', 'b'], ['b', 'b', 'b', 'b', 'b', 'b', 'b', 'b'], ['b', 'b', 'b', 'b', 'b', 'b', 'b', 'b'], ['b', 'b', 'b', 'b', 'b', 'b', 'b', 'b'], ['b', 'b', 'b', 'b', 'b', 'b', 'b', 'b']]
 
