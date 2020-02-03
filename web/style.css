@@ -30,7 +30,7 @@ button {
 }
 
 button.enabled,
-button:hover:not(#undo):not(#anims) {
+button:hover:not(#undo):not(#anims):not(#pass) {
 	color: black; 
 	background-color: white; 
 }
