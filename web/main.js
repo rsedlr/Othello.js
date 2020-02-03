@@ -154,7 +154,7 @@ function checkMove(r, c, player) {  // board, row, column, player
 				else if (i < 6) { x += dir[i-4]; y = x; }  // then diagonal...
 				else { x += dir[i-6]; y = -x; }  // then the other diagonal
 			}
-			if (board[r - x][c - y] != player) {  // if consective enemy pieces aren't surrounded by a friendly piece
+			if (board[r - x][c - y] != player) {  // if consecutive enemy pieces aren't surrounded by a friendly piece
 				direction[i] = 0;  // reset this direction to 0
 			}
 		} catch { // if the coordinate doesn't exist
