@@ -178,12 +178,13 @@ function pass() {
 	if (passable) {
 		document.getElementById('pass').className = '';
 		passable = false;
-		console.log('passing');
 		if (gameMode != 2 && passCount < 2) {  
+			console.log('passing');
 			passCount += 1;  
 			player = (player == 'w') ? 'b' : 'w';  
 			updateBoard();  
 		} else if (passCount >= 2) {  
+			console.log('cannot pass nomo');
 			findTotal(board, true);  
 		}
 	}
