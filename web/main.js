@@ -66,19 +66,19 @@ function renderBoard() {
 	});
 }
 
-function updateBoard() {  
+function updateBoard(pass=false) {  
 	waiting = false;
 	var gameOver = true, idealMove = [0, []];  
 	board.forEach((row,r) => {  
 		row.forEach((square,c) => {  
 			var boardSquare = document.getElementById(`sq-${r}:${c}`);  
-			if (board[r][c] != boardBackup[r][c]) {  // || board[r][c] == ' '
+			if (board[r][c] != boardBackup[r][c] && pass == false) {  // || board[r][c] == ' '
 				while (boardSquare.firstChild) boardSquare.removeChild(boardSquare.firstChild);
 				if (['w','b'].includes(board[r][c])) {  
 					var boardPiece = document.createElement("div");  
 					boardSquare.appendChild(boardPiece);  
 					boardPiece.className = "boardPiece " + board[r][c];  // .tolowercase()
-					if (animations) boardPiece.className += ' anims';
+					if (animations) boardPiece.className += ' anims';;
 				}
 			}
 			boardSquare.className = boardSquare.className.replace(' clickable','');  
@@ -114,7 +114,7 @@ function updateBoard() {
 		} else if (gameMode == 2) {  
 			infoDiv.innerHTML = ((player == 'w') ? "white" : "black") + "'s move";  
 		}
-	} else if (!find) {  
+	} else if (!find) {
 		passable = true;
 		if (gameMode == 0 || (gameMode == 1 && player == 'w')) {
 			infoDiv.innerHTML = "AI passing the move...";
@@ -175,15 +175,16 @@ function checkMove(r, c, player) {
 }
 
 function pass() {  
-	if (passable) {
-		document.getElementById('pass').className = '';
+	console.log('pass attempt', passCount, gameMode);
+		if (passable) {
+		document.getElementById('pass').className = '';  // only happens if u can make a move
 		passable = false;
-		if (gameMode != 2 && passCount < 2) {  
+		if (gameMode != 0 && passCount < 2) {  
 			console.log('passing');
 			passCount += 1;  
 			player = (player == 'w') ? 'b' : 'w';  
-			updateBoard();  
-		} else if (passCount >= 2) {  
+			updateBoard(true);  
+		} else if (passCount >= 2) {  // kinda dead way of doing it
 			console.log('cannot pass nomo');
 			findTotal(board, true);  
 		}
@@ -290,10 +291,8 @@ document.addEventListener('change', function() {
 });
 
 // TODO:
-// undo button lights up on AI vs AI
 // make settings on seperate window or somin like that so theres less clutter on the page
 // IF SKIP OCCURS, UPDATE INFO DIV TO INFORM USER SO THEY AINT BAFFED
-// hihglight pass when the current player cannot make a move, rather than doing it automatically
 
 // [['b', 'b', 'b', 'b', 'b', 'b', 'w', ' '], ['b', 'b', 'b', 'b', 'b', 'b', 'b', 'w'], ['b', 'b', 'b', 'b', 'b', 'b', 'b', 'b'], ['b', 'b', 'b', 'b', 'b', 'b', 'b', 'b'], ['b', 'b', 'b', 'b', 'b', 'b', 'b', 'b'], ['b', 'b', 'b', 'b', 'b', 'b', 'b', 'b'], ['b', 'b', 'b', 'b', 'b', 'b', 'b', 'b'], ['b', 'b', 'b', 'b', 'b', 'b', 'b', 'b']]
 
