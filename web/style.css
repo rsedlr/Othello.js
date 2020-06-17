@@ -1,6 +1,6 @@
 :root {
-	--green: rgb(4, 114, 0);
-	--dark-green: rgb(0, 70, 0);
+  --green: rgb(4, 114, 0);
+  --dark-green: rgb(0, 70, 0);
 }
 
 ::selection {
@@ -10,29 +10,30 @@
   background: rgb(4, 131, 0); /* highlight colour */
 }
 
-html, body {
-	background-color: rgb(141, 141, 141);
-	font-family: Arial, Helvetica, sans-serif;  /* Verdana, sans-serif; */
-	text-align: center;
+html,
+body {
+  background-color: rgb(141, 141, 141);
+  font-family: Arial, Helvetica, sans-serif; /* Verdana, sans-serif; */
+  text-align: center;
 }
 
 button {
-	padding: 8px 16px;
-	/* height: 42px !important; */
-	background-color: black; 
-	border: none;
-	box-shadow: none;
-	color: white; 
-  font-size: 20px; 
-	font-weight: bold;
-	margin: auto 10px;
-	transition: 0.3s;
+  padding: 8px 16px;
+  /* height: 42px !important; */
+  background-color: black;
+  border: none;
+  box-shadow: none;
+  color: white;
+  font-size: 20px;
+  font-weight: bold;
+  margin: auto 10px;
+  transition: 0.3s;
 }
 
 button.enabled,
 button:hover:not(#undo):not(#anims):not(#pass) {
-	color: black; 
-	background-color: white; 
+  color: black;
+  background-color: white;
 }
 
 /* .boardSelect {
@@ -40,156 +41,157 @@ button:hover:not(#undo):not(#anims):not(#pass) {
 } */
 
 .prefix.mac {
-	position: relative;
-	top: -1px;
+  position: relative;
+  top: -1px;
 }
 
 h1 {
-	font-size: 50px;
+  font-size: 50px;
 }
 
 h2 {
-	font-size: 30px;
-	margin-top: 40px;
+  font-size: 30px;
+  margin-top: 40px;
 }
 
 p {
-	font-size: 25px;
+  font-size: 25px;
 }
 
-#infoDiv, #scoreDiv {
-	font-size: 43px;
-	font-weight: bold;
-	margin: 10px auto;
+#infoDiv,
+#scoreDiv {
+  font-size: 43px;
+  font-weight: bold;
+  margin: 10px auto;
 }
 
 #scoreDiv {
-	font-size: 32px;
-	margin-bottom: 25px;
-	margin-top: 15px;
+  font-size: 32px;
+  margin-bottom: 25px;
+  margin-top: 15px;
 }
 
-
 #boardDiv {
-	width: 480px;
-	margin: 0 auto 30px;
-	border: 8px solid rgb(0, 0, 0);
-	cursor: default;
+  width: 480px;
+  margin: 0 auto 30px;
+  border: 8px solid rgb(0, 0, 0);
+  cursor: default;
 }
 
 .boardSquare {
-	display: inline-block;
-	width: 60px;
-	height: 60px;
-	vertical-align: top;
-	background-color: var(--green);
-	box-shadow: inset 0 0 0 1px rgb(0, 0, 0);
+  display: inline-block;
+  width: 60px;
+  height: 60px;
+  vertical-align: top;
+  background-color: var(--green);
+  box-shadow: inset 0 0 0 1px rgb(0, 0, 0);
 }
 
 .boardSquare.clickable {
-	background-color: var(--dark-green);
+  background-color: var(--dark-green);
 }
 
 .boardPiece {
-	width: 40px;
-	height: 40px;
-	line-height: 40px;
-	/* font-size: 30px; */
-	border-width: 4px;
-	/* border-style: solid; */
-	margin: 10px;
-	border-radius: 50%;
-	animation: none;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  /* font-size: 30px; */
+  border-width: 4px;
+  /* border-style: solid; */
+  margin: 10px;
+  border-radius: 50%;
+  animation: none;
 }
 
 .boardPiece.anims {
-	animation: slide-up 0.4s ease;
+  animation: slide-up 0.4s ease;
 }
 
 .boardPiece.w {
-	border-color: #fff;
-	background: #fff;
+  border-color: #fff;
+  background: #fff;
 }
 
 .boardPiece.b {
-	background: black;
+  background: black;
 }
 
 #optionsDiv {
-	width: 500px;
-	margin: 0 auto;
-	font-size: 18px;
+  width: 500px;
+  margin: 0 auto;
+  font-size: 18px;
 }
 
 .prefix {
-	padding: 8px 8px 8px 16px;
-	display: inline-block;
-	background-color: black; 
-	border: none;
-	box-shadow: none;
-	color: white; 
-	border-radius: 0;
-  font-size: 20px; 
-	font-weight: bold;
-	margin: 0 0 0 10px;
-	transition: 0.3s;
-	display: inline-block;
+  padding: 8px 8px 8px 16px;
+  display: inline-block;
+  background-color: black;
+  border: none;
+  box-shadow: none;
+  color: white;
+  border-radius: 0;
+  font-size: 20px;
+  font-weight: bold;
+  margin: 0 0 0 10px;
+  transition: 0.3s;
+  display: inline-block;
 }
 
 select {
   margin-left: -10px;
-	padding: 8px 7px 8px 9px;
-	height: 39px;
-  font-size: 20px; 
-	font-weight: bold;
-	border: none;
-	border-radius: 0;
+  padding: 8px 7px 8px 9px;
+  height: 39px;
+  font-size: 20px;
+  font-weight: bold;
+  border: none;
+  border-radius: 0;
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
-	background: #000;
-	color: #fff;
-	transition: 0.3s;
-} 
-select:hover {
-	background: #fff;
-	border-color: #fff;
-	color: #000;
+  background: #000;
+  color: #fff;
+  transition: 0.3s;
 }
-select::-ms-expand { 
-	display: none;
+select:hover {
+  background: #fff;
+  border-color: #fff;
+  color: #000;
+}
+select::-ms-expand {
+  display: none;
 }
 
 #delay {
-	padding-left: 15px;
+  padding-left: 15px;
 }
 
-#rows, #cols {
-	padding: 8px 10px 8px 17px;
+#rows,
+#cols {
+  padding: 8px 10px 8px 17px;
 }
 
 #howToModal {
-	display: none;
-	position: fixed;
-	left: 0;
+  display: none;
+  position: fixed;
+  left: 0;
   top: 0;
   width: 100%;
   height: 100%;
-	z-index: 1000;
-	background-color: #000000;
-	background-color: #000000b7;
-	overflow: auto; 
-	padding-top: 70px;
+  z-index: 1000;
+  background-color: #000000;
+  background-color: #000000b7;
+  overflow: auto;
+  padding-top: 70px;
 }
 
 #howToBlock {
-	margin: auto;
-	width: 50%;
-	padding: 1px 20px;
-	background-color: white;
-	border: 8px solid rgb(4, 114, 0);
-	animation: zoom 0.5s;
-	/* top: 50%; */
+  margin: auto;
+  width: 50%;
+  padding: 1px 20px;
+  background-color: white;
+  border: 8px solid rgb(4, 114, 0);
+  animation: zoom 0.5s;
+  /* top: 50%; */
 }
 
 .img-close {
@@ -201,26 +203,31 @@ select::-ms-expand {
   font-weight: bold;
   transition: 0.3s;
 }
-.img-close:hover, .img-close:focus {
+.img-close:hover,
+.img-close:focus {
   color: red;
   text-decoration: none;
   cursor: pointer;
 }
 
 @keyframes slide-up {
-	0% {
-			opacity: 0;
-			transform: translateY(10px);
-	}
-	100% {
-			opacity: 1;
-			transform: translateY(0);
-	}
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes zoom {
-  from { transform: scale(0) } 
-  to { transform: scale(1) }
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
 }
 
 .row {
@@ -238,30 +245,94 @@ select::-ms-expand {
 }
 
 #buttonContainer {
-	display: block;
-	width: 480px;
-	margin: auto;
+  display: block;
+  width: 480px;
+  margin: auto;
 }
 
 #boardContainer {
-	padding-left: 20px;
+  padding-left: 20px;
 }
 
 #howto {
-	margin-bottom: 20px;
-	background-color: var(--green);
-	border: 4px solid #000;
+  margin-bottom: 20px;
+  background-color: var(--green);
+  border: 4px solid #000;
 }
 
 #howto:hover {
-	background-color: var(--dark-green) !important;
-	color: white !important;
+  background-color: var(--dark-green) !important;
+  color: white !important;
 }
 
 @media screen and (min-width: 1100px) {
-	.column { flex: 1; }
-	#boardDiv {	margin: 0 10px 0 auto;	}
-	#buttonContainer { margin-left: 10px; }
-	#howToBlock {	width: 80% !important; }
+  .column {
+    flex: 1;
+  }
+  #boardDiv {
+    margin: 0 10px 0 auto;
+  }
+  #buttonContainer {
+    margin-left: 10px;
+  }
+  #howToBlock {
+    width: 80% !important;
+  }
 }
 
+/* back to portfolio button */
+.nav {
+  -webkit-tap-highlight-color: transparent;
+  text-align: left;
+  font: 16px Arial;
+  color: black;
+  box-sizing: border-box;
+  background-color: rgba(41, 41, 41, 0.93);
+  max-width: 220px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 1rem;
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1030;
+}
+
+.nav-cont {
+  -webkit-tap-highlight-color: transparent;
+  text-align: left;
+  font: 16px Arial;
+  color: black;
+  box-sizing: border-box;
+  width: 100%;
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+  max-width: 1140px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.navbar-brand {
+  -webkit-tap-highlight-color: transparent;
+  text-align: left;
+  font: 16px Arial;
+  box-sizing: border-box;
+  background-color: transparent;
+  display: inline-block;
+  padding-top: 0.3125rem;
+  padding-bottom: 0.3125rem;
+  line-height: inherit;
+  white-space: nowrap;
+  color: #0075ff !important;
+  font-weight: bold;
+  font-size: 20px;
+  margin: auto;
+  text-decoration: none;
+}
